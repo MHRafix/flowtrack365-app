@@ -5,7 +5,17 @@ import { LogOutIcon } from 'lucide-react';
 import React, { PropsWithChildren } from 'react';
 import { useAppConfirm } from './AppConfirm';
 import AppSidenav from './AppSideNav';
+import { ModeToggler } from './ModeToggler';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 import { Separator } from './ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from './ui/sidebar';
 
@@ -17,16 +27,16 @@ const DashboardScaffold: React.FC<PropsWithChildren> = ({ children }) => {
 			<SidebarProvider defaultOpen={true}>
 				<AppSidenav />
 				<SidebarInset>
-					<header className='flex h-16 shrink-0 justify-between items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12'>
+					<header className='bg-slate-200 flex h-16 shrink-0 justify-between items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 pr-4'>
 						<div className='flex items-center px-4 gap-2'>
-							<SidebarTrigger className='-ml-1' />
+							<SidebarTrigger className='-ml-1 text-2xl' />
 							<Separator orientation='vertical' className='h-4 mr-2' />
 						</div>
 
-						<div className='flex items-center mr-2 gap-2'>
+						<div className='flex pt-0 items-center gap-2'>
 							{/* <ThemeSwitcherButton /> */}
 							{/* User Button */}
-
+							<ModeToggler />{' '}
 							<Button
 								variant={'ghost'}
 								onClick={() => {
@@ -44,23 +54,23 @@ const DashboardScaffold: React.FC<PropsWithChildren> = ({ children }) => {
 								<LogOutIcon />
 								Logout
 							</Button>
-
-							{/* <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>
-                      {auth.user?.name?.slice(0, 2)}
-                    </AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Settings</DropdownMenuItem>
-                  <DropdownMenuItem>Logout</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu> */}
+							<DropdownMenu>
+								<DropdownMenuTrigger>
+									<Avatar>
+										<AvatarImage src='https://github.com/shadcn.png' />
+										<AvatarFallback>
+											{/* {auth.user?.name?.slice(0, 2)} */}
+											MH
+										</AvatarFallback>
+									</Avatar>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent>
+									<DropdownMenuLabel>My Account</DropdownMenuLabel>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem>Settings</DropdownMenuItem>
+									<DropdownMenuItem>Logout</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
 						</div>
 					</header>
 					<div className='flex flex-col flex-1 p-4 pt-0 gap-4'>

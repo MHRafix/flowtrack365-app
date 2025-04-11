@@ -4,6 +4,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import GlobalLoadingScreen from './components/GlobalLoadingScreen';
 import AppGlobalProvider from './components/providers/AppGlobalProvider';
+import { ThemeProvider } from './components/providers/ThemeProvider';
 import './index.css';
 import { routeTree } from './pagesTree.gen';
 import { jotaiStore } from './store';
@@ -33,10 +34,12 @@ const InnerApp = () => {
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<JotaiProvider store={jotaiStore}>
-			<AppGlobalProvider>
-				<InnerApp />
-			</AppGlobalProvider>
-		</JotaiProvider>
+		<ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+			<JotaiProvider store={jotaiStore}>
+				<AppGlobalProvider>
+					<InnerApp />
+				</AppGlobalProvider>
+			</JotaiProvider>
+		</ThemeProvider>
 	</StrictMode>
 );

@@ -19,20 +19,18 @@ export const Route = createLazyFileRoute('/auth/login/')({
 });
 
 function RouteComponent() {
-	// 1. Define your form.
+	// Define your form.
 	const form = useForm<LoginFormStateType>({
 		resolver: yupResolver(Login_Form_Schema),
 	});
 
-	// 2. Define a submit handler.
+	// Define a submit handler.
 	function onSubmit(values: LoginFormStateType) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
 		console.log(values);
 	}
 	return (
 		<div className='flex h-screen items-center justify-center'>
-			<div className='lg:w-5/12 dark:bg-slate-800 px-5 py-6 rounded-sm'>
+			<div className='lg:w-5/12 w-full bg-neutral-50 dark:bg-slate-800 px-5 py-6 rounded-sm'>
 				<h2 className='text-2xl font-semibold my-5'>Login Now</h2>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>

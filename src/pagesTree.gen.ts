@@ -14,6 +14,8 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './pages/__root'
 import { Route as AppImport } from './pages/_app'
+import { Route as AppHomeImport } from './pages/_app/home'
+import { Route as AppBlogImport } from './pages/_app/blog'
 
 // Create Virtual Routes
 
@@ -33,6 +35,18 @@ const AppIndexLazyRoute = AppIndexLazyImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any).lazy(() => import('./pages/_app/index.lazy').then((d) => d.Route))
+
+const AppHomeRoute = AppHomeImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppBlogRoute = AppBlogImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => AppRoute,
+} as any)
 
 const AuthLoginIndexLazyRoute = AuthLoginIndexLazyImport.update({
   id: '/auth/login/',
@@ -61,6 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppImport
       parentRoute: typeof rootRoute
     }
+    '/_app/blog': {
+      id: '/_app/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof AppBlogImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/home': {
+      id: '/_app/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AppHomeImport
+      parentRoute: typeof AppImport
+    }
     '/_app/': {
       id: '/_app/'
       path: '/'
@@ -88,10 +116,14 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AppRouteChildren {
+  AppBlogRoute: typeof AppBlogRoute
+  AppHomeRoute: typeof AppHomeRoute
   AppIndexLazyRoute: typeof AppIndexLazyRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppBlogRoute: AppBlogRoute,
+  AppHomeRoute: AppHomeRoute,
   AppIndexLazyRoute: AppIndexLazyRoute,
 }
 
@@ -99,12 +131,16 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof AppRouteWithChildren
+  '/blog': typeof AppBlogRoute
+  '/home': typeof AppHomeRoute
   '/': typeof AppIndexLazyRoute
   '/auth/get-started': typeof AuthGetStartedIndexLazyRoute
   '/auth/login': typeof AuthLoginIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
+  '/blog': typeof AppBlogRoute
+  '/home': typeof AppHomeRoute
   '/': typeof AppIndexLazyRoute
   '/auth/get-started': typeof AuthGetStartedIndexLazyRoute
   '/auth/login': typeof AuthLoginIndexLazyRoute
@@ -113,6 +149,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_app': typeof AppRouteWithChildren
+  '/_app/blog': typeof AppBlogRoute
+  '/_app/home': typeof AppHomeRoute
   '/_app/': typeof AppIndexLazyRoute
   '/auth/get-started/': typeof AuthGetStartedIndexLazyRoute
   '/auth/login/': typeof AuthLoginIndexLazyRoute
@@ -120,10 +158,17 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/' | '/auth/get-started' | '/auth/login'
+  fullPaths: '' | '/blog' | '/home' | '/' | '/auth/get-started' | '/auth/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/get-started' | '/auth/login'
-  id: '__root__' | '/_app' | '/_app/' | '/auth/get-started/' | '/auth/login/'
+  to: '/blog' | '/home' | '/' | '/auth/get-started' | '/auth/login'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/_app/blog'
+    | '/_app/home'
+    | '/_app/'
+    | '/auth/get-started/'
+    | '/auth/login/'
   fileRoutesById: FileRoutesById
 }
 
@@ -157,8 +202,18 @@ export const routeTree = rootRoute
     "/_app": {
       "filePath": "_app.tsx",
       "children": [
+        "/_app/blog",
+        "/_app/home",
         "/_app/"
       ]
+    },
+    "/_app/blog": {
+      "filePath": "_app/blog.tsx",
+      "parent": "/_app"
+    },
+    "/_app/home": {
+      "filePath": "_app/home.tsx",
+      "parent": "/_app"
     },
     "/_app/": {
       "filePath": "_app/index.lazy.tsx",

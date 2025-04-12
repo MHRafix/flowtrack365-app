@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import {

@@ -8,185 +8,218 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 
 // Import Routes
 
-import { Route as rootRoute } from './pages/__root'
-import { Route as AppImport } from './pages/_app'
-import { Route as AppHomeImport } from './pages/_app/home'
-import { Route as AppBlogImport } from './pages/_app/blog'
+import { Route as rootRoute } from './pages/__root';
+import { Route as AppImport } from './pages/_app';
+import { Route as AppHomeImport } from './pages/_app/home';
+import { Route as AppBlogImport } from './pages/_app/blog';
 
 // Create Virtual Routes
 
-const AppIndexLazyImport = createFileRoute('/_app/')()
-const AuthLoginIndexLazyImport = createFileRoute('/auth/login/')()
-const AuthGetStartedIndexLazyImport = createFileRoute('/auth/get-started/')()
+const AppIndexLazyImport = createFileRoute('/_app/')();
+const AuthRegistrationLazyImport = createFileRoute('/auth/registration')();
+const AuthLoginLazyImport = createFileRoute('/auth/login')();
+const AuthAuthSuccessLazyImport = createFileRoute('/auth/auth-success')();
 
 // Create/Update Routes
 
 const AppRoute = AppImport.update({
-  id: '/_app',
-  getParentRoute: () => rootRoute,
-} as any)
+	id: '/_app',
+	getParentRoute: () => rootRoute,
+} as any);
 
 const AppIndexLazyRoute = AppIndexLazyImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppRoute,
-} as any).lazy(() => import('./pages/_app/index.lazy').then((d) => d.Route))
+	id: '/',
+	path: '/',
+	getParentRoute: () => AppRoute,
+} as any).lazy(() => import('./pages/_app/index.lazy').then((d) => d.Route));
+
+const AuthRegistrationLazyRoute = AuthRegistrationLazyImport.update({
+	id: '/auth/registration',
+	path: '/auth/registration',
+	getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+	import('./pages/auth/registration.lazy').then((d) => d.Route)
+);
+
+const AuthLoginLazyRoute = AuthLoginLazyImport.update({
+	id: '/auth/login',
+	path: '/auth/login',
+	getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./pages/auth/login.lazy').then((d) => d.Route));
+
+const AuthAuthSuccessLazyRoute = AuthAuthSuccessLazyImport.update({
+	id: '/auth/auth-success',
+	path: '/auth/auth-success',
+	getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+	import('./pages/auth/auth-success.lazy').then((d) => d.Route)
+);
 
 const AppHomeRoute = AppHomeImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => AppRoute,
-} as any)
+	id: '/home',
+	path: '/home',
+	getParentRoute: () => AppRoute,
+} as any);
 
 const AppBlogRoute = AppBlogImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const AuthLoginIndexLazyRoute = AuthLoginIndexLazyImport.update({
-  id: '/auth/login/',
-  path: '/auth/login/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./pages/auth/login/index.lazy').then((d) => d.Route),
-)
-
-const AuthGetStartedIndexLazyRoute = AuthGetStartedIndexLazyImport.update({
-  id: '/auth/get-started/',
-  path: '/auth/get-started/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./pages/auth/get-started/index.lazy').then((d) => d.Route),
-)
+	id: '/blog',
+	path: '/blog',
+	getParentRoute: () => AppRoute,
+} as any);
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_app': {
-      id: '/_app'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AppImport
-      parentRoute: typeof rootRoute
-    }
-    '/_app/blog': {
-      id: '/_app/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof AppBlogImport
-      parentRoute: typeof AppImport
-    }
-    '/_app/home': {
-      id: '/_app/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof AppHomeImport
-      parentRoute: typeof AppImport
-    }
-    '/_app/': {
-      id: '/_app/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AppIndexLazyImport
-      parentRoute: typeof AppImport
-    }
-    '/auth/get-started/': {
-      id: '/auth/get-started/'
-      path: '/auth/get-started'
-      fullPath: '/auth/get-started'
-      preLoaderRoute: typeof AuthGetStartedIndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/auth/login/': {
-      id: '/auth/login/'
-      path: '/auth/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginIndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-  }
+	interface FileRoutesByPath {
+		'/_app': {
+			id: '/_app';
+			path: '';
+			fullPath: '';
+			preLoaderRoute: typeof AppImport;
+			parentRoute: typeof rootRoute;
+		};
+		'/_app/blog': {
+			id: '/_app/blog';
+			path: '/blog';
+			fullPath: '/blog';
+			preLoaderRoute: typeof AppBlogImport;
+			parentRoute: typeof AppImport;
+		};
+		'/_app/home': {
+			id: '/_app/home';
+			path: '/home';
+			fullPath: '/home';
+			preLoaderRoute: typeof AppHomeImport;
+			parentRoute: typeof AppImport;
+		};
+		'/auth/auth-success': {
+			id: '/auth/auth-success';
+			path: '/auth/auth-success';
+			fullPath: '/auth/auth-success';
+			preLoaderRoute: typeof AuthAuthSuccessLazyImport;
+			parentRoute: typeof rootRoute;
+		};
+		'/auth/login': {
+			id: '/auth/login';
+			path: '/auth/login';
+			fullPath: '/auth/login';
+			preLoaderRoute: typeof AuthLoginLazyImport;
+			parentRoute: typeof rootRoute;
+		};
+		'/auth/registration': {
+			id: '/auth/registration';
+			path: '/auth/registration';
+			fullPath: '/auth/registration';
+			preLoaderRoute: typeof AuthRegistrationLazyImport;
+			parentRoute: typeof rootRoute;
+		};
+		'/_app/': {
+			id: '/_app/';
+			path: '/';
+			fullPath: '/';
+			preLoaderRoute: typeof AppIndexLazyImport;
+			parentRoute: typeof AppImport;
+		};
+	}
 }
 
 // Create and export the route tree
 
 interface AppRouteChildren {
-  AppBlogRoute: typeof AppBlogRoute
-  AppHomeRoute: typeof AppHomeRoute
-  AppIndexLazyRoute: typeof AppIndexLazyRoute
+	AppBlogRoute: typeof AppBlogRoute;
+	AppHomeRoute: typeof AppHomeRoute;
+	AppIndexLazyRoute: typeof AppIndexLazyRoute;
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppBlogRoute: AppBlogRoute,
-  AppHomeRoute: AppHomeRoute,
-  AppIndexLazyRoute: AppIndexLazyRoute,
-}
+	AppBlogRoute: AppBlogRoute,
+	AppHomeRoute: AppHomeRoute,
+	AppIndexLazyRoute: AppIndexLazyRoute,
+};
 
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren);
 
 export interface FileRoutesByFullPath {
-  '': typeof AppRouteWithChildren
-  '/blog': typeof AppBlogRoute
-  '/home': typeof AppHomeRoute
-  '/': typeof AppIndexLazyRoute
-  '/auth/get-started': typeof AuthGetStartedIndexLazyRoute
-  '/auth/login': typeof AuthLoginIndexLazyRoute
+	'': typeof AppRouteWithChildren;
+	'/blog': typeof AppBlogRoute;
+	'/home': typeof AppHomeRoute;
+	'/auth/auth-success': typeof AuthAuthSuccessLazyRoute;
+	'/auth/login': typeof AuthLoginLazyRoute;
+	'/auth/registration': typeof AuthRegistrationLazyRoute;
+	'/': typeof AppIndexLazyRoute;
 }
 
 export interface FileRoutesByTo {
-  '/blog': typeof AppBlogRoute
-  '/home': typeof AppHomeRoute
-  '/': typeof AppIndexLazyRoute
-  '/auth/get-started': typeof AuthGetStartedIndexLazyRoute
-  '/auth/login': typeof AuthLoginIndexLazyRoute
+	'/blog': typeof AppBlogRoute;
+	'/home': typeof AppHomeRoute;
+	'/auth/auth-success': typeof AuthAuthSuccessLazyRoute;
+	'/auth/login': typeof AuthLoginLazyRoute;
+	'/auth/registration': typeof AuthRegistrationLazyRoute;
+	'/': typeof AppIndexLazyRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/_app': typeof AppRouteWithChildren
-  '/_app/blog': typeof AppBlogRoute
-  '/_app/home': typeof AppHomeRoute
-  '/_app/': typeof AppIndexLazyRoute
-  '/auth/get-started/': typeof AuthGetStartedIndexLazyRoute
-  '/auth/login/': typeof AuthLoginIndexLazyRoute
+	__root__: typeof rootRoute;
+	'/_app': typeof AppRouteWithChildren;
+	'/_app/blog': typeof AppBlogRoute;
+	'/_app/home': typeof AppHomeRoute;
+	'/auth/auth-success': typeof AuthAuthSuccessLazyRoute;
+	'/auth/login': typeof AuthLoginLazyRoute;
+	'/auth/registration': typeof AuthRegistrationLazyRoute;
+	'/_app/': typeof AppIndexLazyRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/blog' | '/home' | '/' | '/auth/get-started' | '/auth/login'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/blog' | '/home' | '/' | '/auth/get-started' | '/auth/login'
-  id:
-    | '__root__'
-    | '/_app'
-    | '/_app/blog'
-    | '/_app/home'
-    | '/_app/'
-    | '/auth/get-started/'
-    | '/auth/login/'
-  fileRoutesById: FileRoutesById
+	fileRoutesByFullPath: FileRoutesByFullPath;
+	fullPaths:
+		| ''
+		| '/blog'
+		| '/home'
+		| '/auth/auth-success'
+		| '/auth/login'
+		| '/auth/registration'
+		| '/';
+	fileRoutesByTo: FileRoutesByTo;
+	to:
+		| '/blog'
+		| '/home'
+		| '/auth/auth-success'
+		| '/auth/login'
+		| '/auth/registration'
+		| '/';
+	id:
+		| '__root__'
+		| '/_app'
+		| '/_app/blog'
+		| '/_app/home'
+		| '/auth/auth-success'
+		| '/auth/login'
+		| '/auth/registration'
+		| '/_app/';
+	fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  AppRoute: typeof AppRouteWithChildren
-  AuthGetStartedIndexLazyRoute: typeof AuthGetStartedIndexLazyRoute
-  AuthLoginIndexLazyRoute: typeof AuthLoginIndexLazyRoute
+	AppRoute: typeof AppRouteWithChildren;
+	AuthAuthSuccessLazyRoute: typeof AuthAuthSuccessLazyRoute;
+	AuthLoginLazyRoute: typeof AuthLoginLazyRoute;
+	AuthRegistrationLazyRoute: typeof AuthRegistrationLazyRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  AppRoute: AppRouteWithChildren,
-  AuthGetStartedIndexLazyRoute: AuthGetStartedIndexLazyRoute,
-  AuthLoginIndexLazyRoute: AuthLoginIndexLazyRoute,
-}
+	AppRoute: AppRouteWithChildren,
+	AuthAuthSuccessLazyRoute: AuthAuthSuccessLazyRoute,
+	AuthLoginLazyRoute: AuthLoginLazyRoute,
+	AuthRegistrationLazyRoute: AuthRegistrationLazyRoute,
+};
 
 export const routeTree = rootRoute
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+	._addFileChildren(rootRouteChildren)
+	._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
@@ -195,8 +228,9 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_app",
-        "/auth/get-started/",
-        "/auth/login/"
+        "/auth/auth-success",
+        "/auth/login",
+        "/auth/registration"
       ]
     },
     "/_app": {
@@ -215,15 +249,18 @@ export const routeTree = rootRoute
       "filePath": "_app/home.tsx",
       "parent": "/_app"
     },
+    "/auth/auth-success": {
+      "filePath": "auth/auth-success.lazy.tsx"
+    },
+    "/auth/login": {
+      "filePath": "auth/login.lazy.tsx"
+    },
+    "/auth/registration": {
+      "filePath": "auth/registration.lazy.tsx"
+    },
     "/_app/": {
       "filePath": "_app/index.lazy.tsx",
       "parent": "/_app"
-    },
-    "/auth/get-started/": {
-      "filePath": "auth/get-started/index.lazy.tsx"
-    },
-    "/auth/login/": {
-      "filePath": "auth/login/index.lazy.tsx"
     }
   }
 }

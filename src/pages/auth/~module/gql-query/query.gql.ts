@@ -13,7 +13,14 @@ export const Registration_User_Mutation = gql`
 export const Magic_Login_User_Mutation = gql`
 	mutation MagicLogin($payload: MagicLinkAuthenticationInput!) {
 		sendMagicLink(payload: $payload) {
-			data
+			isSuccess
+			message
+		}
+	}
+`;
+export const Verify_Magic_Login_Mutation = gql`
+	mutation VerifyMagicLink($payload: VerifyMagicLinkInput!) {
+		verifyMagicLink(payload: $payload) {
 			isSuccess
 			message
 		}

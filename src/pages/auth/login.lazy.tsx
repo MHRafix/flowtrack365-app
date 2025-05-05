@@ -38,7 +38,7 @@ function RouteComponent() {
 				<h2 className='text-2xl font-semibold my-5'>Login Now</h2>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
-						<FormField
+						{/* <FormField
 							control={form.control}
 							name='username'
 							render={({ field }) => (
@@ -51,7 +51,7 @@ function RouteComponent() {
 									<FormMessage />
 								</FormItem>
 							)}
-						/>
+						/> */}
 						<FormField
 							control={form.control}
 							name='email'
@@ -79,7 +79,7 @@ function RouteComponent() {
 }
 
 const Login_Form_Schema = Yup.object({
-	username: Yup.string().required().label('Username'),
+	// username: Yup.string().required().label('Username'),
 	email: Yup.string().email().required().label('Email'),
 });
 

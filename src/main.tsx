@@ -1,6 +1,5 @@
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { Provider as JotaiProvider } from 'jotai';
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import GlobalLoadingScreen from './components/GlobalLoadingScreen';
 import AppGlobalProvider from './components/providers/AppGlobalProvider';
@@ -33,13 +32,13 @@ const InnerApp = () => {
 };
 
 createRoot(document.getElementById('root')!).render(
-	<StrictMode>
-		<ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-			<JotaiProvider store={jotaiStore}>
-				<AppGlobalProvider>
-					<InnerApp />
-				</AppGlobalProvider>
-			</JotaiProvider>
-		</ThemeProvider>
-	</StrictMode>
+	// <StrictMode>
+	<ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+		<JotaiProvider store={jotaiStore}>
+			<AppGlobalProvider>
+				<InnerApp />
+			</AppGlobalProvider>
+		</JotaiProvider>
+	</ThemeProvider>
+	// </StrictMode>
 );

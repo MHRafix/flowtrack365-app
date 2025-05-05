@@ -3,12 +3,14 @@ import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { LoginFormStateType } from '../../login.lazy';
 import { RegistrationFormStateType } from '../../registration.lazy';
+import { VerifyMagicLoginFormStateType } from '../../verify-login.lazy';
 import {
 	Magic_Login_User_Mutation,
 	Registration_User_Mutation,
+	Verify_Magic_Login_Mutation,
 } from '../gql-query/query.gql';
 
-export const authApi = () => {
+export const authApi = (onRedirect?: CallableFunction) => {
 	const registrationMutation = useMutation({
 		mutationFn: (payload: RegistrationFormStateType) =>
 			gqlRequest({
@@ -17,7 +19,7 @@ export const authApi = () => {
 			}),
 		onSuccess: () => {
 			toast.success('Registration has been success');
-			// joinRequestsQuery.refetch();
+			onRedirect?.();
 		},
 		onError: () => toast.error('Failed to register account'),
 	});
@@ -26,13 +28,28 @@ export const authApi = () => {
 		mutationFn: (payload: LoginFormStateType) =>
 			gqlRequest({
 				query: Magic_Login_User_Mutation,
-				variables: { input: payload },
+				variables: { payload },
 			}),
 		onSuccess: () => {
-			toast.success('Login has been success');
+			toast.success('Login link has been sent to your mail.');
 			// joinRequestsQuery.refetch();
 		},
 		onError: () => toast.error('Failed to login'),
 	});
-	return { registrationMutation, loginMutation };
+
+	const verifyMagicLoginMutation = useMutation({
+		mutationFn: (payload: VerifyMagicLoginFormStateType) =>
+			gqlRequest({
+				query: Verify_Magic_Login_Mutation,
+				variables: { payload },
+			}),
+		onSuccess: () => {
+			toast.success('Login has been success.');
+			onRedirect?.();
+		},
+		onError: () => {
+			toast.error('Failed to verify.');
+		},
+	});
+	return { registrationMutation, loginMutation, verifyMagicLoginMutation };
 };

@@ -6,7 +6,7 @@ export const gqlRequest = async <T>(payload: {
 	variables?: { [key: string]: any };
 }) => {
 	const apiResponse = await fetch(
-		`${import.meta.env.VITE_APP_RIDER_API_URL}/graphql`,
+		`${import.meta.env.VITE_APP_BUSINESS_API_URL}/graphql`,
 		{
 			method: 'POST',
 			credentials: 'include',

@@ -9,13 +9,21 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { authApi } from './~module/api/auth.api';
 
-export const Route = createLazyFileRoute('/auth/registration')({
+export const Route = createFileRoute('/auth/registration')({
+	async beforeLoad(ctx) {
+		if (ctx.context.auth.isFetched && ctx.context.auth.isAuthenticated) {
+			throw redirect({
+				to: '/',
+			});
+		}
+		return ctx;
+	},
 	component: RouteComponent,
 });
 

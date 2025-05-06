@@ -23,6 +23,19 @@ export const Verify_Magic_Login_Mutation = gql`
 		verifyMagicLink(payload: $payload) {
 			isSuccess
 			message
+			data
+		}
+	}
+`;
+export const Login_User_Details_Query = gql`
+	query User($input: CommonMatchInput!) {
+		user(input: $input) {
+			_id
+			name
+			email
+			phone
+			avatar
+			role
 		}
 	}
 `;

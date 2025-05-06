@@ -1,4 +1,4 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
@@ -16,7 +16,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Loader2 } from 'lucide-react';
 import { authApi } from './~module/api/auth.api';
 
-export const Route = createLazyFileRoute('/auth/login')({
+export const Route = createFileRoute('/auth/login')({
+	async beforeLoad(ctx) {
+		if (ctx.context.auth.isFetched && ctx.context.auth.isAuthenticated) {
+			throw redirect({
+				to: '/',
+			});
+		}
+		return ctx;
+	},
 	component: RouteComponent,
 });
 

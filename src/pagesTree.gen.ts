@@ -14,16 +14,15 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './pages/__root'
 import { Route as AppImport } from './pages/_app'
+import { Route as AuthVerifyLoginImport } from './pages/auth/verify-login'
+import { Route as AuthRegistrationImport } from './pages/auth/registration'
+import { Route as AuthLoginImport } from './pages/auth/login'
 import { Route as AppHomeImport } from './pages/_app/home'
 import { Route as AppBlogImport } from './pages/_app/blog'
 
 // Create Virtual Routes
 
 const AppIndexLazyImport = createFileRoute('/_app/')()
-const AuthVerifyLoginLazyImport = createFileRoute('/auth/verify-login')()
-const AuthRegistrationLazyImport = createFileRoute('/auth/registration')()
-const AuthLoginLazyImport = createFileRoute('/auth/login')()
-const AuthAuthSuccessLazyImport = createFileRoute('/auth/auth-success')()
 
 // Create/Update Routes
 
@@ -38,35 +37,23 @@ const AppIndexLazyRoute = AppIndexLazyImport.update({
   getParentRoute: () => AppRoute,
 } as any).lazy(() => import('./pages/_app/index.lazy').then((d) => d.Route))
 
-const AuthVerifyLoginLazyRoute = AuthVerifyLoginLazyImport.update({
+const AuthVerifyLoginRoute = AuthVerifyLoginImport.update({
   id: '/auth/verify-login',
   path: '/auth/verify-login',
   getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./pages/auth/verify-login.lazy').then((d) => d.Route),
-)
+} as any)
 
-const AuthRegistrationLazyRoute = AuthRegistrationLazyImport.update({
+const AuthRegistrationRoute = AuthRegistrationImport.update({
   id: '/auth/registration',
   path: '/auth/registration',
   getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./pages/auth/registration.lazy').then((d) => d.Route),
-)
+} as any)
 
-const AuthLoginLazyRoute = AuthLoginLazyImport.update({
+const AuthLoginRoute = AuthLoginImport.update({
   id: '/auth/login',
   path: '/auth/login',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./pages/auth/login.lazy').then((d) => d.Route))
-
-const AuthAuthSuccessLazyRoute = AuthAuthSuccessLazyImport.update({
-  id: '/auth/auth-success',
-  path: '/auth/auth-success',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./pages/auth/auth-success.lazy').then((d) => d.Route),
-)
+} as any)
 
 const AppHomeRoute = AppHomeImport.update({
   id: '/home',
@@ -105,32 +92,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHomeImport
       parentRoute: typeof AppImport
     }
-    '/auth/auth-success': {
-      id: '/auth/auth-success'
-      path: '/auth/auth-success'
-      fullPath: '/auth/auth-success'
-      preLoaderRoute: typeof AuthAuthSuccessLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/auth/login': {
       id: '/auth/login'
       path: '/auth/login'
       fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginLazyImport
+      preLoaderRoute: typeof AuthLoginImport
       parentRoute: typeof rootRoute
     }
     '/auth/registration': {
       id: '/auth/registration'
       path: '/auth/registration'
       fullPath: '/auth/registration'
-      preLoaderRoute: typeof AuthRegistrationLazyImport
+      preLoaderRoute: typeof AuthRegistrationImport
       parentRoute: typeof rootRoute
     }
     '/auth/verify-login': {
       id: '/auth/verify-login'
       path: '/auth/verify-login'
       fullPath: '/auth/verify-login'
-      preLoaderRoute: typeof AuthVerifyLoginLazyImport
+      preLoaderRoute: typeof AuthVerifyLoginImport
       parentRoute: typeof rootRoute
     }
     '/_app/': {
@@ -163,20 +143,18 @@ export interface FileRoutesByFullPath {
   '': typeof AppRouteWithChildren
   '/blog': typeof AppBlogRoute
   '/home': typeof AppHomeRoute
-  '/auth/auth-success': typeof AuthAuthSuccessLazyRoute
-  '/auth/login': typeof AuthLoginLazyRoute
-  '/auth/registration': typeof AuthRegistrationLazyRoute
-  '/auth/verify-login': typeof AuthVerifyLoginLazyRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/registration': typeof AuthRegistrationRoute
+  '/auth/verify-login': typeof AuthVerifyLoginRoute
   '/': typeof AppIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/blog': typeof AppBlogRoute
   '/home': typeof AppHomeRoute
-  '/auth/auth-success': typeof AuthAuthSuccessLazyRoute
-  '/auth/login': typeof AuthLoginLazyRoute
-  '/auth/registration': typeof AuthRegistrationLazyRoute
-  '/auth/verify-login': typeof AuthVerifyLoginLazyRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/registration': typeof AuthRegistrationRoute
+  '/auth/verify-login': typeof AuthVerifyLoginRoute
   '/': typeof AppIndexLazyRoute
 }
 
@@ -185,10 +163,9 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/_app/blog': typeof AppBlogRoute
   '/_app/home': typeof AppHomeRoute
-  '/auth/auth-success': typeof AuthAuthSuccessLazyRoute
-  '/auth/login': typeof AuthLoginLazyRoute
-  '/auth/registration': typeof AuthRegistrationLazyRoute
-  '/auth/verify-login': typeof AuthVerifyLoginLazyRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/registration': typeof AuthRegistrationRoute
+  '/auth/verify-login': typeof AuthVerifyLoginRoute
   '/_app/': typeof AppIndexLazyRoute
 }
 
@@ -198,7 +175,6 @@ export interface FileRouteTypes {
     | ''
     | '/blog'
     | '/home'
-    | '/auth/auth-success'
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
@@ -207,7 +183,6 @@ export interface FileRouteTypes {
   to:
     | '/blog'
     | '/home'
-    | '/auth/auth-success'
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
@@ -217,7 +192,6 @@ export interface FileRouteTypes {
     | '/_app'
     | '/_app/blog'
     | '/_app/home'
-    | '/auth/auth-success'
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
@@ -227,18 +201,16 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
-  AuthAuthSuccessLazyRoute: typeof AuthAuthSuccessLazyRoute
-  AuthLoginLazyRoute: typeof AuthLoginLazyRoute
-  AuthRegistrationLazyRoute: typeof AuthRegistrationLazyRoute
-  AuthVerifyLoginLazyRoute: typeof AuthVerifyLoginLazyRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegistrationRoute: typeof AuthRegistrationRoute
+  AuthVerifyLoginRoute: typeof AuthVerifyLoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
-  AuthAuthSuccessLazyRoute: AuthAuthSuccessLazyRoute,
-  AuthLoginLazyRoute: AuthLoginLazyRoute,
-  AuthRegistrationLazyRoute: AuthRegistrationLazyRoute,
-  AuthVerifyLoginLazyRoute: AuthVerifyLoginLazyRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRegistrationRoute: AuthRegistrationRoute,
+  AuthVerifyLoginRoute: AuthVerifyLoginRoute,
 }
 
 export const routeTree = rootRoute
@@ -252,7 +224,6 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_app",
-        "/auth/auth-success",
         "/auth/login",
         "/auth/registration",
         "/auth/verify-login"
@@ -274,17 +245,14 @@ export const routeTree = rootRoute
       "filePath": "_app/home.tsx",
       "parent": "/_app"
     },
-    "/auth/auth-success": {
-      "filePath": "auth/auth-success.lazy.tsx"
-    },
     "/auth/login": {
-      "filePath": "auth/login.lazy.tsx"
+      "filePath": "auth/login.tsx"
     },
     "/auth/registration": {
-      "filePath": "auth/registration.lazy.tsx"
+      "filePath": "auth/registration.tsx"
     },
     "/auth/verify-login": {
-      "filePath": "auth/verify-login.lazy.tsx"
+      "filePath": "auth/verify-login.tsx"
     },
     "/_app/": {
       "filePath": "_app/index.lazy.tsx",

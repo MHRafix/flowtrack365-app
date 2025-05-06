@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import {
-	createLazyFileRoute,
+	createFileRoute,
 	useNavigate,
 	useSearch,
 } from '@tanstack/react-router';
@@ -8,7 +8,15 @@ import { ArrowLeft, BadgeCheckIcon, Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { authApi } from './~module/api/auth.api';
 
-export const Route = createLazyFileRoute('/auth/verify-login')({
+export const Route = createFileRoute('/auth/verify-login')({
+	// async beforeLoad(ctx) {
+	// 	if (ctx.context.auth.isFetched && ctx.context.auth.isAuthenticated) {
+	// 		throw redirect({
+	// 			to: '/',
+	// 		});
+	// 	}
+	// 	return ctx;
+	// },
 	component: RouteComponent,
 });
 
@@ -17,7 +25,7 @@ function RouteComponent() {
 	const navigate = useNavigate();
 
 	const handleRedirect = () => {
-		navigate({ to: '/home' }); // Replace '/settings' with any route path
+		navigate({ to: '/' }); // Replace '/settings' with any route path
 	};
 
 	const { verifyMagicLoginMutation } = authApi(handleRedirect);

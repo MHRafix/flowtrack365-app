@@ -1,10 +1,12 @@
 import { gqlRequest } from '@/lib/api-client';
-import { useMutation } from '@tanstack/react-query';
+import { User } from '@/types/userType';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { LoginFormStateType } from '../../login.lazy';
-import { RegistrationFormStateType } from '../../registration.lazy';
-import { VerifyMagicLoginFormStateType } from '../../verify-login.lazy';
+import { LoginFormStateType } from '../../login';
+import { RegistrationFormStateType } from '../../registration';
+import { VerifyMagicLoginFormStateType } from '../../verify-login';
 import {
+	Login_User_Details_Query,
 	Magic_Login_User_Mutation,
 	Registration_User_Mutation,
 	Verify_Magic_Login_Mutation,
@@ -43,7 +45,8 @@ export const authApi = (onRedirect?: CallableFunction) => {
 				query: Verify_Magic_Login_Mutation,
 				variables: { payload },
 			}),
-		onSuccess: () => {
+		onSuccess: (res: any) => {
+			localStorage.setItem('token', res?.verifyMagicLink?.data?.token);
 			toast.success('Login has been success.');
 			onRedirect?.();
 		},
@@ -51,5 +54,22 @@ export const authApi = (onRedirect?: CallableFunction) => {
 			toast.error('Failed to verify.');
 		},
 	});
-	return { registrationMutation, loginMutation, verifyMagicLoginMutation };
+
+	const loggedInUserDetails = useQuery({
+		queryKey: ['logged-in-user'],
+		queryFn: async () => {
+			const res = await gqlRequest<{
+				user: User | null;
+			}>({
+				query: Login_User_Details_Query,
+			});
+			return res?.user;
+		},
+	});
+	return {
+		registrationMutation,
+		loginMutation,
+		verifyMagicLoginMutation,
+		loggedInUserDetails,
+	};
 };

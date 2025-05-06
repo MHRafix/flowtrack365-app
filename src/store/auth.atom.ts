@@ -1,14 +1,16 @@
+import { gqlRequest } from '@/lib/api-client';
+import { Login_User_Details_Query } from '@/pages/auth/~module/gql-query/query.gql';
+import { User } from '@/types/userType';
 import { useAtom } from 'jotai';
 import { atomWithImmer } from 'jotai-immer';
+import { jwtDecode } from 'jwt-decode';
 import { jotaiStore } from '.';
-import { IMeUser } from '@/types/commonModelTypes';
-import { identityApi } from '@/lib/api-client';
 
 export interface IAuthStore {
 	isAuthenticated: boolean;
 	isPending: boolean;
 	isFetched: boolean;
-	user: IMeUser | null;
+	user: User | null;
 	logout?: () => Promise<void>;
 }
 export const userAtom = atomWithImmer<IAuthStore>({
@@ -17,31 +19,53 @@ export const userAtom = atomWithImmer<IAuthStore>({
 	isFetched: false,
 	user: null,
 });
-
 export async function fetchME() {
-	jotaiStore.set(userAtom, (draft) => {
-		draft.isPending = true;
-	});
+	const token = localStorage.getItem('token'); // or however you're storing it
 
 	try {
-		const data = await identityApi.get<IMeUser>('/users/me');
+		const decoded: User = jwtDecode(token!);
 
 		jotaiStore.set(userAtom, (draft) => {
-			draft.user = data?.data || null;
-			draft.isAuthenticated = !!data;
-			draft.isFetched = true;
+			draft.isPending = true;
 		});
 
-		return data;
-	} catch {
+		try {
+			const data = await gqlRequest<{
+				user: User | null;
+			}>({
+				query: Login_User_Details_Query,
+				variables: {
+					input: {
+						key: 'email',
+						operator: 'eq',
+						value: decoded?.email,
+					},
+				},
+			});
+
+			jotaiStore.set(userAtom, (draft) => {
+				draft.user = data?.user || null;
+				draft.isAuthenticated = true;
+				draft.isFetched = true;
+			});
+
+			return data;
+		} catch {
+			jotaiStore.set(userAtom, (draft) => {
+				draft.user = null;
+				draft.isAuthenticated = false;
+				draft.isFetched = true;
+			});
+		} finally {
+			jotaiStore.set(userAtom, (draft) => {
+				draft.isPending = false;
+			});
+		}
+	} catch (error) {
 		jotaiStore.set(userAtom, (draft) => {
 			draft.user = null;
 			draft.isAuthenticated = false;
 			draft.isFetched = true;
-		});
-	} finally {
-		jotaiStore.set(userAtom, (draft) => {
-			draft.isPending = false;
 		});
 	}
 }

@@ -73,7 +73,7 @@ const DashboardScaffold: React.FC<PropsWithChildren> = ({ children }) => {
 							</DropdownMenu>
 						</div>
 					</header>
-					<div className='flex flex-col flex-1 p-4 pt-0 gap-4'>
+					<div className='flex flex-col flex-1 p-4 gap-4'>
 						<>{children}</>
 					</div>
 				</SidebarInset>

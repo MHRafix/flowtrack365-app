@@ -17,12 +17,16 @@ import { Route as AppImport } from './pages/_app'
 import { Route as AuthVerifyLoginImport } from './pages/auth/verify-login'
 import { Route as AuthRegistrationImport } from './pages/auth/registration'
 import { Route as AuthLoginImport } from './pages/auth/login'
-import { Route as AppHomeImport } from './pages/_app/home'
-import { Route as AppBlogImport } from './pages/_app/blog'
 
 // Create Virtual Routes
 
 const AppIndexLazyImport = createFileRoute('/_app/')()
+const AppExpenseManagementExpensesIndexLazyImport = createFileRoute(
+  '/_app/expense-management/expenses/',
+)()
+const AppExpenseManagementExpenseCategoriesIndexLazyImport = createFileRoute(
+  '/_app/expense-management/expense-categories/',
+)()
 
 // Create/Update Routes
 
@@ -55,17 +59,27 @@ const AuthLoginRoute = AuthLoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppHomeRoute = AppHomeImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => AppRoute,
-} as any)
+const AppExpenseManagementExpensesIndexLazyRoute =
+  AppExpenseManagementExpensesIndexLazyImport.update({
+    id: '/expense-management/expenses/',
+    path: '/expense-management/expenses/',
+    getParentRoute: () => AppRoute,
+  } as any).lazy(() =>
+    import('./pages/_app/expense-management/expenses/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
-const AppBlogRoute = AppBlogImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => AppRoute,
-} as any)
+const AppExpenseManagementExpenseCategoriesIndexLazyRoute =
+  AppExpenseManagementExpenseCategoriesIndexLazyImport.update({
+    id: '/expense-management/expense-categories/',
+    path: '/expense-management/expense-categories/',
+    getParentRoute: () => AppRoute,
+  } as any).lazy(() =>
+    import(
+      './pages/_app/expense-management/expense-categories/index.lazy'
+    ).then((d) => d.Route),
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -77,20 +91,6 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof AppImport
       parentRoute: typeof rootRoute
-    }
-    '/_app/blog': {
-      id: '/_app/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof AppBlogImport
-      parentRoute: typeof AppImport
-    }
-    '/_app/home': {
-      id: '/_app/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof AppHomeImport
-      parentRoute: typeof AppImport
     }
     '/auth/login': {
       id: '/auth/login'
@@ -120,82 +120,98 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/expense-management/expense-categories/': {
+      id: '/_app/expense-management/expense-categories/'
+      path: '/expense-management/expense-categories'
+      fullPath: '/expense-management/expense-categories'
+      preLoaderRoute: typeof AppExpenseManagementExpenseCategoriesIndexLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/expense-management/expenses/': {
+      id: '/_app/expense-management/expenses/'
+      path: '/expense-management/expenses'
+      fullPath: '/expense-management/expenses'
+      preLoaderRoute: typeof AppExpenseManagementExpensesIndexLazyImport
+      parentRoute: typeof AppImport
+    }
   }
 }
 
 // Create and export the route tree
 
 interface AppRouteChildren {
-  AppBlogRoute: typeof AppBlogRoute
-  AppHomeRoute: typeof AppHomeRoute
   AppIndexLazyRoute: typeof AppIndexLazyRoute
+  AppExpenseManagementExpenseCategoriesIndexLazyRoute: typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
+  AppExpenseManagementExpensesIndexLazyRoute: typeof AppExpenseManagementExpensesIndexLazyRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppBlogRoute: AppBlogRoute,
-  AppHomeRoute: AppHomeRoute,
   AppIndexLazyRoute: AppIndexLazyRoute,
+  AppExpenseManagementExpenseCategoriesIndexLazyRoute:
+    AppExpenseManagementExpenseCategoriesIndexLazyRoute,
+  AppExpenseManagementExpensesIndexLazyRoute:
+    AppExpenseManagementExpensesIndexLazyRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof AppRouteWithChildren
-  '/blog': typeof AppBlogRoute
-  '/home': typeof AppHomeRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
   '/': typeof AppIndexLazyRoute
+  '/expense-management/expense-categories': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
+  '/expense-management/expenses': typeof AppExpenseManagementExpensesIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
-  '/blog': typeof AppBlogRoute
-  '/home': typeof AppHomeRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
   '/': typeof AppIndexLazyRoute
+  '/expense-management/expense-categories': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
+  '/expense-management/expenses': typeof AppExpenseManagementExpensesIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_app': typeof AppRouteWithChildren
-  '/_app/blog': typeof AppBlogRoute
-  '/_app/home': typeof AppHomeRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
   '/_app/': typeof AppIndexLazyRoute
+  '/_app/expense-management/expense-categories/': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
+  '/_app/expense-management/expenses/': typeof AppExpenseManagementExpensesIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
-    | '/blog'
-    | '/home'
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
     | '/'
+    | '/expense-management/expense-categories'
+    | '/expense-management/expenses'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/blog'
-    | '/home'
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
     | '/'
+    | '/expense-management/expense-categories'
+    | '/expense-management/expenses'
   id:
     | '__root__'
     | '/_app'
-    | '/_app/blog'
-    | '/_app/home'
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
     | '/_app/'
+    | '/_app/expense-management/expense-categories/'
+    | '/_app/expense-management/expenses/'
   fileRoutesById: FileRoutesById
 }
 
@@ -232,18 +248,10 @@ export const routeTree = rootRoute
     "/_app": {
       "filePath": "_app.tsx",
       "children": [
-        "/_app/blog",
-        "/_app/home",
-        "/_app/"
+        "/_app/",
+        "/_app/expense-management/expense-categories/",
+        "/_app/expense-management/expenses/"
       ]
-    },
-    "/_app/blog": {
-      "filePath": "_app/blog.tsx",
-      "parent": "/_app"
-    },
-    "/_app/home": {
-      "filePath": "_app/home.tsx",
-      "parent": "/_app"
     },
     "/auth/login": {
       "filePath": "auth/login.tsx"
@@ -256,6 +264,14 @@ export const routeTree = rootRoute
     },
     "/_app/": {
       "filePath": "_app/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/expense-management/expense-categories/": {
+      "filePath": "_app/expense-management/expense-categories/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/expense-management/expenses/": {
+      "filePath": "_app/expense-management/expenses/index.lazy.tsx",
       "parent": "/_app"
     }
   }

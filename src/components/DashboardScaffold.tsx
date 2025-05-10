@@ -27,7 +27,7 @@ const DashboardScaffold: React.FC<PropsWithChildren> = ({ children }) => {
 			<SidebarProvider defaultOpen={true}>
 				<AppSidenav />
 				<SidebarInset>
-					<header className='dark:bg-neutral-900 bg-[#FBFBFB] border-b !py-8 flex h-20 shrink-0 justify-between items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 pr-4'>
+					<header className='dark:bg-[#172031] bg-[#FBFBFB] border-b !py-8 flex h-20 shrink-0 justify-between items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 pr-4'>
 						<div className='flex items-center px-4 gap-2'>
 							<SidebarTrigger className='-ml-1 text-2xl' />
 							<Separator orientation='vertical' className='h-4 mr-2' />

@@ -23,5 +23,8 @@ export const expenseTableColumns: ColumnDef<IExpense>[] = [
 	{
 		accessorKey: 'description',
 		header: 'Description',
+		cell: ({ row }) => {
+			return <span>{row.original?.description || 'N/A'}</span>;
+		},
 	},
 ];

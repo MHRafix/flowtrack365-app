@@ -21,11 +21,11 @@ import { Route as AuthLoginImport } from './pages/auth/login'
 // Create Virtual Routes
 
 const AppIndexLazyImport = createFileRoute('/_app/')()
-const AppExpenseManagementExpensesIndexLazyImport = createFileRoute(
-  '/_app/expense-management/expenses/',
-)()
 const AppExpenseManagementExpenseCategoriesIndexLazyImport = createFileRoute(
   '/_app/expense-management/expense-categories/',
+)()
+const AppExpenseManagementAllExpensesIndexLazyImport = createFileRoute(
+  '/_app/expense-management/all-expenses/',
 )()
 
 // Create/Update Routes
@@ -59,17 +59,6 @@ const AuthLoginRoute = AuthLoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppExpenseManagementExpensesIndexLazyRoute =
-  AppExpenseManagementExpensesIndexLazyImport.update({
-    id: '/expense-management/expenses/',
-    path: '/expense-management/expenses/',
-    getParentRoute: () => AppRoute,
-  } as any).lazy(() =>
-    import('./pages/_app/expense-management/expenses/index.lazy').then(
-      (d) => d.Route,
-    ),
-  )
-
 const AppExpenseManagementExpenseCategoriesIndexLazyRoute =
   AppExpenseManagementExpenseCategoriesIndexLazyImport.update({
     id: '/expense-management/expense-categories/',
@@ -79,6 +68,17 @@ const AppExpenseManagementExpenseCategoriesIndexLazyRoute =
     import(
       './pages/_app/expense-management/expense-categories/index.lazy'
     ).then((d) => d.Route),
+  )
+
+const AppExpenseManagementAllExpensesIndexLazyRoute =
+  AppExpenseManagementAllExpensesIndexLazyImport.update({
+    id: '/expense-management/all-expenses/',
+    path: '/expense-management/all-expenses/',
+    getParentRoute: () => AppRoute,
+  } as any).lazy(() =>
+    import('./pages/_app/expense-management/all-expenses/index.lazy').then(
+      (d) => d.Route,
+    ),
   )
 
 // Populate the FileRoutesByPath interface
@@ -120,18 +120,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/expense-management/all-expenses/': {
+      id: '/_app/expense-management/all-expenses/'
+      path: '/expense-management/all-expenses'
+      fullPath: '/expense-management/all-expenses'
+      preLoaderRoute: typeof AppExpenseManagementAllExpensesIndexLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/expense-management/expense-categories/': {
       id: '/_app/expense-management/expense-categories/'
       path: '/expense-management/expense-categories'
       fullPath: '/expense-management/expense-categories'
       preLoaderRoute: typeof AppExpenseManagementExpenseCategoriesIndexLazyImport
-      parentRoute: typeof AppImport
-    }
-    '/_app/expense-management/expenses/': {
-      id: '/_app/expense-management/expenses/'
-      path: '/expense-management/expenses'
-      fullPath: '/expense-management/expenses'
-      preLoaderRoute: typeof AppExpenseManagementExpensesIndexLazyImport
       parentRoute: typeof AppImport
     }
   }
@@ -141,16 +141,16 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppIndexLazyRoute: typeof AppIndexLazyRoute
+  AppExpenseManagementAllExpensesIndexLazyRoute: typeof AppExpenseManagementAllExpensesIndexLazyRoute
   AppExpenseManagementExpenseCategoriesIndexLazyRoute: typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
-  AppExpenseManagementExpensesIndexLazyRoute: typeof AppExpenseManagementExpensesIndexLazyRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexLazyRoute: AppIndexLazyRoute,
+  AppExpenseManagementAllExpensesIndexLazyRoute:
+    AppExpenseManagementAllExpensesIndexLazyRoute,
   AppExpenseManagementExpenseCategoriesIndexLazyRoute:
     AppExpenseManagementExpenseCategoriesIndexLazyRoute,
-  AppExpenseManagementExpensesIndexLazyRoute:
-    AppExpenseManagementExpensesIndexLazyRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -161,8 +161,8 @@ export interface FileRoutesByFullPath {
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
   '/': typeof AppIndexLazyRoute
+  '/expense-management/all-expenses': typeof AppExpenseManagementAllExpensesIndexLazyRoute
   '/expense-management/expense-categories': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
-  '/expense-management/expenses': typeof AppExpenseManagementExpensesIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -170,8 +170,8 @@ export interface FileRoutesByTo {
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
   '/': typeof AppIndexLazyRoute
+  '/expense-management/all-expenses': typeof AppExpenseManagementAllExpensesIndexLazyRoute
   '/expense-management/expense-categories': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
-  '/expense-management/expenses': typeof AppExpenseManagementExpensesIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -181,8 +181,8 @@ export interface FileRoutesById {
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
   '/_app/': typeof AppIndexLazyRoute
+  '/_app/expense-management/all-expenses/': typeof AppExpenseManagementAllExpensesIndexLazyRoute
   '/_app/expense-management/expense-categories/': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
-  '/_app/expense-management/expenses/': typeof AppExpenseManagementExpensesIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -193,16 +193,16 @@ export interface FileRouteTypes {
     | '/auth/registration'
     | '/auth/verify-login'
     | '/'
+    | '/expense-management/all-expenses'
     | '/expense-management/expense-categories'
-    | '/expense-management/expenses'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
     | '/'
+    | '/expense-management/all-expenses'
     | '/expense-management/expense-categories'
-    | '/expense-management/expenses'
   id:
     | '__root__'
     | '/_app'
@@ -210,8 +210,8 @@ export interface FileRouteTypes {
     | '/auth/registration'
     | '/auth/verify-login'
     | '/_app/'
+    | '/_app/expense-management/all-expenses/'
     | '/_app/expense-management/expense-categories/'
-    | '/_app/expense-management/expenses/'
   fileRoutesById: FileRoutesById
 }
 
@@ -249,8 +249,8 @@ export const routeTree = rootRoute
       "filePath": "_app.tsx",
       "children": [
         "/_app/",
-        "/_app/expense-management/expense-categories/",
-        "/_app/expense-management/expenses/"
+        "/_app/expense-management/all-expenses/",
+        "/_app/expense-management/expense-categories/"
       ]
     },
     "/auth/login": {
@@ -266,12 +266,12 @@ export const routeTree = rootRoute
       "filePath": "_app/index.lazy.tsx",
       "parent": "/_app"
     },
-    "/_app/expense-management/expense-categories/": {
-      "filePath": "_app/expense-management/expense-categories/index.lazy.tsx",
+    "/_app/expense-management/all-expenses/": {
+      "filePath": "_app/expense-management/all-expenses/index.lazy.tsx",
       "parent": "/_app"
     },
-    "/_app/expense-management/expenses/": {
-      "filePath": "_app/expense-management/expenses/index.lazy.tsx",
+    "/_app/expense-management/expense-categories/": {
+      "filePath": "_app/expense-management/expense-categories/index.lazy.tsx",
       "parent": "/_app"
     }
   }

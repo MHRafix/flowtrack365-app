@@ -1,10 +1,6 @@
 import { jotaiStore } from '@/store';
 import { fetchME, IAuthStore, userAtom } from '@/store/auth.atom';
-import {
-	createRootRouteWithContext,
-	Outlet,
-	redirect,
-} from '@tanstack/react-router';
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 interface IRouteContext {
@@ -13,8 +9,7 @@ interface IRouteContext {
 
 export const Route = createRootRouteWithContext<IRouteContext>()({
 	beforeLoad: async (ctx) => {
-		await fetchME();
-
+		const res = await fetchME();
 		return { auth: jotaiStore.get(userAtom) };
 	},
 	component: () => (

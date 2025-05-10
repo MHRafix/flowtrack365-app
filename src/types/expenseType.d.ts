@@ -3,7 +3,7 @@ export interface IExpense {
 	title: string;
 	description: string;
 	amount: number;
-	category: Category;
+	category: IExpenseCategory;
 }
 export interface IExpenseListWithPagination {
 	nodes: IExpense[];

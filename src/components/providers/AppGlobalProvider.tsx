@@ -1,4 +1,3 @@
-'use client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { PropsWithChildren, Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';

@@ -1,5 +1,3 @@
-'use client';
-
 import { useForm } from 'react-hook-form';
 import { useAppConfirm } from './AppConfirm';
 import { Button } from './ui/button';

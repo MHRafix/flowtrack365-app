@@ -1,7 +1,6 @@
 import {
 	Sidebar,
 	SidebarContent,
-	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarHeader,
@@ -139,7 +138,7 @@ const AppSidenav = () => {
 				</SidebarGroup>
 			</SidebarContent>
 
-			<SidebarFooter>{/* Footer content */}</SidebarFooter>
+			{/* <SidebarFooter>Footer content</SidebarFooter> */}
 		</Sidebar>
 	);
 };

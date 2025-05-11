@@ -1,4 +1,3 @@
-import DrawerWrapper from '@/components/DrawerWrapper';
 import { Button } from '@/components/ui/button';
 import {
 	Form,
@@ -19,7 +18,7 @@ import {
 } from '@/components/ui/select';
 import { IExpense, IExpenseCategory } from '@/types/expenseType';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Loader2, PenSquare, Plus } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
@@ -29,13 +28,20 @@ interface ExpenseFormPropsType {
 	expense?: IExpense;
 	expenseCategories: IExpenseCategory[];
 	actionType: 'ADD' | 'EDIT';
+	onRefetch: CallableFunction;
+	onCloseDrawer: CallableFunction;
 }
 export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 	expense,
 	expenseCategories,
 	actionType,
+	onRefetch,
+	onCloseDrawer,
 }) => {
-	const { createExpense, updateExpense } = expenseApi();
+	const { createExpense, updateExpense } = expenseApi(() => {
+		onCloseDrawer();
+		onRefetch();
+	});
 
 	// Define your form.
 	const form = useForm<ExpenseFormStateType>({
@@ -55,83 +61,70 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 			: updateExpense.mutate({ _id: expense?._id!, ...values });
 	}
 	return (
-		<DrawerWrapper
-			title={actionType === 'ADD' ? 'Add Expense' : 'Edit Expense'}
-			triggerButton={
-				<Button variant={'outline'}>
-					{actionType === 'ADD' ? <Plus /> : <PenSquare />}{' '}
-					{actionType === 'ADD' ? 'Add Expense' : 'Edit'}
-				</Button>
-			}
-		>
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
-					<FormField
-						control={form.control}
-						name='title'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Title</FormLabel>
-								<FormControl>
-									<Input placeholder='Expense name' {...field} />
-								</FormControl>
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
+				<FormField
+					control={form.control}
+					name='title'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Title</FormLabel>
+							<FormControl>
+								<Input placeholder='Expense name' {...field} />
+							</FormControl>
 
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='amount'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Amount</FormLabel>
-								<FormControl>
-									<Input
-										type='number'
-										placeholder='Expense amount'
-										{...field}
-									/>
-								</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='amount'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Amount</FormLabel>
+							<FormControl>
+								<Input type='number' placeholder='Expense amount' {...field} />
+							</FormControl>
 
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='category'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Category</FormLabel>
-								<FormControl>
-									<Select
-										onValueChange={field.onChange}
-										defaultValue={expense?.category?._id}
-									>
-										<SelectTrigger className='w-full'>
-											<SelectValue placeholder='Select a category' />
-										</SelectTrigger>
-										<SelectContent>
-											<SelectGroup>
-												{expenseCategories?.map(
-													(expenseCategory: IExpenseCategory, idx: number) => (
-														<SelectItem value={expenseCategory?._id} key={idx}>
-															{expenseCategory?.title}
-														</SelectItem>
-													)
-												)}
-											</SelectGroup>
-										</SelectContent>
-									</Select>
-								</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='category'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Category</FormLabel>
+							<FormControl>
+								<Select
+									onValueChange={field.onChange}
+									defaultValue={expense?.category?._id}
+								>
+									<SelectTrigger className='w-full'>
+										<SelectValue placeholder='Select a category' />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectGroup>
+											{expenseCategories?.map(
+												(expenseCategory: IExpenseCategory, idx: number) => (
+													<SelectItem value={expenseCategory?._id} key={idx}>
+														{expenseCategory?.title}
+													</SelectItem>
+												)
+											)}
+										</SelectGroup>
+									</SelectContent>
+								</Select>
+							</FormControl>
 
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
-					{/* <FormField
+				{/* <FormField
 						control={form.control}
 						name='description'
 						render={({ field }) => (
@@ -148,16 +141,13 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 							</FormItem>
 						)}
 					/> */}
-					<Button type='submit' variant={'default'} className='w-full'>
-						{createExpense?.isPending ||
-							(updateExpense?.isPending && (
-								<Loader2 className='animate-spin' />
-							))}
-						Save
-					</Button>
-				</form>
-			</Form>
-		</DrawerWrapper>
+				<Button type='submit' variant={'default'} className='w-full'>
+					{createExpense?.isPending ||
+						(updateExpense?.isPending && <Loader2 className='animate-spin' />)}
+					Save
+				</Button>
+			</form>
+		</Form>
 	);
 };
 

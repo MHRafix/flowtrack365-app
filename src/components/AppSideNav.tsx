@@ -40,7 +40,7 @@ const items = [
 		items: [
 			{
 				title: 'All Expenses',
-				url: '/expense-management/expenses',
+				url: '/expense-management/all-expenses',
 				icon: Blocks,
 			},
 			{

@@ -1,11 +1,15 @@
+import { useAppConfirm } from '@/components/AppConfirm';
 import { DataTable } from '@/components/DataTable';
+import DrawerWrapper from '@/components/DrawerWrapper';
 import { Button } from '@/components/ui/button';
 import { gqlRequest } from '@/lib/api-client';
 import { IExpenseCategoryListWithPagination } from '@/types/expenseCategoriesType';
 import { IExpenseListWithPagination } from '@/types/expenseType';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { Trash } from 'lucide-react';
+import { Loader2, PenSquare, Plus, Trash } from 'lucide-react';
+import { useState } from 'react';
+import { expenseApi } from '../~module/api/expenseApi';
 import { expenseTableColumns } from '../~module/components/expense-table-cols';
 import { ExpenseForm } from '../~module/components/ExpenseForm';
 import {
@@ -20,7 +24,12 @@ export const Route = createLazyFileRoute(
 });
 
 function RouteComponent() {
-	const { data } = useQuery({
+	const [isOpenCreateDrawer, setOpenCreateDrawer] = useState<boolean>(false);
+	const [isOpenEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
+
+	const { show } = useAppConfirm();
+
+	const { data, refetch } = useQuery({
 		queryKey: ['all-expenses'],
 		queryFn: async () =>
 			await gqlRequest<{
@@ -36,8 +45,11 @@ function RouteComponent() {
 				// },
 			}),
 	});
+
+	const { removeExpense } = expenseApi(refetch);
+
 	const { data: expenseCategories } = useQuery({
-		queryKey: ['all-expenses-category'],
+		queryKey: ['all-expenses-category-for-dropdown'],
 		queryFn: async () =>
 			await gqlRequest<{
 				expenseCategories: IExpenseCategoryListWithPagination | null;
@@ -52,14 +64,26 @@ function RouteComponent() {
 				// },
 			}),
 	});
+
 	return (
 		<div className='my-5'>
-			<div className='flex justify-between items-center gap-5 mb-5 '>
-				<h2 className='text-2xl font-bold'>All Expenses</h2>
+			<DrawerWrapper
+				title={'Add Expense'}
+				isOpen={isOpenCreateDrawer}
+				onCloseDrawer={() => setOpenCreateDrawer(false)}
+			>
 				<ExpenseForm
 					actionType='ADD'
 					expenseCategories={expenseCategories?.expenseCategories?.nodes!}
+					onRefetch={refetch}
+					onCloseDrawer={() => setOpenCreateDrawer(false)}
 				/>
+			</DrawerWrapper>
+			<div className='flex justify-between items-center gap-5 mb-5 '>
+				<h2 className='text-2xl font-bold'>All Expenses</h2>
+				<Button variant={'outline'} onClick={() => setOpenCreateDrawer(true)}>
+					<Plus /> Add Expense
+				</Button>
 			</div>
 			<DataTable
 				columns={expenseTableColumns}
@@ -70,12 +94,38 @@ function RouteComponent() {
 				}
 				ActionCell={({ row }) => (
 					<div className='flex gap-2'>
-						<ExpenseForm
-							expense={row!}
-							expenseCategories={expenseCategories?.expenseCategories?.nodes!}
-							actionType='EDIT'
-						/>
-						<Button variant={'destructive'}>
+						<Button variant={'outline'} onClick={() => setOpenEditDrawer(true)}>
+							<PenSquare /> Edit
+						</Button>
+						<DrawerWrapper
+							title={'Edit Expense'}
+							isOpen={isOpenEditDrawer}
+							onCloseDrawer={() => setOpenEditDrawer(false)}
+						>
+							<ExpenseForm
+								expense={row!}
+								expenseCategories={expenseCategories?.expenseCategories?.nodes!}
+								actionType='EDIT'
+								onRefetch={refetch}
+								onCloseDrawer={() => setOpenEditDrawer(false)}
+							/>
+						</DrawerWrapper>
+						<Button
+							variant={'destructive'}
+							onClick={() =>
+								show({
+									title: 'Are you sure to remove expense ?',
+									children: (
+										<span>Please proceed to complete this action.</span>
+									),
+									onConfirm() {
+										removeExpense.mutate(row?._id);
+									},
+								})
+							}
+							disabled={removeExpense?.isPending}
+						>
+							{removeExpense?.isPending && <Loader2 className='animate-spin' />}
 							<Trash /> Remove
 						</Button>
 					</div>

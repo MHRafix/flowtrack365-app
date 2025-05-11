@@ -1,25 +1,20 @@
-import { FC, JSX, PropsWithChildren } from 'react';
-import {
-	Drawer,
-	DrawerContent,
-	DrawerHeader,
-	DrawerTitle,
-	DrawerTrigger,
-} from './ui/drawer';
+import { FC, PropsWithChildren } from 'react';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from './ui/drawer';
 
 interface DrawerWrapperPropsType extends PropsWithChildren {
 	title: string;
-	triggerButton: JSX.Element;
+	isOpen: boolean;
+	onCloseDrawer: CallableFunction;
 }
 
 const DrawerWrapper: FC<DrawerWrapperPropsType> = ({
 	title,
-	triggerButton,
+	isOpen,
 	children,
+	onCloseDrawer,
 }) => {
 	return (
-		<Drawer direction='right'>
-			<DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
+		<Drawer open={isOpen} direction='right' onClose={() => onCloseDrawer()}>
 			<DrawerContent>
 				<div className='mx-auto w-full max-w-sm'>
 					<DrawerHeader>

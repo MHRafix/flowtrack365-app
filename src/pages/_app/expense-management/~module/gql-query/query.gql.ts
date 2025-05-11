@@ -39,6 +39,12 @@ export const Update_Expense_Mutation = gql`
 	}
 `;
 
+export const Remove_Expense_Mutation = gql`
+	mutation RemoveExpense($input: CommonMatchInput!) {
+		removeExpense(input: $input)
+	}
+`;
+
 export const All_Expense_Categories_List_Query = gql`
 	query AllExpenseCategories($input: ExpenseCategoryListQueryDto) {
 		expenseCategories(input: $input) {

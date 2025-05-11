@@ -45,19 +45,12 @@ export const Remove_Expense_Mutation = gql`
 	}
 `;
 
-export const All_Expense_Categories_List_Query = gql`
+export const All_Expense_Categories_For_DropDown_List_Query = gql`
 	query AllExpenseCategories($input: ExpenseCategoryListQueryDto) {
 		expenseCategories(input: $input) {
 			nodes {
 				_id
 				title
-				description
-			}
-			meta {
-				totalCount
-				currentPage
-				hasNextPage
-				totalPages
 			}
 		}
 	}

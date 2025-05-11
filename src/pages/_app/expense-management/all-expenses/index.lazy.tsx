@@ -4,18 +4,18 @@ import DrawerWrapper from '@/components/DrawerWrapper';
 import { Button } from '@/components/ui/button';
 import { gqlRequest } from '@/lib/api-client';
 import { IExpenseCategoryListWithPagination } from '@/types/expenseCategoriesType';
-import { IExpenseListWithPagination } from '@/types/expenseType';
+import { IExpense, IExpenseListWithPagination } from '@/types/expenseType';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { Loader2, PenSquare, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
-import { expenseApi } from '../~module/api/expenseApi';
-import { expenseTableColumns } from '../~module/components/expense-table-cols';
-import { ExpenseForm } from '../~module/components/ExpenseForm';
+import { expenseApi } from './~module/api/expenseApi';
+import { expenseTableColumns } from './~module/components/expense-table-cols';
+import { ExpenseForm } from './~module/components/ExpenseForm';
 import {
-	All_Expense_Categories_List_Query,
+	All_Expense_Categories_For_DropDown_List_Query,
 	All_Expense_List_Query,
-} from '../~module/gql-query/query.gql';
+} from './~module/gql-query/query.gql';
 
 export const Route = createLazyFileRoute(
 	'/_app/expense-management/all-expenses/'
@@ -26,6 +26,7 @@ export const Route = createLazyFileRoute(
 function RouteComponent() {
 	const [isOpenCreateDrawer, setOpenCreateDrawer] = useState<boolean>(false);
 	const [isOpenEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
+	const [expense, setExpense] = useState<IExpense | null>(null);
 
 	const { show } = useAppConfirm();
 
@@ -54,7 +55,7 @@ function RouteComponent() {
 			await gqlRequest<{
 				expenseCategories: IExpenseCategoryListWithPagination | null;
 			}>({
-				query: All_Expense_Categories_List_Query,
+				query: All_Expense_Categories_For_DropDown_List_Query,
 				// variables: {
 				// 	input: {
 				// 		key: 'email',
@@ -70,18 +71,30 @@ function RouteComponent() {
 			<DrawerWrapper
 				title={'Add Expense'}
 				isOpen={isOpenCreateDrawer}
-				onCloseDrawer={() => setOpenCreateDrawer(false)}
+				onCloseDrawer={() => {
+					setOpenCreateDrawer(false);
+					setExpense(null);
+				}}
 			>
 				<ExpenseForm
 					actionType='ADD'
 					expenseCategories={expenseCategories?.expenseCategories?.nodes!}
 					onRefetch={refetch}
-					onCloseDrawer={() => setOpenCreateDrawer(false)}
+					onCloseDrawer={() => {
+						setOpenCreateDrawer(false);
+						setExpense(null);
+					}}
 				/>
 			</DrawerWrapper>
 			<div className='flex justify-between items-center gap-5 mb-5 '>
 				<h2 className='text-2xl font-bold'>All Expenses</h2>
-				<Button variant={'outline'} onClick={() => setOpenCreateDrawer(true)}>
+				<Button
+					variant={'outline'}
+					onClick={() => {
+						setOpenCreateDrawer(true);
+						setExpense(null);
+					}}
+				>
 					<Plus /> Add Expense
 				</Button>
 			</div>
@@ -94,22 +107,16 @@ function RouteComponent() {
 				}
 				ActionCell={({ row }) => (
 					<div className='flex gap-2'>
-						<Button variant={'outline'} onClick={() => setOpenEditDrawer(true)}>
+						<Button
+							variant={'outline'}
+							onClick={() => {
+								setOpenEditDrawer(true);
+								setExpense(row);
+							}}
+						>
 							<PenSquare /> Edit
 						</Button>
-						<DrawerWrapper
-							title={'Edit Expense'}
-							isOpen={isOpenEditDrawer}
-							onCloseDrawer={() => setOpenEditDrawer(false)}
-						>
-							<ExpenseForm
-								expense={row!}
-								expenseCategories={expenseCategories?.expenseCategories?.nodes!}
-								actionType='EDIT'
-								onRefetch={refetch}
-								onCloseDrawer={() => setOpenEditDrawer(false)}
-							/>
-						</DrawerWrapper>
+
 						<Button
 							variant={'destructive'}
 							onClick={() =>
@@ -130,7 +137,26 @@ function RouteComponent() {
 						</Button>
 					</div>
 				)}
-			/>
+			/>{' '}
+			<DrawerWrapper
+				title={'Edit Expense'}
+				isOpen={isOpenEditDrawer}
+				onCloseDrawer={() => {
+					setOpenEditDrawer(false);
+					setExpense(null);
+				}}
+			>
+				<ExpenseForm
+					expense={expense!}
+					expenseCategories={expenseCategories?.expenseCategories?.nodes!}
+					actionType='EDIT'
+					onRefetch={refetch}
+					onCloseDrawer={() => {
+						setOpenEditDrawer(false);
+						setExpense(null);
+					}}
+				/>
+			</DrawerWrapper>
 		</div>
 	);
 }

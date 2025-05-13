@@ -26,7 +26,7 @@ function RouteComponent() {
 	const [isOpenCreateDrawer, setOpenCreateDrawer] = useState<boolean>(false);
 	const [isOpenEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
 	const [expense, setExpenseCategory] = useState<IExpenseCategory | null>(null);
-
+	const [rowId, setRowId] = useState<string>('');
 	const { show } = useAppConfirm();
 
 	const { data, refetch } = useQuery({
@@ -100,7 +100,8 @@ function RouteComponent() {
 
 						<Button
 							variant={'destructive'}
-							onClick={() =>
+							onClick={() => {
+								setRowId(row?._id);
 								show({
 									title: 'Are you sure to remove expense ?',
 									children: (
@@ -109,11 +110,11 @@ function RouteComponent() {
 									onConfirm() {
 										removeExpenseCategory.mutate(row?._id);
 									},
-								})
-							}
+								});
+							}}
 							disabled={removeExpenseCategory?.isPending}
 						>
-							{removeExpenseCategory?.isPending && (
+							{removeExpenseCategory?.isPending && row?._id === rowId && (
 								<Loader2 className='animate-spin' />
 							)}
 							<Trash /> Remove

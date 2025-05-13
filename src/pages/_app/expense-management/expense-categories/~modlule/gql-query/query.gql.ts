@@ -7,6 +7,7 @@ export const All_Expense_Categories_List_Query = gql`
 				_id
 				title
 				description
+				createdAt
 			}
 			meta {
 				totalCount

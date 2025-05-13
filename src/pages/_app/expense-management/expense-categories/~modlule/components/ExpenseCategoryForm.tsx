@@ -87,11 +87,18 @@ export const ExpenseCategoryForm: FC<ExpenseFormPropsType> = ({
 					)}
 				/>
 
-				<Button type='submit' variant={'default'} className='w-full'>
-					{createExpenseCategory?.isPending ||
-						(updateExpenseCategory?.isPending && (
-							<Loader2 className='animate-spin' />
-						))}
+				<Button
+					type='submit'
+					variant={'default'}
+					className='w-full'
+					disabled={
+						createExpenseCategory?.isPending || updateExpenseCategory?.isPending
+					}
+				>
+					{(createExpenseCategory?.isPending ||
+						updateExpenseCategory?.isPending) && (
+						<Loader2 className='animate-spin' />
+					)}
 					Save
 				</Button>
 			</form>

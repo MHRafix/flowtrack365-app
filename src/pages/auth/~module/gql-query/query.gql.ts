@@ -27,6 +27,7 @@ export const Verify_Magic_Login_Mutation = gql`
 		}
 	}
 `;
+
 export const Login_User_Details_Query = gql`
 	query User($input: CommonMatchInput!) {
 		user(input: $input) {
@@ -36,6 +37,37 @@ export const Login_User_Details_Query = gql`
 			phone
 			avatar
 			role
+		}
+	}
+`;
+
+/**
+ * organizations query
+ * */
+
+export const Organizations_List_Query = gql`
+	query Organizations($input: OrganizationListQueryInput) {
+		organizations(input: $input) {
+			nodes {
+				_id
+				name
+				tagline
+				orgUID
+				Logo {
+					bucket
+					region
+					key
+					externalUrl
+				}
+				createdAt
+				updatedAt
+			}
+			meta {
+				totalCount
+				currentPage
+				hasNextPage
+				totalPages
+			}
 		}
 	}
 `;

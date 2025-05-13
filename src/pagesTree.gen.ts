@@ -21,6 +21,7 @@ import { Route as AuthLoginImport } from './pages/auth/login'
 // Create Virtual Routes
 
 const AppIndexLazyImport = createFileRoute('/_app/')()
+const AuthOrganizationsLazyImport = createFileRoute('/auth/organizations')()
 const AppExpenseManagementExpenseCategoriesIndexLazyImport = createFileRoute(
   '/_app/expense-management/expense-categories/',
 )()
@@ -40,6 +41,14 @@ const AppIndexLazyRoute = AppIndexLazyImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any).lazy(() => import('./pages/_app/index.lazy').then((d) => d.Route))
+
+const AuthOrganizationsLazyRoute = AuthOrganizationsLazyImport.update({
+  id: '/auth/organizations',
+  path: '/auth/organizations',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./pages/auth/organizations.lazy').then((d) => d.Route),
+)
 
 const AuthVerifyLoginRoute = AuthVerifyLoginImport.update({
   id: '/auth/verify-login',
@@ -113,6 +122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVerifyLoginImport
       parentRoute: typeof rootRoute
     }
+    '/auth/organizations': {
+      id: '/auth/organizations'
+      path: '/auth/organizations'
+      fullPath: '/auth/organizations'
+      preLoaderRoute: typeof AuthOrganizationsLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/_app/': {
       id: '/_app/'
       path: '/'
@@ -160,6 +176,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
+  '/auth/organizations': typeof AuthOrganizationsLazyRoute
   '/': typeof AppIndexLazyRoute
   '/expense-management/all-expenses': typeof AppExpenseManagementAllExpensesIndexLazyRoute
   '/expense-management/expense-categories': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
@@ -169,6 +186,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
+  '/auth/organizations': typeof AuthOrganizationsLazyRoute
   '/': typeof AppIndexLazyRoute
   '/expense-management/all-expenses': typeof AppExpenseManagementAllExpensesIndexLazyRoute
   '/expense-management/expense-categories': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
@@ -180,6 +198,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
+  '/auth/organizations': typeof AuthOrganizationsLazyRoute
   '/_app/': typeof AppIndexLazyRoute
   '/_app/expense-management/all-expenses/': typeof AppExpenseManagementAllExpensesIndexLazyRoute
   '/_app/expense-management/expense-categories/': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
@@ -192,6 +211,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
+    | '/auth/organizations'
     | '/'
     | '/expense-management/all-expenses'
     | '/expense-management/expense-categories'
@@ -200,6 +220,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
+    | '/auth/organizations'
     | '/'
     | '/expense-management/all-expenses'
     | '/expense-management/expense-categories'
@@ -209,6 +230,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
+    | '/auth/organizations'
     | '/_app/'
     | '/_app/expense-management/all-expenses/'
     | '/_app/expense-management/expense-categories/'
@@ -220,6 +242,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegistrationRoute: typeof AuthRegistrationRoute
   AuthVerifyLoginRoute: typeof AuthVerifyLoginRoute
+  AuthOrganizationsLazyRoute: typeof AuthOrganizationsLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -227,6 +250,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegistrationRoute: AuthRegistrationRoute,
   AuthVerifyLoginRoute: AuthVerifyLoginRoute,
+  AuthOrganizationsLazyRoute: AuthOrganizationsLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -242,7 +266,8 @@ export const routeTree = rootRoute
         "/_app",
         "/auth/login",
         "/auth/registration",
-        "/auth/verify-login"
+        "/auth/verify-login",
+        "/auth/organizations"
       ]
     },
     "/_app": {
@@ -261,6 +286,9 @@ export const routeTree = rootRoute
     },
     "/auth/verify-login": {
       "filePath": "auth/verify-login.tsx"
+    },
+    "/auth/organizations": {
+      "filePath": "auth/organizations.lazy.tsx"
     },
     "/_app/": {
       "filePath": "_app/index.lazy.tsx",

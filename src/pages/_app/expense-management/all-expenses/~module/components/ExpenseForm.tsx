@@ -16,28 +16,50 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { IExpense, IExpenseCategory } from '@/types/expenseType';
+import { gqlRequest } from '@/lib/api-client';
+import {
+	IExpenseCategory,
+	IExpenseCategoryListWithPagination,
+} from '@/types/expenseCategoriesType';
+import { IExpense } from '@/types/expenseType';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { expenseApi } from '../api/expenseApi';
+import { All_Expense_Categories_For_DropDown_List_Query } from '../gql-query/query.gql';
 
 interface ExpenseFormPropsType {
 	expense?: IExpense;
-	expenseCategories: IExpenseCategory[];
 	actionType: 'ADD' | 'EDIT';
 	onRefetch: CallableFunction;
 	onCloseDrawer: CallableFunction;
 }
 export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 	expense,
-	expenseCategories,
 	actionType,
 	onRefetch,
 	onCloseDrawer,
 }) => {
+	const { data: expenseCategories } = useQuery({
+		queryKey: ['all-expenses-category-for-dropdown'],
+		queryFn: async () =>
+			await gqlRequest<{
+				expenseCategories: IExpenseCategoryListWithPagination | null;
+			}>({
+				query: All_Expense_Categories_For_DropDown_List_Query,
+				// variables: {
+				// 	input: {
+				// 		key: 'email',
+				// 		operator: 'eq',
+				// 		value: decoded?.email,
+				// 	},
+				// },
+			}),
+	});
+
 	const { createExpense, updateExpense } = expenseApi(() => {
 		onCloseDrawer();
 		onRefetch();
@@ -107,7 +129,7 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 									</SelectTrigger>
 									<SelectContent>
 										<SelectGroup>
-											{expenseCategories?.map(
+											{expenseCategories?.expenseCategories?.nodes?.map(
 												(expenseCategory: IExpenseCategory, idx: number) => (
 													<SelectItem value={expenseCategory?._id} key={idx}>
 														{expenseCategory?.title}
@@ -142,8 +164,9 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 						)}
 					/> */}
 				<Button type='submit' variant={'default'} className='w-full'>
-					{createExpense?.isPending ||
-						(updateExpense?.isPending && <Loader2 className='animate-spin' />)}
+					{(createExpense?.isPending || updateExpense?.isPending) && (
+						<Loader2 className='animate-spin' />
+					)}
 					Save
 				</Button>
 			</form>

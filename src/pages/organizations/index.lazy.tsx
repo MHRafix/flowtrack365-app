@@ -25,13 +25,13 @@ function RouteComponent() {
 					input: {
 						limit: 1000,
 						page: 1,
-						// where: [
-						// 	{
-						// 		key: 'employees._id',
-						// 		operator: 'eq',
-						// 		value: auth?.user?._id,
-						// 	},
-						// ],
+						where: [
+							{
+								key: 'employees._id',
+								operator: 'eq',
+								value: auth?.user?._id,
+							},
+						],
 					},
 				},
 			}),

@@ -17,17 +17,22 @@ import { Route as AppImport } from './pages/_app'
 import { Route as AuthVerifyLoginImport } from './pages/auth/verify-login'
 import { Route as AuthRegistrationImport } from './pages/auth/registration'
 import { Route as AuthLoginImport } from './pages/auth/login'
+import { Route as AppOrganizationsOrgIdTaskManagementIndexImport } from './pages/_app/organizations/$orgId/task-management/index'
 
 // Create Virtual Routes
 
-const AppIndexLazyImport = createFileRoute('/_app/')()
-const AuthOrganizationsLazyImport = createFileRoute('/auth/organizations')()
-const AppExpenseManagementExpenseCategoriesIndexLazyImport = createFileRoute(
-  '/_app/expense-management/expense-categories/',
+const OrganizationsIndexLazyImport = createFileRoute('/organizations/')()
+const AppOrganizationsOrgIdIndexLazyImport = createFileRoute(
+  '/_app/organizations/$orgId/',
 )()
-const AppExpenseManagementAllExpensesIndexLazyImport = createFileRoute(
-  '/_app/expense-management/all-expenses/',
-)()
+const AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyImport =
+  createFileRoute(
+    '/_app/organizations/$orgId/expense-management/expense-categories/',
+  )()
+const AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyImport =
+  createFileRoute(
+    '/_app/organizations/$orgId/expense-management/all-expenses/',
+  )()
 
 // Create/Update Routes
 
@@ -36,18 +41,12 @@ const AppRoute = AppImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppIndexLazyRoute = AppIndexLazyImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppRoute,
-} as any).lazy(() => import('./pages/_app/index.lazy').then((d) => d.Route))
-
-const AuthOrganizationsLazyRoute = AuthOrganizationsLazyImport.update({
-  id: '/auth/organizations',
-  path: '/auth/organizations',
+const OrganizationsIndexLazyRoute = OrganizationsIndexLazyImport.update({
+  id: '/organizations/',
+  path: '/organizations/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
-  import('./pages/auth/organizations.lazy').then((d) => d.Route),
+  import('./pages/organizations/index.lazy').then((d) => d.Route),
 )
 
 const AuthVerifyLoginRoute = AuthVerifyLoginImport.update({
@@ -68,26 +67,44 @@ const AuthLoginRoute = AuthLoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppExpenseManagementExpenseCategoriesIndexLazyRoute =
-  AppExpenseManagementExpenseCategoriesIndexLazyImport.update({
-    id: '/expense-management/expense-categories/',
-    path: '/expense-management/expense-categories/',
+const AppOrganizationsOrgIdIndexLazyRoute =
+  AppOrganizationsOrgIdIndexLazyImport.update({
+    id: '/organizations/$orgId/',
+    path: '/organizations/$orgId/',
     getParentRoute: () => AppRoute,
   } as any).lazy(() =>
+    import('./pages/_app/organizations/$orgId/index.lazy').then((d) => d.Route),
+  )
+
+const AppOrganizationsOrgIdTaskManagementIndexRoute =
+  AppOrganizationsOrgIdTaskManagementIndexImport.update({
+    id: '/organizations/$orgId/task-management/',
+    path: '/organizations/$orgId/task-management/',
+    getParentRoute: () => AppRoute,
+  } as any)
+
+const AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute =
+  AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyImport.update(
+    {
+      id: '/organizations/$orgId/expense-management/expense-categories/',
+      path: '/organizations/$orgId/expense-management/expense-categories/',
+      getParentRoute: () => AppRoute,
+    } as any,
+  ).lazy(() =>
     import(
-      './pages/_app/expense-management/expense-categories/index.lazy'
+      './pages/_app/organizations/$orgId/expense-management/expense-categories/index.lazy'
     ).then((d) => d.Route),
   )
 
-const AppExpenseManagementAllExpensesIndexLazyRoute =
-  AppExpenseManagementAllExpensesIndexLazyImport.update({
-    id: '/expense-management/all-expenses/',
-    path: '/expense-management/all-expenses/',
+const AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute =
+  AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyImport.update({
+    id: '/organizations/$orgId/expense-management/all-expenses/',
+    path: '/organizations/$orgId/expense-management/all-expenses/',
     getParentRoute: () => AppRoute,
   } as any).lazy(() =>
-    import('./pages/_app/expense-management/all-expenses/index.lazy').then(
-      (d) => d.Route,
-    ),
+    import(
+      './pages/_app/organizations/$orgId/expense-management/all-expenses/index.lazy'
+    ).then((d) => d.Route),
   )
 
 // Populate the FileRoutesByPath interface
@@ -122,32 +139,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVerifyLoginImport
       parentRoute: typeof rootRoute
     }
-    '/auth/organizations': {
-      id: '/auth/organizations'
-      path: '/auth/organizations'
-      fullPath: '/auth/organizations'
-      preLoaderRoute: typeof AuthOrganizationsLazyImport
+    '/organizations/': {
+      id: '/organizations/'
+      path: '/organizations'
+      fullPath: '/organizations'
+      preLoaderRoute: typeof OrganizationsIndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/_app/': {
-      id: '/_app/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AppIndexLazyImport
+    '/_app/organizations/$orgId/': {
+      id: '/_app/organizations/$orgId/'
+      path: '/organizations/$orgId'
+      fullPath: '/organizations/$orgId'
+      preLoaderRoute: typeof AppOrganizationsOrgIdIndexLazyImport
       parentRoute: typeof AppImport
     }
-    '/_app/expense-management/all-expenses/': {
-      id: '/_app/expense-management/all-expenses/'
-      path: '/expense-management/all-expenses'
-      fullPath: '/expense-management/all-expenses'
-      preLoaderRoute: typeof AppExpenseManagementAllExpensesIndexLazyImport
+    '/_app/organizations/$orgId/task-management/': {
+      id: '/_app/organizations/$orgId/task-management/'
+      path: '/organizations/$orgId/task-management'
+      fullPath: '/organizations/$orgId/task-management'
+      preLoaderRoute: typeof AppOrganizationsOrgIdTaskManagementIndexImport
       parentRoute: typeof AppImport
     }
-    '/_app/expense-management/expense-categories/': {
-      id: '/_app/expense-management/expense-categories/'
-      path: '/expense-management/expense-categories'
-      fullPath: '/expense-management/expense-categories'
-      preLoaderRoute: typeof AppExpenseManagementExpenseCategoriesIndexLazyImport
+    '/_app/organizations/$orgId/expense-management/all-expenses/': {
+      id: '/_app/organizations/$orgId/expense-management/all-expenses/'
+      path: '/organizations/$orgId/expense-management/all-expenses'
+      fullPath: '/organizations/$orgId/expense-management/all-expenses'
+      preLoaderRoute: typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/organizations/$orgId/expense-management/expense-categories/': {
+      id: '/_app/organizations/$orgId/expense-management/expense-categories/'
+      path: '/organizations/$orgId/expense-management/expense-categories'
+      fullPath: '/organizations/$orgId/expense-management/expense-categories'
+      preLoaderRoute: typeof AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyImport
       parentRoute: typeof AppImport
     }
   }
@@ -156,17 +180,20 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AppRouteChildren {
-  AppIndexLazyRoute: typeof AppIndexLazyRoute
-  AppExpenseManagementAllExpensesIndexLazyRoute: typeof AppExpenseManagementAllExpensesIndexLazyRoute
-  AppExpenseManagementExpenseCategoriesIndexLazyRoute: typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
+  AppOrganizationsOrgIdIndexLazyRoute: typeof AppOrganizationsOrgIdIndexLazyRoute
+  AppOrganizationsOrgIdTaskManagementIndexRoute: typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute: typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
+  AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute: typeof AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppIndexLazyRoute: AppIndexLazyRoute,
-  AppExpenseManagementAllExpensesIndexLazyRoute:
-    AppExpenseManagementAllExpensesIndexLazyRoute,
-  AppExpenseManagementExpenseCategoriesIndexLazyRoute:
-    AppExpenseManagementExpenseCategoriesIndexLazyRoute,
+  AppOrganizationsOrgIdIndexLazyRoute: AppOrganizationsOrgIdIndexLazyRoute,
+  AppOrganizationsOrgIdTaskManagementIndexRoute:
+    AppOrganizationsOrgIdTaskManagementIndexRoute,
+  AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute:
+    AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute,
+  AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute:
+    AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -176,20 +203,23 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
-  '/auth/organizations': typeof AuthOrganizationsLazyRoute
-  '/': typeof AppIndexLazyRoute
-  '/expense-management/all-expenses': typeof AppExpenseManagementAllExpensesIndexLazyRoute
-  '/expense-management/expense-categories': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
+  '/organizations': typeof OrganizationsIndexLazyRoute
+  '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
+  '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  '/organizations/$orgId/expense-management/all-expenses': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
+  '/organizations/$orgId/expense-management/expense-categories': typeof AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
+  '': typeof AppRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
-  '/auth/organizations': typeof AuthOrganizationsLazyRoute
-  '/': typeof AppIndexLazyRoute
-  '/expense-management/all-expenses': typeof AppExpenseManagementAllExpensesIndexLazyRoute
-  '/expense-management/expense-categories': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
+  '/organizations': typeof OrganizationsIndexLazyRoute
+  '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
+  '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  '/organizations/$orgId/expense-management/all-expenses': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
+  '/organizations/$orgId/expense-management/expense-categories': typeof AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -198,10 +228,11 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
-  '/auth/organizations': typeof AuthOrganizationsLazyRoute
-  '/_app/': typeof AppIndexLazyRoute
-  '/_app/expense-management/all-expenses/': typeof AppExpenseManagementAllExpensesIndexLazyRoute
-  '/_app/expense-management/expense-categories/': typeof AppExpenseManagementExpenseCategoriesIndexLazyRoute
+  '/organizations/': typeof OrganizationsIndexLazyRoute
+  '/_app/organizations/$orgId/': typeof AppOrganizationsOrgIdIndexLazyRoute
+  '/_app/organizations/$orgId/task-management/': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  '/_app/organizations/$orgId/expense-management/all-expenses/': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
+  '/_app/organizations/$orgId/expense-management/expense-categories/': typeof AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -211,29 +242,33 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
-    | '/auth/organizations'
-    | '/'
-    | '/expense-management/all-expenses'
-    | '/expense-management/expense-categories'
+    | '/organizations'
+    | '/organizations/$orgId'
+    | '/organizations/$orgId/task-management'
+    | '/organizations/$orgId/expense-management/all-expenses'
+    | '/organizations/$orgId/expense-management/expense-categories'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | ''
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
-    | '/auth/organizations'
-    | '/'
-    | '/expense-management/all-expenses'
-    | '/expense-management/expense-categories'
+    | '/organizations'
+    | '/organizations/$orgId'
+    | '/organizations/$orgId/task-management'
+    | '/organizations/$orgId/expense-management/all-expenses'
+    | '/organizations/$orgId/expense-management/expense-categories'
   id:
     | '__root__'
     | '/_app'
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
-    | '/auth/organizations'
-    | '/_app/'
-    | '/_app/expense-management/all-expenses/'
-    | '/_app/expense-management/expense-categories/'
+    | '/organizations/'
+    | '/_app/organizations/$orgId/'
+    | '/_app/organizations/$orgId/task-management/'
+    | '/_app/organizations/$orgId/expense-management/all-expenses/'
+    | '/_app/organizations/$orgId/expense-management/expense-categories/'
   fileRoutesById: FileRoutesById
 }
 
@@ -242,7 +277,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegistrationRoute: typeof AuthRegistrationRoute
   AuthVerifyLoginRoute: typeof AuthVerifyLoginRoute
-  AuthOrganizationsLazyRoute: typeof AuthOrganizationsLazyRoute
+  OrganizationsIndexLazyRoute: typeof OrganizationsIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -250,7 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegistrationRoute: AuthRegistrationRoute,
   AuthVerifyLoginRoute: AuthVerifyLoginRoute,
-  AuthOrganizationsLazyRoute: AuthOrganizationsLazyRoute,
+  OrganizationsIndexLazyRoute: OrganizationsIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -267,15 +302,16 @@ export const routeTree = rootRoute
         "/auth/login",
         "/auth/registration",
         "/auth/verify-login",
-        "/auth/organizations"
+        "/organizations/"
       ]
     },
     "/_app": {
       "filePath": "_app.tsx",
       "children": [
-        "/_app/",
-        "/_app/expense-management/all-expenses/",
-        "/_app/expense-management/expense-categories/"
+        "/_app/organizations/$orgId/",
+        "/_app/organizations/$orgId/task-management/",
+        "/_app/organizations/$orgId/expense-management/all-expenses/",
+        "/_app/organizations/$orgId/expense-management/expense-categories/"
       ]
     },
     "/auth/login": {
@@ -287,19 +323,23 @@ export const routeTree = rootRoute
     "/auth/verify-login": {
       "filePath": "auth/verify-login.tsx"
     },
-    "/auth/organizations": {
-      "filePath": "auth/organizations.lazy.tsx"
+    "/organizations/": {
+      "filePath": "organizations/index.lazy.tsx"
     },
-    "/_app/": {
-      "filePath": "_app/index.lazy.tsx",
+    "/_app/organizations/$orgId/": {
+      "filePath": "_app/organizations/$orgId/index.lazy.tsx",
       "parent": "/_app"
     },
-    "/_app/expense-management/all-expenses/": {
-      "filePath": "_app/expense-management/all-expenses/index.lazy.tsx",
+    "/_app/organizations/$orgId/task-management/": {
+      "filePath": "_app/organizations/$orgId/task-management/index.tsx",
       "parent": "/_app"
     },
-    "/_app/expense-management/expense-categories/": {
-      "filePath": "_app/expense-management/expense-categories/index.lazy.tsx",
+    "/_app/organizations/$orgId/expense-management/all-expenses/": {
+      "filePath": "_app/organizations/$orgId/expense-management/all-expenses/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/organizations/$orgId/expense-management/expense-categories/": {
+      "filePath": "_app/organizations/$orgId/expense-management/expense-categories/index.lazy.tsx",
       "parent": "/_app"
     }
   }

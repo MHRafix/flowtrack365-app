@@ -17,7 +17,7 @@ import { ExpenseCategoryForm } from './~modlule/components/ExpenseCategoryForm';
 import { All_Expense_Categories_List_Query } from './~modlule/gql-query/query.gql';
 
 export const Route = createLazyFileRoute(
-	'/_app/expense-management/expense-categories/'
+	'/_app/organizations/$orgId/expense-management/expense-categories/'
 )({
 	component: RouteComponent,
 });

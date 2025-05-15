@@ -21,38 +21,38 @@ import {
 	SquareStack,
 } from 'lucide-react';
 import { useState } from 'react';
-
+const organizationUID = localStorage.getItem('orgUID');
 const items = [
 	{
 		title: 'Dashboard',
-		url: '/',
+		url: `/organizations/${organizationUID}`,
 		icon: HomeIcon,
 	},
 	{
 		title: 'Task Management',
-		url: '/task-management',
+		url: `/organizations/${organizationUID}/task-management`,
 		icon: ChartNetwork,
 	},
 	{
 		title: 'Expense Management',
-		url: '/expense-management/expenses',
+		url: `/organizations/${organizationUID}/expense-management/all-expenses`,
 		icon: BanknoteArrowDown,
 		items: [
 			{
 				title: 'All Expenses',
-				url: '/expense-management/all-expenses',
+				url: `/organizations/${organizationUID}/expense-management/all-expenses`,
 				icon: Blocks,
 			},
 			{
 				title: 'Expense Categories',
-				url: '/expense-management/expense-categories',
+				url: `/organizations/${organizationUID}/expense-management/expense-categories`,
 				icon: SquareStack,
 			},
 		],
 	},
 	{
 		title: 'CRM Management',
-		url: '/crm-management',
+		url: `/organizations/${organizationUID}/crm-management`,
 		icon: Headphones,
 	},
 ];

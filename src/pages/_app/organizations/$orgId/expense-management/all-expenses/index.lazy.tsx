@@ -15,7 +15,7 @@ import { ExpenseForm } from './~module/components/ExpenseForm';
 import { All_Expense_List_Query } from './~module/gql-query/query.gql';
 
 export const Route = createLazyFileRoute(
-	'/_app/expense-management/all-expenses/'
+	'/_app/organizations/$orgId/expense-management/all-expenses/'
 )({
 	component: RouteComponent,
 });
@@ -40,6 +40,8 @@ function RouteComponent() {
 				query: All_Expense_List_Query,
 				variables: {
 					input: {
+						page: 1,
+						limit: 1000,
 						where: {
 							key: 'createdAt',
 							operator: 'gte',
@@ -50,8 +52,8 @@ function RouteComponent() {
 			}),
 	});
 
-	const { data: thisMonthExpenses } = useQuery({
-		queryKey: [`all-expenses-${currentDate}`],
+	const { data: thisMonthExpenses, refetch: refetchMonthExpense } = useQuery({
+		queryKey: [`all-expenses-${currentYear}-${currentMonth}`],
 		queryFn: async () =>
 			await gqlRequest<{
 				expenseCalculationList: IExpenseListWithPagination | null;
@@ -59,6 +61,8 @@ function RouteComponent() {
 				query: All_Expense_List_Query,
 				variables: {
 					input: {
+						page: 1,
+						limit: 1000,
 						where: {
 							key: 'createdAt',
 							operator: 'gte',
@@ -69,7 +73,10 @@ function RouteComponent() {
 			}),
 	});
 
-	const { removeExpense } = expenseApi(refetch);
+	const { removeExpense } = expenseApi(() => {
+		refetch();
+		refetchMonthExpense();
+	});
 
 	return (
 		<div className='my-5'>
@@ -83,7 +90,10 @@ function RouteComponent() {
 			>
 				<ExpenseForm
 					actionType='ADD'
-					onRefetch={refetch}
+					onRefetch={() => {
+						refetch();
+						refetchMonthExpense();
+					}}
 					onCloseDrawer={() => {
 						setOpenCreateDrawer(false);
 						setExpense(null);
@@ -154,7 +164,8 @@ function RouteComponent() {
 			<br />
 			<h2 className='text-xl font-semibold bg-orange-200 text-black p-3 rounded-md mb-2'>
 				<span className='bg-orange-300 p-1 rounded-md'>
-					{formatDate(new Date().toISOString())}
+					{formatDate(new Date().toISOString()).split(' ')[0]} -{' '}
+					{formatDate(new Date().toISOString()).split(' ')[2]}
 				</span>{' '}
 				Expenses
 			</h2>
@@ -212,7 +223,10 @@ function RouteComponent() {
 				<ExpenseForm
 					expense={expense!}
 					actionType='EDIT'
-					onRefetch={refetch}
+					onRefetch={() => {
+						refetch();
+						refetchMonthExpense();
+					}}
 					onCloseDrawer={() => {
 						setOpenEditDrawer(false);
 						setExpense(null);

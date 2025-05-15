@@ -2,7 +2,7 @@ import { userAtom } from '@/store/auth.atom';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
 
-export const Route = createLazyFileRoute('/_app/')({
+export const Route = createLazyFileRoute('/_app/organizations/$orgId/')({
 	component: RouteComponent,
 });
 

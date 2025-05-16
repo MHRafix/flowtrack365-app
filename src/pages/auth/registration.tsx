@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
@@ -19,7 +19,7 @@ export const Route = createFileRoute('/auth/registration')({
 	async beforeLoad(ctx) {
 		if (ctx.context.auth.isFetched && ctx.context.auth.isAuthenticated) {
 			throw redirect({
-				to: '/',
+				to: '/organizations',
 			});
 		}
 		return ctx;
@@ -28,7 +28,14 @@ export const Route = createFileRoute('/auth/registration')({
 });
 
 function RouteComponent() {
-	const { registrationMutation } = authApi();
+	// handle redirect
+	const navigate = useNavigate();
+
+	const handleRedirect = () => {
+		navigate({ to: '/auth/login' }); // Replace '/settings' with any route path
+	};
+
+	const { registrationMutation } = authApi(() => handleRedirect());
 
 	// Define your form.
 	const form = useForm<RegistrationFormStateType>({

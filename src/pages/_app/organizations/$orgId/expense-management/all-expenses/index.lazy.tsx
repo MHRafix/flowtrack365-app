@@ -31,6 +31,7 @@ function RouteComponent() {
 	const currentMonth = new Date().getMonth();
 	const currentYear = new Date().getFullYear();
 
+	// expense of today
 	const { data: todaysExpenses, refetch } = useQuery({
 		queryKey: [`all-expenses-${currentDate}`],
 		queryFn: async () =>
@@ -52,6 +53,12 @@ function RouteComponent() {
 			}),
 	});
 
+	// today's total expense
+	const totalExpenseOfToday = todaysExpenses?.expenseCalculationList?.nodes
+		?.reduce((acc, curr) => acc + curr.amount, 0)
+		.toFixed(2);
+
+	// expenses of this month
 	const { data: thisMonthExpenses, refetch: refetchMonthExpense } = useQuery({
 		queryKey: [`all-expenses-${currentYear}-${currentMonth}`],
 		queryFn: async () =>
@@ -73,9 +80,44 @@ function RouteComponent() {
 			}),
 	});
 
+	// this month total expense
+	const totalExpenseOfThisMonth =
+		thisMonthExpenses?.expenseCalculationList?.nodes
+			?.reduce((acc, curr) => acc + curr.amount, 0)
+			.toFixed(2);
+
+	// annual expenses
+	const { data: annualExpenses, refetch: refetchAnnualExpenses } = useQuery({
+		queryKey: [`annual-expenses-${currentYear}-${currentMonth}`],
+		queryFn: async () =>
+			await gqlRequest<{
+				expenseCalculationList: IExpenseListWithPagination | null;
+			}>({
+				query: All_Expense_List_Query,
+				variables: {
+					input: {
+						page: 1,
+						limit: 1000,
+						where: {
+							key: 'createdAt',
+							operator: 'lte',
+							value: `${currentYear}-${currentMonth}`,
+						},
+					},
+				},
+			}),
+	});
+
+	// annual total expense
+	const totalExpenseAnnual = annualExpenses?.expenseCalculationList?.nodes
+		?.reduce((acc, curr) => acc + curr.amount, 0)
+		.toFixed(2);
+
+	// remove expense
 	const { removeExpense } = expenseApi(() => {
 		refetch();
 		refetchMonthExpense();
+		refetchAnnualExpenses();
 	});
 
 	return (
@@ -93,6 +135,7 @@ function RouteComponent() {
 					onRefetch={() => {
 						refetch();
 						refetchMonthExpense();
+						refetchAnnualExpenses();
 					}}
 					onCloseDrawer={() => {
 						setOpenCreateDrawer(false);
@@ -113,9 +156,16 @@ function RouteComponent() {
 				</Button>
 			</div>
 
-			<h2 className='text-xl font-semibold bg-blue-200 text-black p-3 rounded-md mb-2'>
-				<span className='bg-blue-300 p-1 rounded-md'>Today's</span> Expenses
-			</h2>
+			<div className='flex justify-between items-center bg-blue-200 text-black p-3 rounded-md mb-2'>
+				<h2 className='text-xl font-semibold'>
+					<span className='bg-blue-300 p-1 rounded-md'>Today's</span> Expenses
+				</h2>
+				<h3 className='text-xl font-semibold'>
+					<span className='bg-blue-300 p-1 rounded-md px-2'>
+						{totalExpenseOfToday || 0.0} BDT
+					</span>
+				</h3>
+			</div>
 			<DataTable
 				columns={expenseTableColumns}
 				data={
@@ -162,13 +212,21 @@ function RouteComponent() {
 
 			<br />
 			<br />
-			<h2 className='text-xl font-semibold bg-orange-200 text-black p-3 rounded-md mb-2'>
-				<span className='bg-orange-300 p-1 rounded-md'>
-					{formatDate(new Date().toISOString()).split(' ')[0]} -{' '}
-					{formatDate(new Date().toISOString()).split(' ')[2]}
-				</span>{' '}
-				Expenses
-			</h2>
+
+			<div className='flex justify-between items-center bg-orange-200 text-black p-3 rounded-md mb-2'>
+				<h2 className='text-xl font-semibold'>
+					<span className='bg-orange-300 p-1 rounded-md'>
+						{formatDate(new Date().toISOString()).split(' ')[0]} -{' '}
+						{formatDate(new Date().toISOString()).split(' ')[2]}
+					</span>{' '}
+					Expenses
+				</h2>
+				<h3 className='text-xl font-semibold'>
+					<span className='bg-orange-300 p-1 rounded-md px-2'>
+						{totalExpenseOfThisMonth || 0.0} BDT
+					</span>
+				</h3>
+			</div>
 			<DataTable
 				columns={expenseTableColumns}
 				data={
@@ -212,6 +270,66 @@ function RouteComponent() {
 					</div>
 				)}
 			/>
+
+			<br />
+			<br />
+			<div className='flex justify-between items-center bg-teal-200 text-black p-3 rounded-md mb-2'>
+				<h2 className='text-xl font-semibold'>
+					<span className='bg-teal-300 p-1 rounded-md'>
+						{formatDate(new Date().toISOString()).split(' ')[2]} Annual
+					</span>{' '}
+					Expenses
+				</h2>
+				<h3 className='text-xl font-semibold'>
+					<span className='bg-teal-300 p-1 rounded-md px-2'>
+						{totalExpenseAnnual || 0.0} BDT
+					</span>
+				</h3>
+			</div>
+			<DataTable
+				columns={expenseTableColumns}
+				data={
+					annualExpenses?.expenseCalculationList?.nodes?.map((expense) => ({
+						...expense,
+					})) || []
+				}
+				ActionCell={({ row }) => (
+					<div className='flex gap-2'>
+						<Button
+							variant={'outline'}
+							onClick={() => {
+								setOpenEditDrawer(true);
+								setExpense(row);
+							}}
+						>
+							<PenSquare /> Edit
+						</Button>
+
+						<Button
+							variant={'destructive'}
+							onClick={() => {
+								setRowId(row?._id);
+								show({
+									title: 'Are you sure to remove expense ?',
+									children: (
+										<span>Please proceed to complete this action.</span>
+									),
+									onConfirm() {
+										removeExpense.mutate(row?._id);
+									},
+								});
+							}}
+							disabled={removeExpense?.isPending}
+						>
+							{removeExpense?.isPending && row?._id === rowId && (
+								<Loader2 className='animate-spin' />
+							)}
+							<Trash /> Remove
+						</Button>
+					</div>
+				)}
+			/>
+
 			<DrawerWrapper
 				title={'Edit Expense'}
 				isOpen={isOpenEditDrawer}
@@ -226,6 +344,7 @@ function RouteComponent() {
 					onRefetch={() => {
 						refetch();
 						refetchMonthExpense();
+						refetchAnnualExpenses();
 					}}
 					onCloseDrawer={() => {
 						setOpenEditDrawer(false);

@@ -20,7 +20,7 @@ export const Route = createFileRoute('/auth/login')({
 	async beforeLoad(ctx) {
 		if (ctx.context.auth.isFetched && ctx.context.auth.isAuthenticated) {
 			throw redirect({
-				to: '/',
+				to: '/organizations',
 			});
 		}
 		return ctx;

@@ -25,7 +25,7 @@ function RouteComponent() {
 	const navigate = useNavigate();
 
 	const handleRedirect = () => {
-		navigate({ to: '/' }); // Replace '/settings' with any route path
+		navigate({ to: '/organizations' }); // Replace '/settings' with any route path
 	};
 
 	const { verifyMagicLoginMutation } = authApi(handleRedirect);

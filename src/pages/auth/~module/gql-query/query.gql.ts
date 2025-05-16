@@ -46,18 +46,56 @@ export const Login_User_Details_Query = gql`
  * */
 
 export const Organizations_List_Query = gql`
-	query Organizations($input: OrganizationListQueryInput) {
-		organizations(input: $input) {
+	query MyOrganizations($id: String!) {
+		myOrganizations(_id: $id) {
 			nodes {
 				_id
 				name
 				tagline
 				orgUID
+				businessEmail
+				businessPhone
+				address
+				cover {
+					bucket
+					region
+					key
+					externalUrl
+				}
 				Logo {
 					bucket
 					region
 					key
 					externalUrl
+				}
+				employees {
+					_id
+					employeeDetails {
+						_id
+						name
+						email
+						phone
+						avatar
+						role
+					}
+					organizations {
+						organization {
+							_id
+							name
+							tagline
+							orgUID
+							businessEmail
+							businessPhone
+							address
+							createdAt
+							updatedAt
+						}
+						role
+						salary
+					}
+				}
+				owner {
+					_id
 				}
 				createdAt
 				updatedAt

@@ -20,7 +20,7 @@ export const authApi = (onRedirect?: CallableFunction) => {
 				variables: { input: payload },
 			}),
 		onSuccess: () => {
-			toast.success('Registration has been success');
+			toast.success('Registration success. Please login');
 			onRedirect?.();
 		},
 		onError: () => toast.error('Failed to register account'),

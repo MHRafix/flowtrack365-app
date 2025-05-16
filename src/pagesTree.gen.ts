@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './pages/__root'
 import { Route as AppImport } from './pages/_app'
+import { Route as OrganizationsIndexImport } from './pages/organizations/index'
 import { Route as AuthVerifyLoginImport } from './pages/auth/verify-login'
 import { Route as AuthRegistrationImport } from './pages/auth/registration'
 import { Route as AuthLoginImport } from './pages/auth/login'
@@ -21,7 +22,6 @@ import { Route as AppOrganizationsOrgIdTaskManagementIndexImport } from './pages
 
 // Create Virtual Routes
 
-const OrganizationsIndexLazyImport = createFileRoute('/organizations/')()
 const AppOrganizationsOrgIdIndexLazyImport = createFileRoute(
   '/_app/organizations/$orgId/',
 )()
@@ -41,13 +41,11 @@ const AppRoute = AppImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const OrganizationsIndexLazyRoute = OrganizationsIndexLazyImport.update({
+const OrganizationsIndexRoute = OrganizationsIndexImport.update({
   id: '/organizations/',
   path: '/organizations/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./pages/organizations/index.lazy').then((d) => d.Route),
-)
+} as any)
 
 const AuthVerifyLoginRoute = AuthVerifyLoginImport.update({
   id: '/auth/verify-login',
@@ -143,7 +141,7 @@ declare module '@tanstack/react-router' {
       id: '/organizations/'
       path: '/organizations'
       fullPath: '/organizations'
-      preLoaderRoute: typeof OrganizationsIndexLazyImport
+      preLoaderRoute: typeof OrganizationsIndexImport
       parentRoute: typeof rootRoute
     }
     '/_app/organizations/$orgId/': {
@@ -203,7 +201,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
-  '/organizations': typeof OrganizationsIndexLazyRoute
+  '/organizations': typeof OrganizationsIndexRoute
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   '/organizations/$orgId/expense-management/all-expenses': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -215,7 +213,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
-  '/organizations': typeof OrganizationsIndexLazyRoute
+  '/organizations': typeof OrganizationsIndexRoute
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   '/organizations/$orgId/expense-management/all-expenses': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -228,7 +226,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
-  '/organizations/': typeof OrganizationsIndexLazyRoute
+  '/organizations/': typeof OrganizationsIndexRoute
   '/_app/organizations/$orgId/': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/_app/organizations/$orgId/task-management/': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   '/_app/organizations/$orgId/expense-management/all-expenses/': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -277,7 +275,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegistrationRoute: typeof AuthRegistrationRoute
   AuthVerifyLoginRoute: typeof AuthVerifyLoginRoute
-  OrganizationsIndexLazyRoute: typeof OrganizationsIndexLazyRoute
+  OrganizationsIndexRoute: typeof OrganizationsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -285,7 +283,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegistrationRoute: AuthRegistrationRoute,
   AuthVerifyLoginRoute: AuthVerifyLoginRoute,
-  OrganizationsIndexLazyRoute: OrganizationsIndexLazyRoute,
+  OrganizationsIndexRoute: OrganizationsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -324,7 +322,7 @@ export const routeTree = rootRoute
       "filePath": "auth/verify-login.tsx"
     },
     "/organizations/": {
-      "filePath": "organizations/index.lazy.tsx"
+      "filePath": "organizations/index.tsx"
     },
     "/_app/organizations/$orgId/": {
       "filePath": "_app/organizations/$orgId/index.lazy.tsx",

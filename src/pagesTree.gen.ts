@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './pages/__root'
 import { Route as AppImport } from './pages/_app'
 import { Route as OrganizationsIndexImport } from './pages/organizations/index'
+import { Route as AppIndexImport } from './pages/_app/index'
 import { Route as AuthVerifyLoginImport } from './pages/auth/verify-login'
 import { Route as AuthRegistrationImport } from './pages/auth/registration'
 import { Route as AuthLoginImport } from './pages/auth/login'
@@ -45,6 +46,12 @@ const OrganizationsIndexRoute = OrganizationsIndexImport.update({
   id: '/organizations/',
   path: '/organizations/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AppIndexRoute = AppIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
 } as any)
 
 const AuthVerifyLoginRoute = AuthVerifyLoginImport.update({
@@ -137,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVerifyLoginImport
       parentRoute: typeof rootRoute
     }
+    '/_app/': {
+      id: '/_app/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AppIndexImport
+      parentRoute: typeof AppImport
+    }
     '/organizations/': {
       id: '/organizations/'
       path: '/organizations'
@@ -178,6 +192,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AppRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
   AppOrganizationsOrgIdIndexLazyRoute: typeof AppOrganizationsOrgIdIndexLazyRoute
   AppOrganizationsOrgIdTaskManagementIndexRoute: typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute: typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -185,6 +200,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
   AppOrganizationsOrgIdIndexLazyRoute: AppOrganizationsOrgIdIndexLazyRoute,
   AppOrganizationsOrgIdTaskManagementIndexRoute:
     AppOrganizationsOrgIdTaskManagementIndexRoute,
@@ -201,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
+  '/': typeof AppIndexRoute
   '/organizations': typeof OrganizationsIndexRoute
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
@@ -209,10 +226,10 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '': typeof AppRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
+  '/': typeof AppIndexRoute
   '/organizations': typeof OrganizationsIndexRoute
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
@@ -226,6 +243,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
+  '/_app/': typeof AppIndexRoute
   '/organizations/': typeof OrganizationsIndexRoute
   '/_app/organizations/$orgId/': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/_app/organizations/$orgId/task-management/': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
@@ -240,6 +258,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
+    | '/'
     | '/organizations'
     | '/organizations/$orgId'
     | '/organizations/$orgId/task-management'
@@ -247,10 +266,10 @@ export interface FileRouteTypes {
     | '/organizations/$orgId/expense-management/expense-categories'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | ''
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
+    | '/'
     | '/organizations'
     | '/organizations/$orgId'
     | '/organizations/$orgId/task-management'
@@ -262,6 +281,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
+    | '/_app/'
     | '/organizations/'
     | '/_app/organizations/$orgId/'
     | '/_app/organizations/$orgId/task-management/'
@@ -306,6 +326,7 @@ export const routeTree = rootRoute
     "/_app": {
       "filePath": "_app.tsx",
       "children": [
+        "/_app/",
         "/_app/organizations/$orgId/",
         "/_app/organizations/$orgId/task-management/",
         "/_app/organizations/$orgId/expense-management/all-expenses/",
@@ -320,6 +341,10 @@ export const routeTree = rootRoute
     },
     "/auth/verify-login": {
       "filePath": "auth/verify-login.tsx"
+    },
+    "/_app/": {
+      "filePath": "_app/index.tsx",
+      "parent": "/_app"
     },
     "/organizations/": {
       "filePath": "organizations/index.tsx"

@@ -156,15 +156,13 @@ function RouteComponent() {
 				</Button>
 			</div>
 
-			<div className='flex justify-between items-center bg-blue-200 text-black p-3 rounded-md mb-2'>
+			<div className='grid gap-3 md:flex justify-between items-center bg-blue-200 text-black p-3 rounded-md mb-2'>
 				<h2 className='text-xl font-semibold'>
 					<span className='bg-blue-300 p-1 rounded-md'>Today's</span> Expenses
 				</h2>
-				<h3 className='text-xl font-semibold'>
-					<span className='bg-blue-300 p-1 rounded-md px-2'>
-						{totalExpenseOfToday || 0.0} BDT
-					</span>
-				</h3>
+				<div className='text-xl font-semibold ml-auto bg-blue-300 p-1 rounded-md px-2'>
+					<span>{totalExpenseOfToday || 0.0} BDT</span>
+				</div>
 			</div>
 			<DataTable
 				columns={expenseTableColumns}
@@ -213,7 +211,7 @@ function RouteComponent() {
 			<br />
 			<br />
 
-			<div className='flex justify-between items-center bg-orange-200 text-black p-3 rounded-md mb-2'>
+			<div className='grid gap-3 md:flex justify-between items-center bg-orange-200 text-black p-3 rounded-md mb-2'>
 				<h2 className='text-xl font-semibold'>
 					<span className='bg-orange-300 p-1 rounded-md'>
 						{formatDate(new Date().toISOString()).split(' ')[0]} -{' '}
@@ -221,11 +219,9 @@ function RouteComponent() {
 					</span>{' '}
 					Expenses
 				</h2>
-				<h3 className='text-xl font-semibold'>
-					<span className='bg-orange-300 p-1 rounded-md px-2'>
-						{totalExpenseOfThisMonth || 0.0} BDT
-					</span>
-				</h3>
+				<div className='ml-auto text-xl font-semibold bg-orange-300 p-1 rounded-md px-2'>
+					<span>{totalExpenseOfThisMonth || 0.0} BDT</span>
+				</div>
 			</div>
 			<DataTable
 				columns={expenseTableColumns}
@@ -273,18 +269,16 @@ function RouteComponent() {
 
 			<br />
 			<br />
-			<div className='flex justify-between items-center bg-teal-200 text-black p-3 rounded-md mb-2'>
+			<div className='grid gap-3 md:flex justify-between items-center bg-teal-200 text-black p-3 rounded-md mb-2'>
 				<h2 className='text-xl font-semibold'>
 					<span className='bg-teal-300 p-1 rounded-md'>
 						{formatDate(new Date().toISOString()).split(' ')[2]} Annual
 					</span>{' '}
 					Expenses
 				</h2>
-				<h3 className='text-xl font-semibold'>
-					<span className='bg-teal-300 p-1 rounded-md px-2'>
-						{totalExpenseAnnual || 0.0} BDT
-					</span>
-				</h3>
+				<div className='ml-auto text-xl font-semibold bg-teal-300 p-1 rounded-md px-2'>
+					<span className=''>{totalExpenseAnnual || 0.0} BDT</span>
+				</div>
 			</div>
 			<DataTable
 				columns={expenseTableColumns}

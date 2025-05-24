@@ -6,7 +6,6 @@ export const formatCurrency = (amount: number) => {
 };
 
 export const formatDate = (date: string, locale: string = 'en-BD') => {
-	console.log({ date });
 	if (!date) {
 		return '';
 	}

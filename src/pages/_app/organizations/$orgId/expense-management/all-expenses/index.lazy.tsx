@@ -28,7 +28,7 @@ function RouteComponent() {
 
 	const { show } = useAppConfirm();
 	const currentDate = new Date().toISOString().split('T')[0];
-	const currentMonth = new Date().getMonth();
+	const currentMonth = new Date().getMonth() + 1;
 	const currentYear = new Date().getFullYear();
 
 	// expense of today

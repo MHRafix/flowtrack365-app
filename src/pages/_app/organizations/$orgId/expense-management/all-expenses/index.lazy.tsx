@@ -4,9 +4,11 @@ import DrawerWrapper from '@/components/DrawerWrapper';
 import { Button } from '@/components/ui/button';
 import { gqlRequest } from '@/lib/api-client';
 import { formatDate } from '@/lib/formater.utils';
+import { userAtom } from '@/store/auth.atom';
 import { IExpense, IExpenseListWithPagination } from '@/types/expenseType';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
+import { useAtom } from 'jotai';
 import { Loader2, PenSquare, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { expenseApi } from './~module/api/expenseApi';
@@ -25,6 +27,7 @@ function RouteComponent() {
 	const [isOpenEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
 	const [expense, setExpense] = useState<IExpense | null>(null);
 	const [rowId, setRowId] = useState<string>('');
+	const [session] = useAtom(userAtom);
 
 	const { show } = useAppConfirm();
 	const currentDate = new Date().toISOString().split('T')[0];
@@ -48,7 +51,11 @@ function RouteComponent() {
 							operator: 'gte',
 							value: currentDate,
 						},
+						sort: 'DESC',
+						sortBy: 'createdAt',
 					},
+					creatorId: session?.user?._id,
+					orgUid: session?.orgUID,
 				},
 			}),
 	});
@@ -75,7 +82,11 @@ function RouteComponent() {
 							operator: 'gte',
 							value: `${currentYear}-${currentMonth}`,
 						},
+						sort: 'DESC',
+						sortBy: 'createdAt',
 					},
+					creatorId: session?.user?._id,
+					orgUid: session?.orgUID,
 				},
 			}),
 	});
@@ -103,7 +114,11 @@ function RouteComponent() {
 							operator: 'lte',
 							value: `${currentYear}-${currentMonth}`,
 						},
+						sort: 'DESC',
+						sortBy: 'createdAt',
 					},
+					creatorId: session?.user?._id,
+					orgUid: session?.orgUID,
 				},
 			}),
 	});

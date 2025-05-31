@@ -1,18 +1,34 @@
 import { gql } from '@/lib/api-client';
 
 export const All_Expense_List_Query = gql`
-	query ExpenseCalculationList($input: ExpenseListQueryDto) {
-		expenseCalculationList(input: $input) {
+	query ExpenseCalculationList(
+		$input: ExpenseListQueryDto
+		$creatorId: String!
+		$orgUid: String!
+	) {
+		expenseCalculationList(
+			input: $input
+			creatorId: $creatorId
+			orgUID: $orgUid
+		) {
 			nodes {
 				_id
 				title
-				amount
 				description
+				amount
 				category {
 					_id
 					title
+					description
+					createdAt
+					updatedAt
 				}
+				creator {
+					_id
+				}
+				orgUID
 				createdAt
+				updatedAt
 			}
 			meta {
 				totalCount

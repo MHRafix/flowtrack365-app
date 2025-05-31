@@ -41,6 +41,14 @@ export const Login_User_Details_Query = gql`
 	}
 `;
 
+export const Login_User_Details_In_Employee_List_Query = gql`
+	query Employee($input: CommonMatchInput!) {
+		Employee(input: $input) {
+			_id
+		}
+	}
+`;
+
 /**
  * organizations query
  * */

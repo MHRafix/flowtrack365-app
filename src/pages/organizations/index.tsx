@@ -59,9 +59,12 @@ function RouteComponent() {
 							>
 								<div
 									className='h-[180px] cursor-pointer dark:bg-neutral-900 bg-neutral-200 hover:dark:bg-neutral-900 hover:bg-neutral-300 hover:duration-300 rounded-md px-2 py-4'
-									onClick={() =>
-										localStorage.setItem('orgUID', organization?.orgUID)
-									}
+									onClick={() => {
+										localStorage.setItem('orgUID', organization?.orgUID);
+										// jotaiStore.set(userAtom, (draft) => {
+										// 	draft.orgUID = organization?.orgUID;
+										// });
+									}}
 								>
 									<img
 										src={

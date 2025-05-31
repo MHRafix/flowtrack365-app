@@ -1,5 +1,9 @@
 import { gqlRequest } from '@/lib/api-client';
-import { Login_User_Details_Query } from '@/pages/auth/~module/gql-query/query.gql';
+import {
+	Login_User_Details_In_Employee_List_Query,
+	Login_User_Details_Query,
+} from '@/pages/auth/~module/gql-query/query.gql';
+import { IEmployee } from '@/types/employeeType';
 import { User } from '@/types/userType';
 import { useAtom } from 'jotai';
 import { atomWithImmer } from 'jotai-immer';
@@ -11,13 +15,17 @@ export interface IAuthStore {
 	isPending: boolean;
 	isFetched: boolean;
 	user: User | null;
+	userEmployeeProfile: IEmployee | null;
 	logout?: () => Promise<void>;
+	orgUID: string | null;
 }
 export const userAtom = atomWithImmer<IAuthStore>({
 	isAuthenticated: false,
 	isPending: false,
 	isFetched: false,
 	user: null,
+	userEmployeeProfile: null,
+	orgUID: null,
 });
 export async function fetchME() {
 	const token = localStorage.getItem('token'); // or however you're storing it
@@ -43,8 +51,24 @@ export async function fetchME() {
 				},
 			});
 
+			// user employee profile data
+			const userEmployeeProfileData = await gqlRequest<{
+				Employee: IEmployee | null;
+			}>({
+				query: Login_User_Details_In_Employee_List_Query,
+				variables: {
+					input: {
+						key: 'employeeDetails',
+						operator: 'eq',
+						value: data?.user?._id,
+					},
+				},
+			});
+
 			jotaiStore.set(userAtom, (draft) => {
 				draft.user = data?.user || null;
+				draft.userEmployeeProfile = userEmployeeProfileData?.Employee || null;
+				draft.orgUID = localStorage.getItem('orgUID');
 				draft.isAuthenticated = true;
 				draft.isFetched = true;
 			});
@@ -53,6 +77,8 @@ export async function fetchME() {
 		} catch {
 			jotaiStore.set(userAtom, (draft) => {
 				draft.user = null;
+				draft.userEmployeeProfile = null;
+				draft.orgUID = null;
 				draft.isAuthenticated = false;
 				draft.isFetched = true;
 			});
@@ -64,6 +90,8 @@ export async function fetchME() {
 	} catch (error) {
 		jotaiStore.set(userAtom, (draft) => {
 			draft.user = null;
+			draft.userEmployeeProfile = null;
+			draft.orgUID = null;
 			draft.isAuthenticated = false;
 			draft.isFetched = true;
 		});

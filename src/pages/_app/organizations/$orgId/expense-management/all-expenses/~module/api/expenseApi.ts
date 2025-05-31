@@ -68,4 +68,6 @@ export const expenseApi = (onSuccess?: CallableFunction) => {
 
 interface ExpenseUpdatePayloadType extends ExpenseFormStateType {
 	_id: string;
+	orgUID: string;
+	creator: any;
 }

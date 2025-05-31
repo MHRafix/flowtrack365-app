@@ -80,7 +80,12 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 	function onSubmit(values: ExpenseFormStateType) {
 		actionType === 'ADD'
 			? createExpense.mutate(values)
-			: updateExpense.mutate({ _id: expense?._id!, ...values });
+			: updateExpense.mutate({
+					_id: expense?._id!,
+					...values,
+					orgUID: '@XCoder-2025-872-1',
+					creator: '679082e33212e52b4df5c3e6',
+				});
 	}
 	return (
 		<Form {...form}>

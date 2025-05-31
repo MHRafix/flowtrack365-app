@@ -17,6 +17,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { gqlRequest } from '@/lib/api-client';
+import { userAtom } from '@/store/auth.atom';
 import {
 	IExpenseCategory,
 	IExpenseCategoryListWithPagination,
@@ -24,6 +25,7 @@ import {
 import { IExpense } from '@/types/expenseType';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useQuery } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
 import { Loader2 } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -43,6 +45,8 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 	onRefetch,
 	onCloseDrawer,
 }) => {
+	const [session] = useAtom(userAtom);
+
 	const { data: expenseCategories } = useQuery({
 		queryKey: ['all-expenses-category-for-dropdown'],
 		queryFn: async () =>
@@ -79,12 +83,16 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 	// Define a submit handler.
 	function onSubmit(values: ExpenseFormStateType) {
 		actionType === 'ADD'
-			? createExpense.mutate(values)
+			? createExpense.mutate({
+					...values,
+					orgUID: session?.orgUID!,
+					creator: session?.userEmployeeProfile?._id!,
+				})
 			: updateExpense.mutate({
 					_id: expense?._id!,
 					...values,
-					orgUID: '@XCoder-2025-872-1',
-					creator: '679082e33212e52b4df5c3e6',
+					orgUID: session?.orgUID!,
+					creator: session?.userEmployeeProfile?._id!,
 				});
 	}
 	return (

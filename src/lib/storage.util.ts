@@ -1,4 +1,4 @@
-type TKey = 'accessToken' | 'refreshToken';
+type TKey = 'token' | 'orgUID';
 
 export class StorageUtil {
 	static getItem(key: TKey) {

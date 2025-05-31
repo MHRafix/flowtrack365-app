@@ -39,6 +39,11 @@ export const authApi = (onRedirect?: CallableFunction) => {
 		onError: () => toast.error('Failed to login'),
 	});
 
+	const triggerLogout = () => {
+		localStorage.removeItem('token');
+		localStorage.removeItem('orgUID');
+	};
+
 	const verifyMagicLoginMutation = useMutation({
 		mutationFn: (payload: VerifyMagicLoginFormStateType) =>
 			gqlRequest({
@@ -71,5 +76,6 @@ export const authApi = (onRedirect?: CallableFunction) => {
 		loginMutation,
 		verifyMagicLoginMutation,
 		loggedInUserDetails,
+		triggerLogout,
 	};
 };

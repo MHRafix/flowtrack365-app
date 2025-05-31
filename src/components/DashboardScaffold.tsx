@@ -1,27 +1,43 @@
-import { StorageUtil } from '@/lib/storage.util';
-import { fetchME } from '@/store/auth.atom';
+import { gqlRequest } from '@/lib/api-client';
+import { Organizations_List_Query } from '@/pages/auth/~module/gql-query/query.gql';
+import { userAtom } from '@/store/auth.atom';
+import { IOrganizationsWithPagination } from '@/types/organizationType';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
-import { LogOutIcon } from 'lucide-react';
+import { useAtom } from 'jotai';
 import React, { PropsWithChildren } from 'react';
 import { useAppConfirm } from './AppConfirm';
 import AppSidenav from './AppSideNav';
 import { ModeToggler } from './ModeToggler';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Button } from './ui/button';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from './ui/dropdown-menu';
+import { OrganizationSwitcherDropdownBtn } from './OrganizationSwitcherButton';
 import { Separator } from './ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from './ui/sidebar';
+import { Skeleton } from './ui/skeleton';
 
 const DashboardScaffold: React.FC<PropsWithChildren> = ({ children }) => {
 	const appConfirmHandle = useAppConfirm();
 	const router = useRouter();
+	const [session] = useAtom(userAtom);
+
+	const { data: organizations, isLoading } = useQuery({
+		queryKey: ['organizations-query'],
+		queryFn: async () => {
+			const res = await gqlRequest<{
+				myOrganizations: IOrganizationsWithPagination | null;
+			}>({
+				query: Organizations_List_Query,
+				variables: {
+					input: {
+						limit: 1000,
+						page: 1,
+					},
+					id: session?.user?._id,
+				},
+			});
+
+			return res?.myOrganizations?.nodes;
+		},
+	});
 	return (
 		<>
 			<SidebarProvider defaultOpen={true}>
@@ -34,17 +50,26 @@ const DashboardScaffold: React.FC<PropsWithChildren> = ({ children }) => {
 						</div>
 
 						<div className='flex pt-0 items-center gap-2'>
-							{/* <ThemeSwitcherButton /> */}
-							{/* User Button */}
+							{isLoading ? (
+								<Skeleton className='h-[55px] w-[250px] ' />
+							) : (
+								<>
+									{!organizations?.length ? null : (
+										<OrganizationSwitcherDropdownBtn
+											organizations={organizations!}
+										/>
+									)}
+								</>
+							)}
 							<ModeToggler />{' '}
-							<Button
+							{/* <Button
 								variant={'ghost'}
 								onClick={() => {
 									appConfirmHandle.show({
 										title: 'Logout',
 										onConfirm: async () => {
-											StorageUtil.removeItem('accessToken');
-											StorageUtil.removeItem('refreshToken');
+											StorageUtil.removeItem('token');
+											StorageUtil.removeItem('orgUID');
 											await fetchME();
 											router.invalidate();
 										},
@@ -59,7 +84,7 @@ const DashboardScaffold: React.FC<PropsWithChildren> = ({ children }) => {
 									<Avatar>
 										<AvatarImage src='https://github.com/shadcn.png' />
 										<AvatarFallback>
-											{/* {auth.user?.name?.slice(0, 2)} */}
+					
 											MH
 										</AvatarFallback>
 									</Avatar>
@@ -70,7 +95,7 @@ const DashboardScaffold: React.FC<PropsWithChildren> = ({ children }) => {
 									<DropdownMenuItem>Settings</DropdownMenuItem>
 									<DropdownMenuItem>Logout</DropdownMenuItem>
 								</DropdownMenuContent>
-							</DropdownMenu>
+							</DropdownMenu> */}
 						</div>
 					</header>
 					<div className='flex flex-col flex-1 p-4 gap-4'>

@@ -10,7 +10,7 @@ import {
 
 export const expenseApi = (onSuccess?: CallableFunction) => {
 	const createExpense = useMutation({
-		mutationFn: (payload: ExpenseFormStateType) =>
+		mutationFn: (payload: ExpenseApiPayloadType) =>
 			gqlRequest({
 				query: Create_Expense_Mutation,
 				variables: { input: payload },
@@ -22,7 +22,7 @@ export const expenseApi = (onSuccess?: CallableFunction) => {
 		onError: () => toast.error('Failed to create expense'),
 	});
 	const updateExpense = useMutation({
-		mutationFn: (payload: ExpenseUpdatePayloadType) =>
+		mutationFn: (payload: ExpenseApiPayloadType) =>
 			gqlRequest({
 				query: Update_Expense_Mutation,
 				variables: {
@@ -66,8 +66,8 @@ export const expenseApi = (onSuccess?: CallableFunction) => {
 	};
 };
 
-interface ExpenseUpdatePayloadType extends ExpenseFormStateType {
-	_id: string;
+interface ExpenseApiPayloadType extends ExpenseFormStateType {
+	_id?: string;
 	orgUID: string;
-	creator: any;
+	creator: string;
 }

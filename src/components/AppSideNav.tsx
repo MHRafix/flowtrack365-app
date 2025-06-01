@@ -53,6 +53,11 @@ const items = [
 		],
 	},
 	{
+		title: 'All Orders',
+		url: `/organizations/${organizationUID}/orders-management/all-orders`,
+		icon: Grid,
+	},
+	{
 		title: 'Expense Management',
 		url: `/organizations/${organizationUID}/expense-management/all-expenses`,
 		icon: BanknoteArrowDown,

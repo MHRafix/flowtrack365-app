@@ -3,12 +3,14 @@ import { DataTable } from '@/components/DataTable';
 import DrawerWrapper from '@/components/DrawerWrapper';
 import { Button } from '@/components/ui/button';
 import { gqlRequest } from '@/lib/api-client';
+import { userAtom } from '@/store/auth.atom';
 import {
 	IExpenseCategory,
 	IExpenseCategoryListWithPagination,
 } from '@/types/expenseCategoriesType';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
+import { useAtom } from 'jotai';
 import { Loader2, PenSquare, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { expenseCategoryApi } from './~modlule/api/expenseCategory.api';
@@ -23,6 +25,7 @@ export const Route = createLazyFileRoute(
 });
 
 function RouteComponent() {
+	const [session] = useAtom(userAtom);
 	const [isOpenCreateDrawer, setOpenCreateDrawer] = useState<boolean>(false);
 	const [isOpenEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
 	const [expense, setExpenseCategory] = useState<IExpenseCategory | null>(null);
@@ -36,13 +39,9 @@ function RouteComponent() {
 				expenseCategories: IExpenseCategoryListWithPagination | null;
 			}>({
 				query: All_Expense_Categories_List_Query,
-				// variables: {
-				// 	input: {
-				// 		key: 'email',
-				// 		operator: 'eq',
-				// 		value: decoded?.email,
-				// 	},
-				// },
+				variables: {
+					orgUID: session?.orgUID,
+				},
 			}),
 	});
 

@@ -16,6 +16,7 @@ import { Route as rootRoute } from './pages/__root'
 import { Route as AppImport } from './pages/_app'
 import { Route as OrganizationsIndexImport } from './pages/organizations/index'
 import { Route as AppIndexImport } from './pages/_app/index'
+import { Route as OrganizationsCreateOrganizationImport } from './pages/organizations/create-organization'
 import { Route as AuthVerifyLoginImport } from './pages/auth/verify-login'
 import { Route as AuthRegistrationImport } from './pages/auth/registration'
 import { Route as AuthLoginImport } from './pages/auth/login'
@@ -53,6 +54,13 @@ const AppIndexRoute = AppIndexImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+
+const OrganizationsCreateOrganizationRoute =
+  OrganizationsCreateOrganizationImport.update({
+    id: '/organizations/create-organization',
+    path: '/organizations/create-organization',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 const AuthVerifyLoginRoute = AuthVerifyLoginImport.update({
   id: '/auth/verify-login',
@@ -144,6 +152,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVerifyLoginImport
       parentRoute: typeof rootRoute
     }
+    '/organizations/create-organization': {
+      id: '/organizations/create-organization'
+      path: '/organizations/create-organization'
+      fullPath: '/organizations/create-organization'
+      preLoaderRoute: typeof OrganizationsCreateOrganizationImport
+      parentRoute: typeof rootRoute
+    }
     '/_app/': {
       id: '/_app/'
       path: '/'
@@ -217,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
+  '/organizations/create-organization': typeof OrganizationsCreateOrganizationRoute
   '/': typeof AppIndexRoute
   '/organizations': typeof OrganizationsIndexRoute
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
@@ -229,6 +245,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
+  '/organizations/create-organization': typeof OrganizationsCreateOrganizationRoute
   '/': typeof AppIndexRoute
   '/organizations': typeof OrganizationsIndexRoute
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
@@ -243,6 +260,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/registration': typeof AuthRegistrationRoute
   '/auth/verify-login': typeof AuthVerifyLoginRoute
+  '/organizations/create-organization': typeof OrganizationsCreateOrganizationRoute
   '/_app/': typeof AppIndexRoute
   '/organizations/': typeof OrganizationsIndexRoute
   '/_app/organizations/$orgId/': typeof AppOrganizationsOrgIdIndexLazyRoute
@@ -258,6 +276,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
+    | '/organizations/create-organization'
     | '/'
     | '/organizations'
     | '/organizations/$orgId'
@@ -269,6 +288,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
+    | '/organizations/create-organization'
     | '/'
     | '/organizations'
     | '/organizations/$orgId'
@@ -281,6 +301,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/registration'
     | '/auth/verify-login'
+    | '/organizations/create-organization'
     | '/_app/'
     | '/organizations/'
     | '/_app/organizations/$orgId/'
@@ -295,6 +316,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegistrationRoute: typeof AuthRegistrationRoute
   AuthVerifyLoginRoute: typeof AuthVerifyLoginRoute
+  OrganizationsCreateOrganizationRoute: typeof OrganizationsCreateOrganizationRoute
   OrganizationsIndexRoute: typeof OrganizationsIndexRoute
 }
 
@@ -303,6 +325,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegistrationRoute: AuthRegistrationRoute,
   AuthVerifyLoginRoute: AuthVerifyLoginRoute,
+  OrganizationsCreateOrganizationRoute: OrganizationsCreateOrganizationRoute,
   OrganizationsIndexRoute: OrganizationsIndexRoute,
 }
 
@@ -320,6 +343,7 @@ export const routeTree = rootRoute
         "/auth/login",
         "/auth/registration",
         "/auth/verify-login",
+        "/organizations/create-organization",
         "/organizations/"
       ]
     },
@@ -341,6 +365,9 @@ export const routeTree = rootRoute
     },
     "/auth/verify-login": {
       "filePath": "auth/verify-login.tsx"
+    },
+    "/organizations/create-organization": {
+      "filePath": "organizations/create-organization.tsx"
     },
     "/_app/": {
       "filePath": "_app/index.tsx",

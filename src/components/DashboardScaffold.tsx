@@ -51,7 +51,7 @@ const DashboardScaffold: React.FC<PropsWithChildren> = ({ children }) => {
 
 						<div className='flex pt-0 items-center gap-2'>
 							{isLoading ? (
-								<Skeleton className='h-[55px] w-[250px] ' />
+								<Skeleton className='h-[55px] w-[250px]' />
 							) : (
 								<>
 									{!organizations?.length ? null : (

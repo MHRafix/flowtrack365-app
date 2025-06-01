@@ -8,23 +8,40 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { userAtom } from '@/store/auth.atom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useAtom } from 'jotai';
+import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
+import { organizationApi } from './~module/api/organization.api';
 
 export const Route = createFileRoute('/organizations/create-organization')({
 	component: RouteComponent,
 });
 
 function RouteComponent() {
+	const navigate = useNavigate();
+	const [session] = useAtom(userAtom);
+
+	const { createOrganizationMutation } = organizationApi(() => {
+		navigate({ to: '/organizations' });
+	});
+
 	// Define your form.
 	const form = useForm<OrganizationFormStateType>({
 		resolver: yupResolver(Create_Organization_Form_Schema),
 	});
 
 	// Define a submit handler.
-	function onSubmit(values: OrganizationFormStateType) {}
+	function onSubmit(values: OrganizationFormStateType) {
+		createOrganizationMutation.mutate({
+			...values,
+			owner: session?.userEmployeeProfile?._id!,
+			employees: [session?.userEmployeeProfile?._id!],
+		});
+	}
 
 	return (
 		<div className='flex h-screen items-center justify-center bg-white dark:bg-slate-900 my-5'>
@@ -40,7 +57,7 @@ function RouteComponent() {
 									<FormItem>
 										<FormLabel>Name</FormLabel>
 										<FormControl>
-											<Input placeholder='Enter your name' {...field} />
+											<Input placeholder='Enter organization name' {...field} />
 										</FormControl>
 
 										<FormMessage />
@@ -71,7 +88,10 @@ function RouteComponent() {
 									<FormItem>
 										<FormLabel>Email</FormLabel>
 										<FormControl>
-											<Input placeholder='Enter your email' {...field} />
+											<Input
+												placeholder='Enter organization email'
+												{...field}
+											/>
 										</FormControl>
 
 										<FormMessage />
@@ -85,7 +105,10 @@ function RouteComponent() {
 									<FormItem>
 										<FormLabel>Phone</FormLabel>
 										<FormControl>
-											<Input placeholder='Enter your phone' {...field} />
+											<Input
+												placeholder='Enter organization phone'
+												{...field}
+											/>
 										</FormControl>
 
 										<FormMessage />
@@ -110,10 +133,14 @@ function RouteComponent() {
 								)}
 							/>
 
-							<Button type='submit' variant={'default'}>
-								{/* {loginMutation?.isPending && (
+							<Button
+								disabled={createOrganizationMutation?.isPending}
+								type='submit'
+								variant={'default'}
+							>
+								{createOrganizationMutation?.isPending && (
 									<Loader2 className='animate-spin' />
-								)} */}
+								)}
 								Create
 							</Button>
 						</form>

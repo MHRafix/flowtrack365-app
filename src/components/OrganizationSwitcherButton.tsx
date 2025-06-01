@@ -16,8 +16,9 @@ import { StorageUtil } from '@/lib/storage.util';
 import { userAtom } from '@/store/auth.atom';
 import { IOrganization } from '@/types/organizationType';
 import { Separator } from '@radix-ui/react-separator';
+import { Link } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
-import { ChevronsDown, CircleCheckBig } from 'lucide-react';
+import { ChevronRight, ChevronsDown, CircleCheckBig } from 'lucide-react';
 
 type Status = {
 	value: string;
@@ -117,6 +118,15 @@ export const OrganizationSwitcherDropdownBtn: React.FC<{
 										{org?.name}
 									</CommandItem>
 								))}
+
+								<Link to='/organizations'>
+									<CommandItem>
+										<p className='w-full flex font-medium text-teal-500 justify-between items-center cursor-pointer'>
+											Organization List{' '}
+											<ChevronRight className='text-teal-500' />
+										</p>
+									</CommandItem>
+								</Link>
 							</CommandGroup>
 						</CommandList>
 					</Command>

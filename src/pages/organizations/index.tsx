@@ -46,10 +46,10 @@ function RouteComponent() {
 		<div className='flex h-screen items-center justify-center bg-white dark:bg-slate-900 my-5'>
 			<div className='lg:w-8/12 '>
 				<h2 className='text-2xl font-semibold my-5'>Select Organizations</h2>
-				<div className='w-full bg-neutral-50 dark:bg-slate-800 p-6 rounded-sm'>
+				<div className='w-full bg-slate-100 dark:bg-slate-800 p-6 rounded-sm'>
 					<div className='w-full grid grid-cols-4 gap-5'>
 						<Link to='/organizations/create-organization'>
-							<div className='h-[180px] cursor-pointer dark:bg-slate-900 bg-slate-200 hover:bg-slate-100 hover:dark:bg-slate-900 hover:duration-500 rounded-md flex justify-center items-center'>
+							<div className='h-[180px] cursor-pointer dark:bg-slate-900 bg-slate-200 hover:bg-slate-200 hover:dark:bg-slate-900 hover:duration-500 rounded-md flex justify-center items-center'>
 								<Plus size={40} />
 							</div>
 						</Link>
@@ -72,7 +72,7 @@ function RouteComponent() {
 											params={{ orgId: organization?.orgUID }}
 										>
 											<div
-												className='h-[180px] cursor-pointer dark:bg-neutral-900 bg-neutral-200 hover:dark:bg-neutral-900 hover:bg-neutral-300 hover:duration-300 rounded-md px-2 py-4'
+												className='h-[180px] cursor-pointer dark:bg-slate-800 bg-slate-100 hover:dark:bg-slate-900 hover:bg-slate-200 hover:duration-300 rounded-md px-2 py-4 border'
 												onClick={() => {
 													localStorage.setItem('orgUID', organization?.orgUID);
 													// jotaiStore.set(userAtom, (draft) => {

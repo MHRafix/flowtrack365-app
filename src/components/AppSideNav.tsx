@@ -16,6 +16,8 @@ import {
 	ChartNetwork,
 	ChevronDown,
 	ChevronRight,
+	Grid,
+	Grid2X2X,
 	Headphones,
 	HomeIcon,
 	SquareStack,
@@ -32,6 +34,23 @@ const items = [
 		title: 'Task Management',
 		url: `/organizations/${organizationUID}/task-management`,
 		icon: ChartNetwork,
+	},
+	{
+		title: 'Inventory Management',
+		url: `/organizations/${organizationUID}/inventory-management/products`,
+		icon: Grid,
+		items: [
+			{
+				title: 'All Products',
+				url: `/organizations/${organizationUID}/inventory-management/products`,
+				icon: Grid,
+			},
+			{
+				title: 'Product Categories',
+				url: `/organizations/${organizationUID}/inventory-management/product-categories`,
+				icon: Grid2X2X,
+			},
+		],
 	},
 	{
 		title: 'Expense Management',

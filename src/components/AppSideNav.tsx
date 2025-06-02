@@ -1,6 +1,7 @@
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarHeader,
@@ -9,7 +10,9 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar';
-import { Link } from '@tanstack/react-router';
+import { StorageUtil } from '@/lib/storage.util';
+import { fetchME } from '@/store/auth.atom';
+import { Link, useRouter } from '@tanstack/react-router';
 import {
 	BanknoteArrowDown,
 	Blocks,
@@ -20,9 +23,21 @@ import {
 	Grid2X2X,
 	Headphones,
 	HomeIcon,
+	LogOutIcon,
 	SquareStack,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useAppConfirm } from './AppConfirm';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Button } from './ui/button';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 const organizationUID = localStorage.getItem('orgUID');
 const items = [
 	{
@@ -82,6 +97,8 @@ const items = [
 ];
 
 const AppSidenav = () => {
+	const appConfirmHandle = useAppConfirm();
+	const router = useRouter();
 	const { state } = useSidebar();
 	const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>(
 		{}
@@ -162,7 +179,39 @@ const AppSidenav = () => {
 				</SidebarGroup>
 			</SidebarContent>
 
-			{/* <SidebarFooter>Footer content</SidebarFooter> */}
+			<SidebarFooter>
+				<Button
+					variant={'ghost'}
+					onClick={() => {
+						appConfirmHandle.show({
+							title: 'Logout',
+							onConfirm: async () => {
+								StorageUtil.removeItem('token');
+								StorageUtil.removeItem('orgUID');
+								await fetchME();
+								router.invalidate();
+							},
+						});
+					}}
+				>
+					<LogOutIcon />
+					Logout
+				</Button>
+				<DropdownMenu>
+					<DropdownMenuTrigger>
+						<Avatar>
+							<AvatarImage src='https://github.com/shadcn.png' />
+							<AvatarFallback>MH</AvatarFallback>
+						</Avatar>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent>
+						<DropdownMenuLabel>My Account</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem>Settings</DropdownMenuItem>
+						<DropdownMenuItem>Logout</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</SidebarFooter>
 		</Sidebar>
 	);
 };

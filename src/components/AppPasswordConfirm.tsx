@@ -54,7 +54,7 @@ const PasswordConfirmForm = ({ onDone }: { onDone?: () => void }) => {
 		},
 	});
 
-	const handleSubmit = (data: any) => {
+	const handleSubmit = () => {
 		// passwordVerifyMutation.mutate(data.password);
 		// toast.promise(passwordVerifyMutation.mutateAsync(data.password), {
 		// 	loading: 'Verifying password...',

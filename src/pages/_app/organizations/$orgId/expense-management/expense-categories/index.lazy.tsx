@@ -40,7 +40,12 @@ function RouteComponent() {
 			}>({
 				query: All_Expense_Categories_List_Query,
 				variables: {
-					orgUID: session?.orgUID,
+					orgUid: session?.orgUID,
+					input: {
+						limit: 1000,
+						page: 1,
+					},
+					// "input": null
 				},
 			}),
 	});

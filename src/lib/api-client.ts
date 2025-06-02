@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { StorageUtil } from './storage.util';
 
 export const gqlRequest = async <T>(payload: {
@@ -13,7 +12,7 @@ export const gqlRequest = async <T>(payload: {
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json',
-				Authorization: `Bearer ${StorageUtil.getItem('accessToken')}`,
+				Authorization: `Bearer ${StorageUtil.getItem('token')}`,
 			},
 			body: JSON.stringify({
 				query: payload.query,
@@ -37,11 +36,11 @@ export const gqlRequest = async <T>(payload: {
 
 export const gql = String.raw;
 
-export const identityApi = axios.create({
-	baseURL: import.meta.env.VITE_APP_IDENTITY_API_URL,
-	headers: {
-		'Content-Type': 'application/json',
-		Accept: 'application/json',
-		Authorization: `Bearer ${StorageUtil.getItem('accessToken')}`,
-	},
-});
+// export const identityApi = axios.create({
+// 	baseURL: import.meta.env.VITE_APP_IDENTITY_API_URL,
+// 	headers: {
+// 		'Content-Type': 'application/json',
+// 		Accept: 'application/json',
+// 		Authorization: `Bearer ${StorageUtil.getItem('token')}`,
+// 	},
+// });

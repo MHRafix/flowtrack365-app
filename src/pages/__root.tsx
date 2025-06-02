@@ -8,7 +8,7 @@ interface IRouteContext {
 }
 
 export const Route = createRootRouteWithContext<IRouteContext>()({
-	beforeLoad: async (ctx) => {
+	beforeLoad: async () => {
 		await fetchME();
 		return { auth: jotaiStore.get(userAtom) };
 	},

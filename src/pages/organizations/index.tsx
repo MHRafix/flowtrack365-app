@@ -44,7 +44,7 @@ function RouteComponent() {
 	});
 	return (
 		<div className='flex sm:h-screen items-center justify-center bg-white dark:bg-slate-900 my-5'>
-			<div className='lg:w-8/12 '>
+			<div className='lg:w-8/12'>
 				<h2 className='text-2xl font-semibold my-5'>Select Organizations</h2>
 				<div className='w-full bg-slate-100 dark:bg-slate-800 p-6 rounded-sm'>
 					<div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 items-stretch'>

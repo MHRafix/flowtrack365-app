@@ -19,11 +19,14 @@ import {
 	ChartNetwork,
 	ChevronDown,
 	ChevronRight,
-	Grid,
-	Grid2X2X,
+	HandCoins,
 	Headphones,
 	HomeIcon,
+	LayoutGrid,
+	LayoutList,
+	ListTodo,
 	LogOutIcon,
+	ShoppingCart,
 	SquareStack,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -53,38 +56,43 @@ const items = [
 	{
 		title: 'Inventory Management',
 		url: `/organizations/${organizationUID}/inventory-management/products`,
-		icon: Grid,
+		icon: ListTodo,
 		items: [
 			{
 				title: 'All Products',
 				url: `/organizations/${organizationUID}/inventory-management/products`,
-				icon: Grid,
+				icon: LayoutList,
 			},
 			{
 				title: 'Product Categories',
-				url: `/organizations/${organizationUID}/inventory-management/product-categories`,
-				icon: Grid2X2X,
+				url: `/organizations/${organizationUID}/inventory-management/products-categories`,
+				icon: LayoutGrid,
 			},
 		],
 	},
 	{
 		title: 'All Orders',
 		url: `/organizations/${organizationUID}/orders-management/all-orders`,
-		icon: Grid,
+		icon: ShoppingCart,
 	},
 	{
-		title: 'Expense Management',
-		url: `/organizations/${organizationUID}/expense-management/all-expenses`,
+		title: 'Account Management',
+		url: `/organizations/${organizationUID}/accounts-management/all-expenses`,
 		icon: BanknoteArrowDown,
 		items: [
 			{
+				title: 'Account Savings',
+				url: `/organizations/${organizationUID}/accounts-management/account-savings`,
+				icon: HandCoins,
+			},
+			{
 				title: 'All Expenses',
-				url: `/organizations/${organizationUID}/expense-management/all-expenses`,
+				url: `/organizations/${organizationUID}/accounts-management/all-expenses`,
 				icon: Blocks,
 			},
 			{
 				title: 'Expense Categories',
-				url: `/organizations/${organizationUID}/expense-management/expense-categories`,
+				url: `/organizations/${organizationUID}/accounts-management/expense-categories`,
 				icon: SquareStack,
 			},
 		],

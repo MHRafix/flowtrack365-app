@@ -16,7 +16,7 @@ const DrawerWrapper: FC<DrawerWrapperPropsType> = ({
 	return (
 		<Drawer open={isOpen} direction='right' onClose={() => onCloseDrawer()}>
 			<DrawerContent>
-				<div className='mx-auto w-full max-w-sm'>
+				<div className='mx-auto w-full max-w-lg'>
 					<DrawerHeader>
 						<DrawerTitle>{title}</DrawerTitle>
 					</DrawerHeader>

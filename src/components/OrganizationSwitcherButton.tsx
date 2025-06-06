@@ -16,7 +16,7 @@ import { StorageUtil } from '@/lib/storage.util';
 import { userAtom } from '@/store/auth.atom';
 import { IOrganization } from '@/types/organizationType';
 import { Separator } from '@radix-ui/react-separator';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
 import { ChevronRight, ChevronsDown, CircleCheckBig } from 'lucide-react';
 
@@ -25,7 +25,7 @@ export const OrganizationSwitcherDropdownBtn: React.FC<{
 }> = ({ organizations }) => {
 	const [session] = useAtom(userAtom);
 	const [open, setOpen] = React.useState(false);
-
+	const navigate = useNavigate();
 	return (
 		<div className='flex items-center'>
 			<Popover open={open} onOpenChange={setOpen}>
@@ -71,8 +71,15 @@ export const OrganizationSwitcherDropdownBtn: React.FC<{
 													(priority) => priority._id === value
 												)?.orgUID!
 											);
-											window.location.reload();
-
+											navigate({
+												to: '/organizations/$orgId',
+												params: {
+													orgId: org?.orgUID,
+												},
+											});
+											setTimeout(() => {
+												window.location.reload();
+											}, 500);
 											setOpen(false);
 										}}
 										disabled={session?.orgUID === org?.orgUID}

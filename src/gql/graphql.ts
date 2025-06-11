@@ -620,6 +620,15 @@ export type Product = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type ProductCategoriesListQueryDto = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<SortType>;
+  sortBy?: InputMaybe<Scalars['String']['input']>;
+  where?: InputMaybe<Array<CommonMatchInput>>;
+  whereOperator?: InputMaybe<Where_Operator>;
+};
+
 export type ProductCategory = {
   __typename?: 'ProductCategory';
   _id?: Maybe<Scalars['ID']['output']>;
@@ -628,6 +637,12 @@ export type ProductCategory = {
   name: Scalars['String']['output'];
   orgUID: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type ProductCategoryPagination = {
+  __typename?: 'ProductCategoryPagination';
+  meta?: Maybe<PaginationMeta>;
+  nodes?: Maybe<Array<ProductCategory>>;
 };
 
 export type ProductListQueryDto = {
@@ -662,7 +677,7 @@ export type Query = {
   organization: Organization;
   organizations: OrganizationWithPagination;
   product: Product;
-  productCategories: Array<ProductCategory>;
+  productCategories: ProductCategoryPagination;
   productCategory: ProductCategory;
   products: ProductPagination;
   saving: Saving;
@@ -740,6 +755,12 @@ export type QueryOrganizationsArgs = {
 
 export type QueryProductArgs = {
   _id: Scalars['String']['input'];
+};
+
+
+export type QueryProductCategoriesArgs = {
+  input?: InputMaybe<ProductCategoriesListQueryDto>;
+  orgUID: Scalars['String']['input'];
 };
 
 

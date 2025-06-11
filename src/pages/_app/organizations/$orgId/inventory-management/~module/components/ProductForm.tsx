@@ -95,7 +95,6 @@ export const ProductForm: FC<ProductFormPropsType> = ({
 
 	return (
 		<Form {...form}>
-			{JSON.stringify(form?.formState?.errors, null, 2)}
 			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
 				<FormField
 					control={form.control}

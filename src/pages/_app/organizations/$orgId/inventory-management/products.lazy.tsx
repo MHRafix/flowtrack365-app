@@ -8,8 +8,9 @@ import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
-import { PenSquare, Plus, Trash } from 'lucide-react';
+import { Loader2, PenSquare, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
+import { productApi } from './~module/api/productApi';
 import { ProductForm } from './~module/components/ProductForm';
 import { productsTableColumns } from './~module/components/products-table-cols';
 import { All_Products_Query } from './~module/gql-query/query.gql';
@@ -47,6 +48,8 @@ function RouteComponent() {
 				},
 			}),
 	});
+
+	const { removeProduct } = productApi(() => refetch());
 
 	return (
 		<div>
@@ -86,20 +89,20 @@ function RouteComponent() {
 							onClick={() => {
 								setRowId(row?._id!);
 								show({
-									title: 'Are you sure to remove expense ?',
+									title: 'Are you sure to remove product ?',
 									children: (
 										<span>Please proceed to complete this action.</span>
 									),
 									onConfirm() {
-										// removeExpense.mutate(row?._id);
+										removeProduct.mutate(row?._id!);
 									},
 								});
 							}}
-							// disabled={removeExpense?.isPending}
+							disabled={removeProduct?.isPending}
 						>
-							{/* {removeExpense?.isPending && row?._id === rowId && (
+							{removeProduct?.isPending && row?._id === rowId && (
 								<Loader2 className='animate-spin' />
-							)} */}
+							)}
 							<Trash /> Remove
 						</Button>
 					</div>

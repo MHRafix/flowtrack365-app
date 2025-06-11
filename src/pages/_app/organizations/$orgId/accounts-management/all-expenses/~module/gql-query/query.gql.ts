@@ -63,8 +63,11 @@ export const Remove_Expense_Mutation = gql`
 `;
 
 export const All_Expense_Categories_For_DropDown_List_Query = gql`
-	query AllExpenseCategories($input: ExpenseCategoryListQueryDto) {
-		expenseCategories(input: $input) {
+	query ExpenseCategories(
+		$orgUid: String!
+		$input: ExpenseCategoryListQueryDto
+	) {
+		expenseCategories(orgUID: $orgUid, input: $input) {
 			nodes {
 				_id
 				title

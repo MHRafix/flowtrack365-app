@@ -33,7 +33,7 @@ function RouteComponent() {
 	const { show } = useAppConfirm();
 
 	const { data, refetch } = useQuery({
-		queryKey: ['all-expenses-category-for-dropdown'],
+		queryKey: ['all-expenses-category'],
 		queryFn: async () =>
 			await gqlRequest<{
 				expenseCategories: IExpenseCategoryListWithPagination | null;
@@ -45,7 +45,6 @@ function RouteComponent() {
 						limit: 1000,
 						page: 1,
 					},
-					// "input": null
 				},
 			}),
 	});

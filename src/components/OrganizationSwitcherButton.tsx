@@ -53,7 +53,7 @@ export const OrganizationSwitcherDropdownBtn: React.FC<{
 						<ChevronsDown className='text-teal-500' />
 					</div>
 				</PopoverTrigger>
-				<PopoverContent className='p-0' side='right' align='start'>
+				<PopoverContent className='p-0' side='bottom'>
 					<p className='mx-3 mt-2'>Your organizations</p>
 					<Separator />
 					<Command>

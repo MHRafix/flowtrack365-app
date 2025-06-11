@@ -54,13 +54,13 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 				expenseCategories: IExpenseCategoryListWithPagination | null;
 			}>({
 				query: All_Expense_Categories_For_DropDown_List_Query,
-				// variables: {
-				// 	input: {
-				// 		key: 'email',
-				// 		operator: 'eq',
-				// 		value: decoded?.email,
-				// 	},
-				// },
+				variables: {
+					orgUid: session?.orgUID,
+					input: {
+						limit: 1000,
+						page: 1,
+					},
+				},
 			}),
 	});
 

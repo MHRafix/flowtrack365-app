@@ -187,7 +187,9 @@ const AppSidenav = () => {
 														<SidebarMenuItem
 															key={subItem.title}
 															className={
-																isSubActive ? '!bg-primary !rounded-md' : ''
+																isSubActive
+																	? '!bg-primary !rounded-md my-1'
+																	: ''
 															}
 														>
 															<SidebarMenuButton asChild>

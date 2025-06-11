@@ -95,6 +95,7 @@ export const ProductForm: FC<ProductFormPropsType> = ({
 
 	return (
 		<Form {...form}>
+			{JSON.stringify(form?.formState?.errors, null, 2)}
 			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
 				<FormField
 					control={form.control}
@@ -199,6 +200,20 @@ export const ProductForm: FC<ProductFormPropsType> = ({
 						</FormItem>
 					)}
 				/>
+				<FormField
+					control={form.control}
+					name='stock'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Stock Quantity</FormLabel>
+							<FormControl>
+								<Input type='number' placeholder='Stock quantity' {...field} />
+							</FormControl>
+
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
 				{/* <FormField
 						control={form.control}
@@ -233,7 +248,6 @@ const Product_Form_Schema = Yup.object({
 	code: Yup.string().required().label('Code'),
 	model: Yup.string().required().label('Model'),
 	category: Yup.string().required().label('Category'),
-	brand: Yup.string().required().label('Brand'),
 	regularPrice: Yup.number().required().label('Regular Price'),
 	discountAmount: Yup.number().required().label('Discount Amount'),
 	stock: Yup.number().required().label('Stock'),

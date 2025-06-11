@@ -12,7 +12,7 @@ export const productApi = (onSuccess?: CallableFunction) => {
 			await gqlRequest({
 				query: Create_Product_Mutation,
 				variables: {
-					input: payload,
+					payload,
 				},
 			}),
 

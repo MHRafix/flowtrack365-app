@@ -119,6 +119,9 @@ const AppSidenav = () => {
 		}));
 	};
 
+	// Add inside AppSidenav before return
+	const pathname = router.state.location.pathname;
+
 	return (
 		<Sidebar collapsible='icon'>
 			<SidebarHeader>
@@ -136,10 +139,21 @@ const AppSidenav = () => {
 							{items.map((item) => {
 								const hasChildren = !!item.items?.length;
 								const isExpanded = expandedItems[item.title];
+								const hasActiveChild =
+									item.items && item.items.some((sub) => pathname === sub.url);
+								const shouldExpand = isExpanded || hasActiveChild;
+
+								// Check if current item or any subitem is active
+								const isActive =
+									pathname === item.url ||
+									(item.items &&
+										item.items.some((sub) => pathname === sub.url));
 
 								return (
 									<div key={item.title}>
-										<SidebarMenuItem>
+										<SidebarMenuItem
+											className={isActive ? '!bg-primary !rounded-md' : ''}
+										>
 											<SidebarMenuButton
 												asChild={!hasChildren}
 												onClick={() => hasChildren && toggleItem(item.title)}
@@ -150,7 +164,7 @@ const AppSidenav = () => {
 														<span className='flex-1 text-left'>
 															{item.title}
 														</span>
-														{isExpanded ? (
+														{shouldExpand ? (
 															<ChevronDown size={16} />
 														) : (
 															<ChevronRight size={16} />
@@ -165,18 +179,26 @@ const AppSidenav = () => {
 											</SidebarMenuButton>
 										</SidebarMenuItem>
 
-										{hasChildren && isExpanded && (
+										{hasChildren && shouldExpand && (
 											<div className='pl-6'>
-												{item?.items?.map((subItem) => (
-													<SidebarMenuItem key={subItem.title}>
-														<SidebarMenuButton asChild>
-															<Link to={subItem.url}>
-																<subItem.icon size={20} className='!mr-2' />
-																<span>{subItem.title}</span>
-															</Link>
-														</SidebarMenuButton>
-													</SidebarMenuItem>
-												))}
+												{item?.items?.map((subItem) => {
+													const isSubActive = pathname === subItem.url;
+													return (
+														<SidebarMenuItem
+															key={subItem.title}
+															className={
+																isSubActive ? '!bg-primary !rounded-md' : ''
+															}
+														>
+															<SidebarMenuButton asChild>
+																<Link to={subItem.url}>
+																	<subItem.icon size={20} className='!mr-2' />
+																	<span>{subItem.title}</span>
+																</Link>
+															</SidebarMenuButton>
+														</SidebarMenuItem>
+													);
+												})}
 											</div>
 										)}
 									</div>
@@ -225,3 +247,65 @@ const AppSidenav = () => {
 };
 
 export default AppSidenav;
+{
+	/* <SidebarMenu>
+	{items.map((item) => {
+		const hasChildren = !!item.items?.length;
+		const isExpanded = expandedItems[item.title];
+
+		// Check if current item or any subitem is active
+		const isActive =
+			pathname === item.url ||
+			(item.items && item.items.some((sub) => pathname === sub.url));
+
+		return (
+			<div key={item.title}>
+				<SidebarMenuItem className={isActive ? 'bg-muted text-primary' : ''}>
+					<SidebarMenuButton
+						asChild={!hasChildren}
+						onClick={() => hasChildren && toggleItem(item.title)}
+					>
+						{hasChildren ? (
+							<button className='flex items-center w-full'>
+								<item.icon size={20} className='!mr-2' />
+								<span className='flex-1 text-left'>{item.title}</span>
+								{isExpanded ? (
+									<ChevronDown size={16} />
+								) : (
+									<ChevronRight size={16} />
+								)}
+							</button>
+						) : (
+							<Link to={item.url}>
+								<item.icon size={20} className='!mr-2' />
+								<span>{item.title}</span>
+							</Link>
+						)}
+					</SidebarMenuButton>
+				</SidebarMenuItem>
+
+				{hasChildren && isExpanded && (
+					<div className='pl-6'>
+						{item?.items?.map((subItem) => {
+							const isSubActive = pathname === subItem.url;
+							return (
+								<SidebarMenuItem
+									key={subItem.title}
+									className={isSubActive ? 'bg-muted text-primary' : ''}
+								>
+									<SidebarMenuButton asChild>
+										<Link to={subItem.url}>
+											<subItem.icon size={20} className='!mr-2' />
+											<span>{subItem.title}</span>
+										</Link>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+							);
+						})}
+					</div>
+				)}
+			</div>
+		);
+	})}
+</SidebarMenu>; */
+}

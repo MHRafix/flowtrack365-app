@@ -16,7 +16,11 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Product, ProductCategory } from '@/gql/graphql';
+import {
+	Product,
+	ProductCategory,
+	ProductCategoryPagination,
+} from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -44,19 +48,15 @@ export const ProductForm: FC<ProductFormPropsType> = ({
 	const [session] = useAtom(userAtom);
 
 	const { data: productCategories } = useQuery({
-		queryKey: ['all-product-category-for-dropdown'],
+		queryKey: ['all-product-category-for-dropdown-ghgh'],
 		queryFn: async () =>
 			await gqlRequest<{
-				productCategories: ProductCategory[] | null;
+				productCategories: ProductCategoryPagination;
 			}>({
 				query: All_Product_Categories_For_DropDown_List_Query,
-				// variables: {
-				// 	input: {
-				// 		key: 'email',
-				// 		operator: 'eq',
-				// 		value: decoded?.email,
-				// 	},
-				// },
+				variables: {
+					orgUid: session?.orgUID,
+				},
 			}),
 	});
 
@@ -126,7 +126,7 @@ export const ProductForm: FC<ProductFormPropsType> = ({
 									</SelectTrigger>
 									<SelectContent>
 										<SelectGroup>
-											{productCategories?.productCategories?.map(
+											{productCategories?.productCategories?.nodes?.map(
 												(productCategory: ProductCategory, idx: number) => (
 													<SelectItem value={productCategory?._id!} key={idx}>
 														{productCategory?.name}

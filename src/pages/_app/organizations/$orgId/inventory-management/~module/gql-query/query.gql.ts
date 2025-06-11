@@ -52,10 +52,15 @@ export const Remove_Product_Mutation = gql`
 `;
 
 export const All_Product_Categories_For_DropDown_List_Query = gql`
-	query ProductCategories {
-		productCategories {
-			_id
-			name
+	query ProductCategories(
+		$orgUid: String!
+		$input: ProductCategoriesListQueryDto
+	) {
+		productCategories(orgUID: $orgUid, input: $input) {
+			nodes {
+				_id
+				name
+			}
 		}
 	}
 `;

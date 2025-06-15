@@ -1,24 +1,24 @@
-import { Saving } from '@/gql/graphql';
+import { BankAccount } from '@/gql/graphql';
 import { formatDate } from '@/lib/formater.utils';
 import { ColumnDef } from '@tanstack/react-table';
 
-export const bankTableColumns: ColumnDef<Saving>[] = [
+export const bankTableColumns: ColumnDef<BankAccount>[] = [
 	{
-		accessorKey: 'title',
+		accessorKey: 'bankName',
 		header: 'Bank Name',
 	},
 	{
 		accessorKey: 'balance',
 		header: 'Balance',
 		cell: ({ row }) => {
-			return <span>{row.original?.amount || 0.0} BDT</span>;
+			return <span>{row.original?.balance || 0.0} BDT</span>;
 		},
 	},
 	{
 		accessorKey: 'branch',
 		header: 'Branch Name',
 		cell: ({ row }) => {
-			return <span>{row.original?.description || 'N/A'}</span>;
+			return <span>{row.original?.bankName || 'N/A'}</span>;
 		},
 	},
 	{

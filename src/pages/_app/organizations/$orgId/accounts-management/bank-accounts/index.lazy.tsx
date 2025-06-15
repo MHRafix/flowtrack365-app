@@ -1,7 +1,7 @@
 import { useAppConfirm } from '@/components/AppConfirm';
 import { DataTable } from '@/components/DataTable';
 import { Button } from '@/components/ui/button';
-import { Saving, SavingPagination } from '@/gql/graphql';
+import { BankAccount, BankAccountPagination } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
@@ -10,7 +10,7 @@ import { useAtom } from 'jotai';
 import { PenSquare, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { bankTableColumns } from './~module/components/accounts-table-cols';
-import { Savings_Query } from './~module/gql-query/query.gql';
+import { Bank_Accounts_Query } from './~module/gql-query/query.gql';
 
 export const Route = createLazyFileRoute(
 	'/_app/organizations/$orgId/accounts-management/bank-accounts/'
@@ -21,7 +21,7 @@ export const Route = createLazyFileRoute(
 function RouteComponent() {
 	const [isOpenCreateDrawer, setOpenCreateDrawer] = useState<boolean>(false);
 	const [isOpenEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
-	const [saving, setSaving] = useState<Saving | null>(null);
+	const [bankAccount, setBankAccount] = useState<BankAccount | null>(null);
 	const [rowId, setRowId] = useState<string>('');
 
 	const { show } = useAppConfirm();
@@ -29,13 +29,13 @@ function RouteComponent() {
 	const [session] = useAtom(userAtom);
 
 	// savings
-	const { data: savings, refetch } = useQuery({
-		queryKey: [`savings`],
+	const { data: bankAccounts, refetch } = useQuery({
+		queryKey: [`bank-accounts`],
 		queryFn: async () =>
 			await gqlRequest<{
-				savings: SavingPagination | null;
+				bankAccounts: BankAccountPagination | null;
 			}>({
-				query: Savings_Query,
+				query: Bank_Accounts_Query,
 				variables: {
 					input: {
 						page: 1,
@@ -56,7 +56,7 @@ function RouteComponent() {
 					variant={'outline'}
 					onClick={() => {
 						setOpenCreateDrawer(true);
-						setSaving(null);
+						setBankAccount(null);
 					}}
 				>
 					<Plus /> New Accounts
@@ -65,8 +65,8 @@ function RouteComponent() {
 			<DataTable
 				columns={bankTableColumns}
 				data={
-					savings?.savings?.nodes?.map((savings) => ({
-						...savings,
+					bankAccounts?.bankAccounts?.nodes?.map((bankAccount) => ({
+						...bankAccount,
 					})) || []
 				}
 				ActionCell={({ row }) => (
@@ -75,7 +75,7 @@ function RouteComponent() {
 							variant={'outline'}
 							onClick={() => {
 								setOpenEditDrawer(true);
-								setSaving(row);
+								setBankAccount(row);
 							}}
 						>
 							<PenSquare /> Edit

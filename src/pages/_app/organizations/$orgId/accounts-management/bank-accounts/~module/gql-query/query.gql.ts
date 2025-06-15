@@ -1,14 +1,13 @@
 import { gql } from '@/lib/api-client';
 
-export const Savings_Query = gql`
-	query Savings($orgUid: String!, $input: SavingListQueryDto) {
-		savings(orgUID: $orgUid, input: $input) {
+export const Bank_Accounts_Query = gql`
+	query BankAccounts($orgUid: String!, $input: BankAccountListQueryDto) {
+		bankAccounts(orgUID: $orgUid, input: $input) {
 			nodes {
 				_id
-				title
-				amount
+				bankName
+				balance
 				orgUID
-				description
 				createdAt
 				updatedAt
 			}

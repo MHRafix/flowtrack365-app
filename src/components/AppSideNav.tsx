@@ -26,6 +26,7 @@ import {
 	LayoutList,
 	ListTodo,
 	LogOutIcon,
+	Plus,
 	ShoppingCart,
 	SquareStack,
 } from 'lucide-react';
@@ -77,22 +78,34 @@ const items = [
 	},
 	{
 		title: 'Account Management',
-		url: `/organizations/${organizationUID}/accounts-management/all-expenses`,
+		url: `/organizations/${organizationUID}/accounts-management/bank-accounts`,
 		icon: BanknoteArrowDown,
 		items: [
 			{
-				title: 'Account Savings',
-				url: `/organizations/${organizationUID}/accounts-management/account-savings`,
+				title: 'Bank Accounts',
+				url: `/organizations/${organizationUID}/accounts-management/bank-accounts`,
 				icon: HandCoins,
 			},
 			{
+				title: 'Adjustments',
+				url: `/organizations/${organizationUID}/accounts-management/adjustments`,
+				icon: Plus,
+			},
+		],
+	},
+	{
+		title: 'Account Management',
+		url: `/organizations/${organizationUID}/expense-management/all-expenses`,
+		icon: BanknoteArrowDown,
+		items: [
+			{
 				title: 'All Expenses',
-				url: `/organizations/${organizationUID}/accounts-management/all-expenses`,
+				url: `/organizations/${organizationUID}/expense-management/all-expenses`,
 				icon: Blocks,
 			},
 			{
 				title: 'Expense Categories',
-				url: `/organizations/${organizationUID}/accounts-management/expense-categories`,
+				url: `/organizations/${organizationUID}/expense-management/expense-categories`,
 				icon: SquareStack,
 			},
 		],

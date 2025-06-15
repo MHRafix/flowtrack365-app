@@ -17,7 +17,7 @@ import { ExpenseForm } from './~module/components/ExpenseForm';
 import { All_Expense_List_Query } from './~module/gql-query/query.gql';
 
 export const Route = createLazyFileRoute(
-	'/_app/organizations/$orgId/accounts-management/all-expenses/'
+	'/_app/organizations/$orgId/expense-management/all-expenses/'
 )({
 	component: RouteComponent,
 });

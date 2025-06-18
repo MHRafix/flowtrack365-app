@@ -22,6 +22,7 @@ import {
 	HandCoins,
 	Headphones,
 	HomeIcon,
+	Landmark,
 	LayoutGrid,
 	LayoutList,
 	ListTodo,
@@ -49,11 +50,7 @@ const items = [
 		url: `/organizations/${organizationUID}`,
 		icon: HomeIcon,
 	},
-	{
-		title: 'Task Management',
-		url: `/organizations/${organizationUID}/task-management`,
-		icon: ChartNetwork,
-	},
+
 	{
 		title: 'Inventory Management',
 		url: `/organizations/${organizationUID}/inventory-management/products`,
@@ -79,7 +76,7 @@ const items = [
 	{
 		title: 'Account Management',
 		url: `/organizations/${organizationUID}/accounts-management/bank-accounts`,
-		icon: BanknoteArrowDown,
+		icon: Landmark,
 		items: [
 			{
 				title: 'Bank Accounts',
@@ -93,8 +90,9 @@ const items = [
 			},
 		],
 	},
+
 	{
-		title: 'Account Management',
+		title: 'Expense Management',
 		url: `/organizations/${organizationUID}/expense-management/all-expenses`,
 		icon: BanknoteArrowDown,
 		items: [
@@ -109,6 +107,11 @@ const items = [
 				icon: SquareStack,
 			},
 		],
+	},
+	{
+		title: 'Task Management',
+		url: `/organizations/${organizationUID}/task-management`,
+		icon: ChartNetwork,
 	},
 	{
 		title: 'CRM Management',

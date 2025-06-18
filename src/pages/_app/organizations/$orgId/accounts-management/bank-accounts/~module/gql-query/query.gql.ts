@@ -6,6 +6,7 @@ export const Bank_Accounts_Query = gql`
 			nodes {
 				_id
 				bankName
+				branch
 				balance
 				orgUID
 				createdAt
@@ -17,6 +18,28 @@ export const Bank_Accounts_Query = gql`
 				hasNextPage
 				totalPages
 			}
+		}
+	}
+`;
+
+export const Create_Bank_Accounts_Mutation = gql`
+	mutation CreateBankAccount($payload: CreateBankAccountInput!) {
+		createBankAccount(payload: $payload)
+	}
+`;
+
+export const Update_Bank_Accounts_Mutation = gql`
+	mutation UpdateBankAccount($payload: UpdateBankAccountInput!) {
+		updateBankAccount(payload: $payload) {
+			_id
+		}
+	}
+`;
+
+export const Remove_Bank_Accounts_Mutation = gql`
+	mutation RemoveBankAccount($id: String!) {
+		removeBankAccount(_id: $id) {
+			_id
 		}
 	}
 `;

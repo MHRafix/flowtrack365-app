@@ -17,9 +17,6 @@ export const bankTableColumns: ColumnDef<BankAccount>[] = [
 	{
 		accessorKey: 'branch',
 		header: 'Branch Name',
-		cell: ({ row }) => {
-			return <span>{row.original?.bankName || 'N/A'}</span>;
-		},
 	},
 	{
 		accessorKey: 'createdAt',

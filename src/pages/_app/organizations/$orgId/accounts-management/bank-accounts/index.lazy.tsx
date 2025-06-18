@@ -1,5 +1,6 @@
 import { useAppConfirm } from '@/components/AppConfirm';
 import { DataTable } from '@/components/DataTable';
+import DrawerWrapper from '@/components/DrawerWrapper';
 import { Button } from '@/components/ui/button';
 import { BankAccount, BankAccountPagination } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
@@ -7,9 +8,11 @@ import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
-import { PenSquare, Plus, Trash } from 'lucide-react';
+import { Loader2, PenSquare, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
+import { bankAccountApi } from './~module/api/bankAccountApi';
 import { bankTableColumns } from './~module/components/accounts-table-cols';
+import { BankAccountForm } from './~module/components/BankAccountForm';
 import { Bank_Accounts_Query } from './~module/gql-query/query.gql';
 
 export const Route = createLazyFileRoute(
@@ -27,6 +30,8 @@ function RouteComponent() {
 	const { show } = useAppConfirm();
 
 	const [session] = useAtom(userAtom);
+
+	const { removeBankAccount } = bankAccountApi(() => refetch());
 
 	// savings
 	const { data: bankAccounts, refetch } = useQuery({
@@ -50,6 +55,26 @@ function RouteComponent() {
 
 	return (
 		<div>
+			<DrawerWrapper
+				title={'Create Account'}
+				isOpen={isOpenCreateDrawer}
+				onCloseDrawer={() => {
+					setOpenCreateDrawer(false);
+					setBankAccount(null);
+				}}
+			>
+				<BankAccountForm
+					actionType='ADD'
+					onRefetch={() => {
+						refetch();
+					}}
+					onCloseDrawer={() => {
+						setOpenCreateDrawer(false);
+						setBankAccount(null);
+					}}
+				/>
+			</DrawerWrapper>
+
 			<div className='flex justify-between items-center gap-5 mb-5'>
 				<h2 className='text-3xl font-bold'>Bank Accounts</h2>
 				<Button
@@ -91,20 +116,40 @@ function RouteComponent() {
 										<span>Please proceed to complete this action.</span>
 									),
 									onConfirm() {
-										// removeExpense.mutate(row?._id);
+										removeBankAccount.mutate(row?._id!);
 									},
 								});
 							}}
-							// disabled={removeExpense?.isPending}
+							disabled={removeBankAccount?.isPending}
 						>
-							{/* {removeExpense?.isPending && row?._id === rowId && ( */}
-							{/* <Loader2 className='animate-spin' /> */}
-							{/* )} */}
+							{removeBankAccount?.isPending && row?._id === rowId && (
+								<Loader2 className='animate-spin' />
+							)}
 							<Trash /> Remove
 						</Button>
 					</div>
 				)}
 			/>
+			<DrawerWrapper
+				title={'Edit Bank Account'}
+				isOpen={isOpenEditDrawer}
+				onCloseDrawer={() => {
+					setOpenEditDrawer(false);
+					setBankAccount(null);
+				}}
+			>
+				<BankAccountForm
+					account={bankAccount!}
+					actionType='EDIT'
+					onRefetch={() => {
+						refetch();
+					}}
+					onCloseDrawer={() => {
+						setOpenEditDrawer(false);
+						setBankAccount(null);
+					}}
+				/>
+			</DrawerWrapper>
 		</div>
 	);
 }

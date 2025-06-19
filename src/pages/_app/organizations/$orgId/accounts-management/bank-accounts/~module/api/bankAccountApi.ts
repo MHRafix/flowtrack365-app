@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { BankAccountFormStateType } from '../components/BankAccountForm';
 import {
+	Balance_Adjustment_Mutation,
 	Create_Bank_Accounts_Mutation,
 	Remove_Bank_Accounts_Mutation,
 	Update_Bank_Accounts_Mutation,
@@ -21,6 +22,20 @@ export const bankAccountApi = (onSuccess?: CallableFunction) => {
 		},
 		onError: () => toast.error('Failed to create bank account'),
 	});
+
+	const balanceAdjustment = useMutation({
+		mutationFn: (payload: BalanceAdjustmentApiPayloadType) =>
+			gqlRequest({
+				query: Balance_Adjustment_Mutation,
+				variables: { payload },
+			}),
+		onSuccess: () => {
+			toast.success('Balance adjustment creation has been success');
+			onSuccess?.();
+		},
+		onError: () => toast.error('Failed to adjust balance'),
+	});
+
 	const updateBankAccount = useMutation({
 		mutationFn: (payload: BankAccountApiPayloadType) =>
 			gqlRequest({
@@ -56,13 +71,21 @@ export const bankAccountApi = (onSuccess?: CallableFunction) => {
 	});
 
 	return {
+		removeBankAccount,
+		balanceAdjustment,
 		createBankAccount,
 		updateBankAccount,
-		removeBankAccount,
 	};
 };
 
 interface BankAccountApiPayloadType extends BankAccountFormStateType {
 	_id?: string;
 	orgUID: string;
+}
+
+interface BalanceAdjustmentApiPayloadType {
+	account: string;
+	amount: number;
+	orgUID: string;
+	type: 'Deposit' | 'Withdraw';
 }

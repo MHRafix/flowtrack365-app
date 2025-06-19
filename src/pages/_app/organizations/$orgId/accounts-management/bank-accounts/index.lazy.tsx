@@ -27,6 +27,7 @@ import {
 import { useState } from 'react';
 import { bankAccountApi } from './~module/api/bankAccountApi';
 import { bankTableColumns } from './~module/components/accounts-table-cols';
+import { AdjustmentForm } from './~module/components/AdjustmentForm';
 import { BankAccountForm } from './~module/components/BankAccountForm';
 import { Bank_Accounts_Query } from './~module/gql-query/query.gql';
 
@@ -38,8 +39,14 @@ export const Route = createLazyFileRoute(
 
 function RouteComponent() {
 	const [isOpenCreateDrawer, setOpenCreateDrawer] = useState<boolean>(false);
+	const [isOpenAdjustmentDrawer, setOpenAdjustmentDrawer] =
+		useState<boolean>(false);
+	const [adjustmentType, setAdjustmentType] = useState<
+		'Deposit' | 'Withdraw'
+	>();
 	const [isOpenEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
 	const [bankAccount, setBankAccount] = useState<BankAccount | null>(null);
+	const [accountId, setAccountId] = useState<string | null>(null);
 	const [rowId, setRowId] = useState<string>('');
 
 	const { show } = useAppConfirm();
@@ -118,11 +125,25 @@ function RouteComponent() {
 								</Button>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent>
-								<DropdownMenuItem>
-									<BanknoteArrowUp /> Deposit
+								<DropdownMenuItem
+									onClick={() => {
+										setOpenAdjustmentDrawer(true);
+										setAccountId(row?._id!);
+										setAdjustmentType('Deposit');
+									}}
+								>
+									<BanknoteArrowDown />
+									Deposit
 								</DropdownMenuItem>
-								<DropdownMenuItem>
-									<BanknoteArrowDown /> Withdraw
+								<DropdownMenuItem
+									onClick={() => {
+										setOpenAdjustmentDrawer(true);
+										setAccountId(row?._id!);
+										setAdjustmentType('Withdraw');
+									}}
+								>
+									<BanknoteArrowUp />
+									Withdraw
 								</DropdownMenuItem>
 								<DropdownMenuItem>
 									<ChartNoAxesCombined /> Statements
@@ -204,6 +225,25 @@ function RouteComponent() {
 					onCloseDrawer={() => {
 						setOpenEditDrawer(false);
 						setBankAccount(null);
+					}}
+				/>
+			</DrawerWrapper>
+			<DrawerWrapper
+				title={`${adjustmentType} Balance`}
+				isOpen={isOpenAdjustmentDrawer}
+				onCloseDrawer={() => {
+					setOpenAdjustmentDrawer(false);
+				}}
+			>
+				<AdjustmentForm
+					adjustmentType={adjustmentType!}
+					account={accountId!}
+					onRefetch={() => {
+						refetch();
+					}}
+					onCloseDrawer={() => {
+						setOpenAdjustmentDrawer(false);
+						setAccountId(null);
 					}}
 				/>
 			</DrawerWrapper>

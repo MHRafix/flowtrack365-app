@@ -12,7 +12,7 @@ import { BankAccount, BankAccountPagination } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
 import {
 	BanknoteArrowDown,
@@ -145,9 +145,17 @@ function RouteComponent() {
 									<BanknoteArrowUp />
 									Withdraw
 								</DropdownMenuItem>
-								<DropdownMenuItem>
-									<ChartNoAxesCombined /> Statements
-								</DropdownMenuItem>
+								<Link
+									to='/organizations/$orgId/accounts-management/statements/$accountId'
+									params={{
+										orgId: session?.orgUID as string,
+										accountId: row?._id as string,
+									}}
+								>
+									<DropdownMenuItem>
+										<ChartNoAxesCombined /> Statements
+									</DropdownMenuItem>
+								</Link>
 								<DropdownMenuItem
 									onClick={() => {
 										setOpenEditDrawer(true);

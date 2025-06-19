@@ -51,6 +51,10 @@ const AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyImport =
   createFileRoute(
     '/_app/organizations/$orgId/accounts-management/adjustments/',
   )()
+const AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyImport =
+  createFileRoute(
+    '/_app/organizations/$orgId/accounts-management/statements/$accountId',
+  )()
 
 // Create/Update Routes
 
@@ -191,6 +195,17 @@ const AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute =
     ).then((d) => d.Route),
   )
 
+const AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute =
+  AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyImport.update({
+    id: '/organizations/$orgId/accounts-management/statements/$accountId',
+    path: '/organizations/$orgId/accounts-management/statements/$accountId',
+    getParentRoute: () => AppRoute,
+  } as any).lazy(() =>
+    import(
+      './pages/_app/organizations/$orgId/accounts-management/statements/$accountId.lazy'
+    ).then((d) => d.Route),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -279,6 +294,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrganizationsOrgIdTaskManagementIndexImport
       parentRoute: typeof AppImport
     }
+    '/_app/organizations/$orgId/accounts-management/statements/$accountId': {
+      id: '/_app/organizations/$orgId/accounts-management/statements/$accountId'
+      path: '/organizations/$orgId/accounts-management/statements/$accountId'
+      fullPath: '/organizations/$orgId/accounts-management/statements/$accountId'
+      preLoaderRoute: typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/organizations/$orgId/accounts-management/adjustments/': {
       id: '/_app/organizations/$orgId/accounts-management/adjustments/'
       path: '/organizations/$orgId/accounts-management/adjustments'
@@ -319,6 +341,7 @@ interface AppRouteChildren {
   AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute: typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute
   AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute: typeof AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute
   AppOrganizationsOrgIdTaskManagementIndexRoute: typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute: typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
   AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute: typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
   AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute: typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute: typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -336,6 +359,8 @@ const AppRouteChildren: AppRouteChildren = {
     AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute,
   AppOrganizationsOrgIdTaskManagementIndexRoute:
     AppOrganizationsOrgIdTaskManagementIndexRoute,
+  AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute:
+    AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute,
   AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute:
     AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute,
   AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute:
@@ -361,6 +386,7 @@ export interface FileRoutesByFullPath {
   '/organizations/$orgId/inventory-management/products-categories': typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute
   '/organizations/$orgId/orders-management/all-orders': typeof AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  '/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
   '/organizations/$orgId/accounts-management/adjustments': typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
   '/organizations/$orgId/accounts-management/bank-accounts': typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   '/organizations/$orgId/expense-management/all-expenses': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -379,6 +405,7 @@ export interface FileRoutesByTo {
   '/organizations/$orgId/inventory-management/products-categories': typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute
   '/organizations/$orgId/orders-management/all-orders': typeof AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  '/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
   '/organizations/$orgId/accounts-management/adjustments': typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
   '/organizations/$orgId/accounts-management/bank-accounts': typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   '/organizations/$orgId/expense-management/all-expenses': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -399,6 +426,7 @@ export interface FileRoutesById {
   '/_app/organizations/$orgId/inventory-management/products-categories': typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute
   '/_app/organizations/$orgId/orders-management/all-orders': typeof AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute
   '/_app/organizations/$orgId/task-management/': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  '/_app/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
   '/_app/organizations/$orgId/accounts-management/adjustments/': typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
   '/_app/organizations/$orgId/accounts-management/bank-accounts/': typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   '/_app/organizations/$orgId/expense-management/all-expenses/': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -420,6 +448,7 @@ export interface FileRouteTypes {
     | '/organizations/$orgId/inventory-management/products-categories'
     | '/organizations/$orgId/orders-management/all-orders'
     | '/organizations/$orgId/task-management'
+    | '/organizations/$orgId/accounts-management/statements/$accountId'
     | '/organizations/$orgId/accounts-management/adjustments'
     | '/organizations/$orgId/accounts-management/bank-accounts'
     | '/organizations/$orgId/expense-management/all-expenses'
@@ -437,6 +466,7 @@ export interface FileRouteTypes {
     | '/organizations/$orgId/inventory-management/products-categories'
     | '/organizations/$orgId/orders-management/all-orders'
     | '/organizations/$orgId/task-management'
+    | '/organizations/$orgId/accounts-management/statements/$accountId'
     | '/organizations/$orgId/accounts-management/adjustments'
     | '/organizations/$orgId/accounts-management/bank-accounts'
     | '/organizations/$orgId/expense-management/all-expenses'
@@ -455,6 +485,7 @@ export interface FileRouteTypes {
     | '/_app/organizations/$orgId/inventory-management/products-categories'
     | '/_app/organizations/$orgId/orders-management/all-orders'
     | '/_app/organizations/$orgId/task-management/'
+    | '/_app/organizations/$orgId/accounts-management/statements/$accountId'
     | '/_app/organizations/$orgId/accounts-management/adjustments/'
     | '/_app/organizations/$orgId/accounts-management/bank-accounts/'
     | '/_app/organizations/$orgId/expense-management/all-expenses/'
@@ -507,6 +538,7 @@ export const routeTree = rootRoute
         "/_app/organizations/$orgId/inventory-management/products-categories",
         "/_app/organizations/$orgId/orders-management/all-orders",
         "/_app/organizations/$orgId/task-management/",
+        "/_app/organizations/$orgId/accounts-management/statements/$accountId",
         "/_app/organizations/$orgId/accounts-management/adjustments/",
         "/_app/organizations/$orgId/accounts-management/bank-accounts/",
         "/_app/organizations/$orgId/expense-management/all-expenses/",
@@ -550,6 +582,10 @@ export const routeTree = rootRoute
     },
     "/_app/organizations/$orgId/task-management/": {
       "filePath": "_app/organizations/$orgId/task-management/index.tsx",
+      "parent": "/_app"
+    },
+    "/_app/organizations/$orgId/accounts-management/statements/$accountId": {
+      "filePath": "_app/organizations/$orgId/accounts-management/statements/$accountId.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/organizations/$orgId/accounts-management/adjustments/": {

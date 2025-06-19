@@ -29,11 +29,27 @@ export type Adjustment = {
   _id?: Maybe<Scalars['ID']['output']>;
   account: BankAccount;
   amount: Scalars['Int']['output'];
+  balance?: Maybe<Scalars['Float']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   orgUID: Scalars['String']['output'];
   type: ActionType;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type AdjustmentListQueryDto = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<SortType>;
+  sortBy?: InputMaybe<Scalars['String']['input']>;
+  where?: InputMaybe<Array<CommonMatchInput>>;
+  whereOperator?: InputMaybe<Where_Operator>;
+};
+
+export type AdjustmentPagination = {
+  __typename?: 'AdjustmentPagination';
+  meta?: Maybe<PaginationMeta>;
+  nodes?: Maybe<Array<Adjustment>>;
 };
 
 export type AllOrder = {
@@ -135,6 +151,7 @@ export type CreateAdjustmentInput = {
   _id?: InputMaybe<Scalars['ID']['input']>;
   account: Scalars['String']['input'];
   amount: Scalars['Int']['input'];
+  balance?: InputMaybe<Scalars['Float']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   orgUID: Scalars['String']['input'];
@@ -770,7 +787,7 @@ export type Query = {
   Attendances: AttendancePagination;
   Employee: Employee;
   adjustment: Adjustment;
-  adjustments: Array<Adjustment>;
+  adjustments: AdjustmentPagination;
   allEmployeeIds: Array<Scalars['String']['output']>;
   allEmployees: EmployeePagination;
   allOrder: AllOrder;
@@ -813,6 +830,13 @@ export type QueryEmployeeArgs = {
 
 export type QueryAdjustmentArgs = {
   _id: Scalars['String']['input'];
+};
+
+
+export type QueryAdjustmentsArgs = {
+  account: Scalars['String']['input'];
+  input?: InputMaybe<AdjustmentListQueryDto>;
+  orgUID: Scalars['String']['input'];
 };
 
 
@@ -1083,6 +1107,7 @@ export type UpdateAdjustmentInput = {
   _id: Scalars['ID']['input'];
   account?: InputMaybe<Scalars['String']['input']>;
   amount?: InputMaybe<Scalars['Int']['input']>;
+  balance?: InputMaybe<Scalars['Float']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   orgUID?: InputMaybe<Scalars['String']['input']>;

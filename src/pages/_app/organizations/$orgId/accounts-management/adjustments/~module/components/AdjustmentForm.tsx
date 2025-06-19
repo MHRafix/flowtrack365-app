@@ -8,14 +8,26 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import { BankAccountPagination } from '@/gql/graphql';
+import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import { Loader2 } from 'lucide-react';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
-import { bankAccountApi } from '../api/bankAccountApi';
+import { bankAccountApi } from '../../../bank-accounts/~module/api/bankAccountApi';
+import { Bank_Accounts_For_Dropdown_Query } from '../../../bank-accounts/~module/gql-query/query.gql';
 
 interface BankAccountFormPropsType {
 	onRefetch: CallableFunction;
@@ -31,6 +43,25 @@ export const AdjustmentForm: FC<BankAccountFormPropsType> = ({
 }) => {
 	const [session] = useAtom(userAtom);
 
+	const { data } = useQuery({
+		queryKey: ['accounts-dropdown-list'],
+		queryFn: () =>
+			gqlRequest<{ bankAccounts: BankAccountPagination }>({
+				query: Bank_Accounts_For_Dropdown_Query,
+				variables: {
+					orgUid: session?.orgUID,
+					input: {
+						limit: 1000,
+						page: 1,
+					},
+				},
+			}),
+	});
+
+	useEffect(() => {
+		form.setValue('account', account!);
+	}, [account]);
+
 	const { balanceAdjustment } = bankAccountApi(() => {
 		onCloseDrawer();
 		onRefetch();
@@ -45,7 +76,6 @@ export const AdjustmentForm: FC<BankAccountFormPropsType> = ({
 	function onSubmit(values: AdjustmentFormStateType) {
 		balanceAdjustment.mutate({
 			...values,
-			account,
 			type: adjustmentType,
 			orgUID: session?.orgUID!,
 		});
@@ -53,6 +83,37 @@ export const AdjustmentForm: FC<BankAccountFormPropsType> = ({
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
+				<FormField
+					control={form.control}
+					name='account'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Account</FormLabel>
+							<FormControl>
+								<Select onValueChange={field.onChange}>
+									<SelectTrigger className='w-full'>
+										<SelectValue placeholder='Select a account' />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectGroup>
+											{data?.bankAccounts?.nodes?.map((accountData, idx) => (
+												<SelectItem value={account!} key={idx}>
+													<p className='font-medium'>{accountData?.bankName}</p>
+													<p className='text-sm text-teal-400'>
+														[{accountData?.reference}]
+													</p>
+												</SelectItem>
+											))}
+										</SelectGroup>
+									</SelectContent>
+								</Select>
+							</FormControl>
+
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
 				<FormField
 					control={form.control}
 					name='amount'
@@ -78,6 +139,7 @@ export const AdjustmentForm: FC<BankAccountFormPropsType> = ({
 };
 
 const Adjustment_Form_Schema = Yup.object({
+	account: Yup.string().required().label('Account'),
 	amount: Yup.number().required().label('Amount'),
 });
 

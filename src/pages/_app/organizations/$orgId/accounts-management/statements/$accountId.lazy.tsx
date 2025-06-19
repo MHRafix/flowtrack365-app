@@ -1,10 +1,12 @@
 import { DataTable } from '@/components/DataTable';
+import { Button } from '@/components/ui/button';
 import { AdjustmentPagination } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
+import { Download } from 'lucide-react';
 import { statementTableColumns } from './~module/components/statements-table-cols';
 import { Statements_Query } from './~module/query/query.gql';
 
@@ -36,6 +38,12 @@ function RouteComponent() {
 
 	return (
 		<div>
+			<div className='flex justify-between items-center gap-5 mb-5'>
+				<h2 className='text-3xl font-bold'>Bank Statements</h2>
+				<Button>
+					<Download /> Download PDF
+				</Button>
+			</div>
 			<DataTable
 				columns={statementTableColumns}
 				data={

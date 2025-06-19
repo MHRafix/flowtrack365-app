@@ -46,6 +46,8 @@ export const BankAccountForm: FC<BankAccountFormPropsType> = ({
 		form.setValue('bankName', account?.bankName!);
 		form.setValue('branch', account?.branch!);
 		form.setValue('balance', account?.balance!);
+		form.setValue('reference', account?.reference!);
+		form.setValue('holderName', account?.holderName!);
 	}, [account]);
 
 	// Define a submit handler.
@@ -72,6 +74,34 @@ export const BankAccountForm: FC<BankAccountFormPropsType> = ({
 							<FormLabel>Bank Name</FormLabel>
 							<FormControl>
 								<Input placeholder='Bank name' {...field} />
+							</FormControl>
+
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='reference'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Reference</FormLabel>
+							<FormControl>
+								<Input placeholder='Reference' {...field} />
+							</FormControl>
+
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='holderName'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Holder Name</FormLabel>
+							<FormControl>
+								<Input placeholder='Holder name' {...field} />
 							</FormControl>
 
 							<FormMessage />
@@ -121,6 +151,8 @@ export const BankAccountForm: FC<BankAccountFormPropsType> = ({
 
 const Bank_Account_Form_Schema = Yup.object({
 	bankName: Yup.string().required().label('Bank name'),
+	reference: Yup.string().required().label('Reference'),
+	holderName: Yup.string().required().label('Holder name'),
 	branch: Yup.string().required().label('Branch'),
 	balance: Yup.number().required().label('Balance'),
 });

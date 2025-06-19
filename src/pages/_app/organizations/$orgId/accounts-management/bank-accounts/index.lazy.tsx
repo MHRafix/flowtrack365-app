@@ -2,13 +2,28 @@ import { useAppConfirm } from '@/components/AppConfirm';
 import { DataTable } from '@/components/DataTable';
 import DrawerWrapper from '@/components/DrawerWrapper';
 import { Button } from '@/components/ui/button';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { BankAccount, BankAccountPagination } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
-import { Loader2, PenSquare, Plus, Trash } from 'lucide-react';
+import {
+	BanknoteArrowDown,
+	BanknoteArrowUp,
+	ChartNoAxesCombined,
+	EllipsisVertical,
+	Loader2,
+	PenSquare,
+	Plus,
+	Trash,
+} from 'lucide-react';
 import { useState } from 'react';
 import { bankAccountApi } from './~module/api/bankAccountApi';
 import { bankTableColumns } from './~module/components/accounts-table-cols';
@@ -96,13 +111,55 @@ function RouteComponent() {
 				}
 				ActionCell={({ row }) => (
 					<div className='flex gap-2'>
-						<Button
-							variant={'outline'}
-							onClick={() => {
-								setOpenEditDrawer(true);
-								setBankAccount(row);
-							}}
-						>
+						<DropdownMenu>
+							<DropdownMenuTrigger>
+								<Button variant={'outline'}>
+									<EllipsisVertical />
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent>
+								<DropdownMenuItem>
+									<BanknoteArrowUp /> Deposit
+								</DropdownMenuItem>
+								<DropdownMenuItem>
+									<BanknoteArrowDown /> Withdraw
+								</DropdownMenuItem>
+								<DropdownMenuItem>
+									<ChartNoAxesCombined /> Statements
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={() => {
+										setOpenEditDrawer(true);
+										setBankAccount(row);
+									}}
+								>
+									<PenSquare /> Edit
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={() => {
+										setRowId(row?._id!);
+										show({
+											title: 'Are you sure to remove expense ?',
+											children: (
+												<span>Please proceed to complete this action.</span>
+											),
+											onConfirm() {
+												removeBankAccount.mutate(row?._id!);
+											},
+										});
+									}}
+									disabled={removeBankAccount?.isPending}
+									variant='destructive'
+								>
+									{removeBankAccount?.isPending && row?._id === rowId && (
+										<Loader2 className='animate-spin' />
+									)}
+									<Trash /> Remove
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+
+						{/* <Button variant={'outline'}>
 							<PenSquare /> Edit
 						</Button>
 
@@ -126,7 +183,7 @@ function RouteComponent() {
 								<Loader2 className='animate-spin' />
 							)}
 							<Trash /> Remove
-						</Button>
+						</Button> */}
 					</div>
 				)}
 			/>

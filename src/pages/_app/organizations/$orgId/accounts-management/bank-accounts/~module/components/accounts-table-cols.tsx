@@ -6,6 +6,14 @@ export const bankTableColumns: ColumnDef<BankAccount>[] = [
 	{
 		accessorKey: 'bankName',
 		header: 'Bank Name',
+		cell: ({ row }) => {
+			return (
+				<div>
+					<p className='font-medium'>{row.original?.bankName}</p>
+					<p className='text-sm text-teal-300'>[{row?.original?.reference}]</p>
+				</div>
+			);
+		},
 	},
 	{
 		accessorKey: 'balance',
@@ -13,6 +21,10 @@ export const bankTableColumns: ColumnDef<BankAccount>[] = [
 		cell: ({ row }) => {
 			return <span>{row.original?.balance || 0.0} BDT</span>;
 		},
+	},
+	{
+		accessorKey: 'holderName',
+		header: 'Holder Name',
 	},
 	{
 		accessorKey: 'branch',

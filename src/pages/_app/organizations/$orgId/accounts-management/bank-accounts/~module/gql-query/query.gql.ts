@@ -6,6 +6,8 @@ export const Bank_Accounts_Query = gql`
 			nodes {
 				_id
 				bankName
+				reference
+				holderName
 				branch
 				balance
 				orgUID

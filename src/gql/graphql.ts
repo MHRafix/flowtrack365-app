@@ -19,6 +19,23 @@ export type Scalars = {
   JSON: { input: any; output: any; }
 };
 
+export enum ActionType {
+  Deposit = 'Deposit',
+  Withdraw = 'Withdraw'
+}
+
+export type Adjustment = {
+  __typename?: 'Adjustment';
+  _id?: Maybe<Scalars['ID']['output']>;
+  account: BankAccount;
+  amount: Scalars['Int']['output'];
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  orgUID: Scalars['String']['output'];
+  type: ActionType;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
 export type AllOrder = {
   __typename?: 'AllOrder';
   /** Example field (placeholder) */
@@ -72,7 +89,9 @@ export type BankAccount = {
   bankName: Scalars['String']['output'];
   branch: Scalars['String']['output'];
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  holderName: Scalars['String']['output'];
   orgUID: Scalars['String']['output'];
+  reference: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -112,6 +131,17 @@ export type CommonMatchInput = {
   value?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type CreateAdjustmentInput = {
+  _id?: InputMaybe<Scalars['ID']['input']>;
+  account: Scalars['String']['input'];
+  amount: Scalars['Int']['input'];
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  orgUID: Scalars['String']['input'];
+  type: ActionType;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
 export type CreateAllOrderInput = {
   /** Example field (placeholder) */
   exampleField: Scalars['Int']['input'];
@@ -134,7 +164,9 @@ export type CreateBankAccountInput = {
   bankName: Scalars['String']['input'];
   branch: Scalars['String']['input'];
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  holderName: Scalars['String']['input'];
   orgUID: Scalars['String']['input'];
+  reference: Scalars['String']['input'];
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -350,6 +382,7 @@ export enum MatchOperator {
 export type Mutation = {
   __typename?: 'Mutation';
   bulkRemoveEmployee?: Maybe<Scalars['Boolean']['output']>;
+  createAdjustment: Scalars['Boolean']['output'];
   createAllOrder: AllOrder;
   createAttendance: Scalars['Boolean']['output'];
   createBankAccount: Scalars['Boolean']['output'];
@@ -362,6 +395,7 @@ export type Mutation = {
   createSaving: Saving;
   createTask: TaskManagement;
   registration: ApiCommonActionOutput;
+  removeAdjustment: Adjustment;
   removeAllOrder: AllOrder;
   removeAttendance?: Maybe<Scalars['Boolean']['output']>;
   removeBankAccount: BankAccount;
@@ -376,6 +410,7 @@ export type Mutation = {
   removeUser?: Maybe<Scalars['Boolean']['output']>;
   sendInviteToMember: ApiCommonActionOutput;
   sendMagicLink: ApiCommonActionOutput;
+  updateAdjustment: Adjustment;
   updateAllOrder: AllOrder;
   updateAttendance: Scalars['Boolean']['output'];
   updateBankAccount: BankAccount;
@@ -396,6 +431,11 @@ export type Mutation = {
 
 export type MutationBulkRemoveEmployeeArgs = {
   uIds: Array<Scalars['String']['input']>;
+};
+
+
+export type MutationCreateAdjustmentArgs = {
+  payload: CreateAdjustmentInput;
 };
 
 
@@ -456,6 +496,11 @@ export type MutationCreateTaskArgs = {
 
 export type MutationRegistrationArgs = {
   input: RegistrationUserInput;
+};
+
+
+export type MutationRemoveAdjustmentArgs = {
+  _id: Scalars['String']['input'];
 };
 
 
@@ -526,6 +571,11 @@ export type MutationSendInviteToMemberArgs = {
 
 export type MutationSendMagicLinkArgs = {
   payload: MagicLinkAuthenticationInput;
+};
+
+
+export type MutationUpdateAdjustmentArgs = {
+  payload: UpdateAdjustmentInput;
 };
 
 
@@ -719,6 +769,8 @@ export type Query = {
   Attendance: Attendance;
   Attendances: AttendancePagination;
   Employee: Employee;
+  adjustment: Adjustment;
+  adjustments: Array<Adjustment>;
   allEmployeeIds: Array<Scalars['String']['output']>;
   allEmployees: EmployeePagination;
   allOrder: AllOrder;
@@ -756,6 +808,11 @@ export type QueryAttendancesArgs = {
 
 export type QueryEmployeeArgs = {
   input: CommonMatchInput;
+};
+
+
+export type QueryAdjustmentArgs = {
+  _id: Scalars['String']['input'];
 };
 
 
@@ -1022,6 +1079,17 @@ export type Unit = {
   exampleField: Scalars['Int']['output'];
 };
 
+export type UpdateAdjustmentInput = {
+  _id: Scalars['ID']['input'];
+  account?: InputMaybe<Scalars['String']['input']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  orgUID?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<ActionType>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
 export type UpdateAllOrderInput = {
   /** Example field (placeholder) */
   exampleField?: InputMaybe<Scalars['Int']['input']>;
@@ -1045,7 +1113,9 @@ export type UpdateBankAccountInput = {
   bankName?: InputMaybe<Scalars['String']['input']>;
   branch?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  holderName?: InputMaybe<Scalars['String']['input']>;
   orgUID?: InputMaybe<Scalars['String']['input']>;
+  reference?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 

@@ -6,17 +6,17 @@ import { Product, ProductPagination } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
 import { Loader2, PenSquare, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
-import { productApi } from './~module/api/productApi';
-import { ProductForm } from './~module/components/ProductForm';
-import { productsTableColumns } from './~module/components/products-table-cols';
-import { All_Products_Query } from './~module/gql-query/query.gql';
+import { productApi } from '../~module/api/productApi';
+import { ProductForm } from '../~module/components/ProductForm';
+import { productsTableColumns } from '../~module/components/products-table-cols';
+import { All_Products_Query } from '../~module/gql-query/query.gql';
 
 export const Route = createLazyFileRoute(
-	'/_app/organizations/$orgId/inventory-management/products'
+	'/_app/organizations/$orgId/inventory-management/products/'
 )({
 	component: RouteComponent,
 });
@@ -55,15 +55,21 @@ function RouteComponent() {
 		<div>
 			<div className='flex justify-between items-center gap-5 mb-5'>
 				<h2 className='text-3xl font-bold'>All Products</h2>
-				<Button
-					variant={'outline'}
-					onClick={() => {
-						setOpenCreateDrawer(true);
-						setProduct(null);
-					}}
+				<Link
+					to={`/organizations/$orgId/inventory-management/products/product-add`}
+					params={{ orgId: session?.orgUID! }}
 				>
-					<Plus /> Add Products
-				</Button>
+					{' '}
+					<Button
+						variant={'outline'}
+						onClick={() => {
+							setOpenCreateDrawer(true);
+							setProduct(null);
+						}}
+					>
+						<Plus /> Add Product
+					</Button>
+				</Link>
 			</div>
 			<DataTable
 				columns={productsTableColumns}
@@ -74,15 +80,14 @@ function RouteComponent() {
 				}
 				ActionCell={({ row }) => (
 					<div className='flex gap-2'>
-						<Button
-							variant={'outline'}
-							onClick={() => {
-								setOpenEditDrawer(true);
-								setProduct(row);
-							}}
+						<Link
+							to={`/organizations/$orgId/inventory-management/products/product-edit/$productId`}
+							params={{ orgId: session?.orgUID!, productId: row?._id! }}
 						>
-							<PenSquare /> Edit
-						</Button>
+							<Button variant={'outline'}>
+								<PenSquare /> Edit
+							</Button>
+						</Link>
 
 						<Button
 							variant={'destructive'}

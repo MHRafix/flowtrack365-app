@@ -159,23 +159,6 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 					)}
 				/>
 
-				{/* <FormField
-						control={form.control}
-						name='description'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Amount</FormLabel>
-								<FormControl>
-									<Textarea
-										placeholder='Description'
-										onChange={field.onChange}
-									/>
-								</FormControl>
-
-								<FormMessage />
-							</FormItem>
-						)}
-					/> */}
 				<Button type='submit' variant={'default'} className='w-full'>
 					{(createExpense?.isPending || updateExpense?.isPending) && (
 						<Loader2 className='animate-spin' />

@@ -1,15 +1,17 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute } from '@tanstack/react-router';
 
 export const Route = createLazyFileRoute(
-  '/_app/organizations/$orgId/accounts-management/adjustments/',
+	'/_app/organizations/$orgId/accounts-management/adjustments/'
 )({
-  component: RouteComponent,
-})
+	component: RouteComponent,
+});
 
 function RouteComponent() {
-  return (
-    <div>
-      Hello "/_app/organizations/$orgId/accounts-management/adjustments/"!
-    </div>
-  )
+	return (
+		<div>
+			<div className='flex justify-between items-center gap-5 mb-5'>
+				<h2 className='text-3xl font-bold'>Transaction & Adjustments</h2>
+			</div>
+		</div>
+	);
 }

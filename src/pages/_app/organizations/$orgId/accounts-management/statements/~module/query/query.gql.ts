@@ -9,12 +9,6 @@ export const Statements_Query = gql`
 					_id
 					bankName
 					reference
-					holderName
-					branch
-					balance
-					orgUID
-					createdAt
-					updatedAt
 				}
 				type
 				amount
@@ -30,6 +24,50 @@ export const Statements_Query = gql`
 				hasNextPage
 				totalPages
 			}
+		}
+	}
+`;
+
+export const Single_Bank_Account_Details_Query = gql`
+	query BankAccount($id: String!, $orgUid: String!) {
+		bankAccount(_id: $id, orgUID: $orgUid) {
+			_id
+			bankName
+			reference
+			holderName
+			branch
+			balance
+			orgUID
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+export const Organization_By_UID_Query = gql`
+	query OrganizationByUID($orgUid: String!) {
+		organizationByUID(orgUID: $orgUid) {
+			_id
+			name
+			tagline
+			orgUID
+			businessEmail
+			businessPhone
+			address
+			cover {
+				bucket
+				region
+				key
+				externalUrl
+			}
+			Logo {
+				bucket
+				region
+				key
+				externalUrl
+			}
+			createdAt
+			updatedAt
 		}
 	}
 `;

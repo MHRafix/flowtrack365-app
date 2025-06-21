@@ -2,9 +2,18 @@ import { useAppConfirm } from '@/components/AppConfirm';
 import { DataTable } from '@/components/DataTable';
 import DrawerWrapper from '@/components/DrawerWrapper';
 import { Button } from '@/components/ui/button';
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import { gqlRequest } from '@/lib/api-client';
 import { formatDate } from '@/lib/formater.utils';
 import { userAtom } from '@/store/auth.atom';
+import { IExpenseCategoryListWithPagination } from '@/types/expenseCategoriesType';
 import { IExpense, IExpenseListWithPagination } from '@/types/expenseType';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
@@ -14,7 +23,10 @@ import { useState } from 'react';
 import { expenseApi } from './~module/api/expenseApi';
 import { expenseTableColumns } from './~module/components/expense-table-cols';
 import { ExpenseForm } from './~module/components/ExpenseForm';
-import { All_Expense_List_Query } from './~module/gql-query/query.gql';
+import {
+	All_Expense_Categories_For_DropDown_List_Query,
+	All_Expense_List_Query,
+} from './~module/gql-query/query.gql';
 
 export const Route = createLazyFileRoute(
 	'/_app/organizations/$orgId/expense-management/all-expenses/'
@@ -28,15 +40,38 @@ function RouteComponent() {
 	const [expense, setExpense] = useState<IExpense | null>(null);
 	const [rowId, setRowId] = useState<string>('');
 	const [session] = useAtom(userAtom);
+	const [category, setCategory] = useState<null | string>(null);
 
 	const { show } = useAppConfirm();
 	const currentDate = new Date().toISOString().split('T')[0];
 	const currentMonth = new Date().getMonth() + 1;
 	const currentYear = new Date().getFullYear();
 
+	const { data: expenseCategories } = useQuery({
+		queryKey: ['all-expenses-category-for-dropdown'],
+		queryFn: async () =>
+			await gqlRequest<{
+				expenseCategories: IExpenseCategoryListWithPagination | null;
+			}>({
+				query: All_Expense_Categories_For_DropDown_List_Query,
+				variables: {
+					orgUid: session?.orgUID,
+					input: {
+						limit: 1000,
+						page: 1,
+					},
+				},
+			}),
+	});
+
 	// expense of today
 	const { data: todaysExpenses, refetch } = useQuery({
-		queryKey: [`all-expenses-${currentDate}`],
+		queryKey: [
+			`all-expenses-${currentDate}`,
+			currentYear,
+			currentMonth,
+			category,
+		],
 		queryFn: async () =>
 			await gqlRequest<{
 				expenseCalculationList: IExpenseListWithPagination | null;
@@ -46,11 +81,7 @@ function RouteComponent() {
 					input: {
 						page: 1,
 						limit: 1000,
-						where: {
-							key: 'createdAt',
-							operator: 'gte',
-							value: currentDate,
-						},
+						where: getFilterQuery(category!, 'day'),
 						sort: 'DESC',
 						sortBy: 'createdAt',
 					},
@@ -67,7 +98,11 @@ function RouteComponent() {
 
 	// expenses of this month
 	const { data: thisMonthExpenses, refetch: refetchMonthExpense } = useQuery({
-		queryKey: [`all-expenses-${currentYear}-${currentMonth}`],
+		queryKey: [
+			`all-expenses-${currentYear}-${currentMonth}`,
+			currentDate,
+			category,
+		],
 		queryFn: async () =>
 			await gqlRequest<{
 				expenseCalculationList: IExpenseListWithPagination | null;
@@ -77,11 +112,7 @@ function RouteComponent() {
 					input: {
 						page: 1,
 						limit: 1000,
-						where: {
-							key: 'createdAt',
-							operator: 'gte',
-							value: `${currentYear}-${currentMonth}`,
-						},
+						where: getFilterQuery(category!, 'month'),
 						sort: 'DESC',
 						sortBy: 'createdAt',
 					},
@@ -99,7 +130,11 @@ function RouteComponent() {
 
 	// annual expenses
 	const { data: annualExpenses, refetch: refetchAnnualExpenses } = useQuery({
-		queryKey: [`annual-expenses-${currentYear}-${currentMonth}`],
+		queryKey: [
+			`annual-expenses-${currentYear}-${currentMonth}`,
+			currentDate,
+			category,
+		],
 		queryFn: async () =>
 			await gqlRequest<{
 				expenseCalculationList: IExpenseListWithPagination | null;
@@ -109,11 +144,7 @@ function RouteComponent() {
 					input: {
 						page: 1,
 						limit: 1000,
-						where: {
-							key: 'createdAt',
-							operator: 'lte',
-							value: `${currentYear}-${currentMonth}`,
-						},
+						where: getFilterQuery(category!, 'annual'),
 						sort: 'DESC',
 						sortBy: 'createdAt',
 					},
@@ -160,15 +191,36 @@ function RouteComponent() {
 			</DrawerWrapper>
 			<div className='flex justify-between items-center gap-5 mb-5'>
 				<h2 className='text-3xl font-bold'>All Expenses</h2>
-				<Button
-					variant={'outline'}
-					onClick={() => {
-						setOpenCreateDrawer(true);
-						setExpense(null);
-					}}
-				>
-					<Plus /> Add Expense
-				</Button>
+				<div className='flex items-center gap-5'>
+					<Select
+						onValueChange={setCategory}
+						defaultValue={expense?.category?._id}
+					>
+						<SelectTrigger className='w-[250px]'>
+							<SelectValue placeholder='Filter by category' />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectGroup>
+								{expenseCategories?.expenseCategories?.nodes?.map(
+									(expenseCategory, idx) => (
+										<SelectItem value={expenseCategory?._id} key={idx}>
+											{expenseCategory?.title}
+										</SelectItem>
+									)
+								)}
+							</SelectGroup>
+						</SelectContent>
+					</Select>{' '}
+					<Button
+						variant={'outline'}
+						onClick={() => {
+							setOpenCreateDrawer(true);
+							setExpense(null);
+						}}
+					>
+						<Plus /> Add Expense
+					</Button>
+				</div>
 			</div>
 
 			<div className='grid gap-3 md:flex justify-between items-center bg-blue-200 text-black p-3 rounded-md mb-2'>
@@ -364,3 +416,73 @@ function RouteComponent() {
 		</div>
 	);
 }
+
+const getFilterQuery = (category: string, filterBy: string) => {
+	const currentDate = new Date().toISOString().split('T')[0];
+	const currentMonth = new Date().getMonth() + 1;
+	const currentYear = new Date().getFullYear();
+
+	switch (filterBy) {
+		case 'day':
+			return category
+				? [
+						{
+							key: 'createdAt',
+							operator: 'gte',
+							value: currentDate,
+						},
+						{
+							key: 'category',
+							operator: 'eq',
+							value: category,
+						},
+					]
+				: {
+						key: 'createdAt',
+						operator: 'gte',
+						value: currentDate,
+					};
+		case 'month':
+			return category
+				? [
+						{
+							key: 'createdAt',
+							operator: 'gte',
+							value: `${currentYear}-${currentMonth}`,
+						},
+						{
+							key: 'category',
+							operator: 'eq',
+							value: category,
+						},
+					]
+				: {
+						key: 'createdAt',
+						operator: 'gte',
+						value: `${currentYear}-${currentMonth}`,
+					};
+
+		case 'annual':
+			return category
+				? [
+						{
+							key: 'createdAt',
+							operator: 'lte',
+							value: `${currentYear}-${currentMonth}`,
+						},
+						{
+							key: 'category',
+							operator: 'eq',
+							value: category,
+						},
+					]
+				: {
+						key: 'createdAt',
+						operator: 'lte',
+						value: `${currentYear}-${currentMonth}`,
+					};
+
+		default:
+			break;
+	}
+};

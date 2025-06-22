@@ -89,6 +89,69 @@ export const Product_Categories_Query = gql`
 	}
 `;
 
+export const Product_details_Query = gql`
+	query Product($id: String!, $orgUid: String!) {
+		product(_id: $id, orgUID: $orgUid) {
+			_id
+			title
+			thumbnail {
+				bucket
+				region
+				key
+				externalUrl
+			}
+			carouselImages {
+				bucket
+				region
+				key
+				externalUrl
+			}
+			gallery {
+				bucket
+				region
+				key
+				externalUrl
+			}
+			code
+			orgUID
+			model
+			salePrice
+			regularPrice
+			discountAmount
+			stock
+			stockHistory {
+				quantity
+				stockType
+				stockPrice
+				date
+			}
+			category {
+				_id
+				name
+				description
+				orgUID
+				createdAt
+				updatedAt
+			}
+			brand {
+				exampleField
+			}
+			unit {
+				exampleField
+			}
+			shortDescription
+			description
+			sizes {
+				size
+				description
+			}
+			colors
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
 export const Create_Product_Category_Mutation = gql`
 	mutation CreateProductCategory($payload: CreateProductCategoryInput!) {
 		createProductCategory(payload: $payload)

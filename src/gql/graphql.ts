@@ -228,20 +228,23 @@ export type CreateProductCategoryInput = {
 export type CreateProductInput = {
   _id?: InputMaybe<Scalars['ID']['input']>;
   brand?: InputMaybe<Scalars['String']['input']>;
+  carouselImages?: InputMaybe<Array<ServerFileInput>>;
   category: Scalars['String']['input'];
   code: Scalars['String']['input'];
   colors?: InputMaybe<Array<Scalars['String']['input']>>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   discountAmount?: InputMaybe<Scalars['Float']['input']>;
+  gallery?: InputMaybe<Array<ServerFileInput>>;
   model?: InputMaybe<Scalars['String']['input']>;
   orgUID: Scalars['String']['input'];
   regularPrice: Scalars['Float']['input'];
   salePrice?: InputMaybe<Scalars['Float']['input']>;
   shortDescription?: InputMaybe<Scalars['String']['input']>;
-  sizes?: InputMaybe<Array<Scalars['String']['input']>>;
+  sizes?: InputMaybe<Array<SizeInput>>;
   stock: Scalars['Float']['input'];
-  stockHistory?: InputMaybe<StockHistoryInput>;
+  stockHistory?: InputMaybe<Array<StockHistoryInput>>;
+  thumbnail?: InputMaybe<ServerFileInput>;
   title: Scalars['String']['input'];
   unit?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -435,7 +438,7 @@ export type Mutation = {
   updateExpenseCalculation: Scalars['Boolean']['output'];
   updateExpenseCategory: Scalars['Boolean']['output'];
   updateOrganization: Organization;
-  updateProduct: Product;
+  updateProduct: Scalars['Boolean']['output'];
   updateProductCategory: ProductCategory;
   updateSaving: Saving;
   updateTask: Scalars['Boolean']['output'];
@@ -632,6 +635,7 @@ export type MutationUpdateOrganizationArgs = {
 
 
 export type MutationUpdateProductArgs = {
+  orgUID: Scalars['String']['input'];
   payload: UpdateProductInput;
 };
 
@@ -722,20 +726,23 @@ export type Product = {
   __typename?: 'Product';
   _id?: Maybe<Scalars['ID']['output']>;
   brand?: Maybe<Brand>;
+  carouselImages?: Maybe<Array<ServerFileEntity>>;
   category: ProductCategory;
   code: Scalars['String']['output'];
   colors?: Maybe<Array<Scalars['String']['output']>>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   discountAmount?: Maybe<Scalars['Float']['output']>;
+  gallery?: Maybe<Array<ServerFileEntity>>;
   model?: Maybe<Scalars['String']['output']>;
   orgUID: Scalars['String']['output'];
   regularPrice: Scalars['Float']['output'];
   salePrice?: Maybe<Scalars['Float']['output']>;
   shortDescription?: Maybe<Scalars['String']['output']>;
-  sizes?: Maybe<Array<Scalars['String']['output']>>;
+  sizes?: Maybe<Array<SizeSchema>>;
   stock: Scalars['Float']['output'];
-  stockHistory: StockHistorySchema;
+  stockHistory?: Maybe<Array<StockHistorySchema>>;
+  thumbnail?: Maybe<ServerFileEntity>;
   title: Scalars['String']['output'];
   unit?: Maybe<Unit>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -792,6 +799,7 @@ export type Query = {
   allEmployees: EmployeePagination;
   allOrder: AllOrder;
   allOrders: Array<AllOrder>;
+  bankAccount: BankAccount;
   bankAccounts: BankAccountPagination;
   expenseCalculation: Expense;
   expenseCalculationList: ExpenseCalculationPagination;
@@ -799,12 +807,13 @@ export type Query = {
   expenseCategory: ExpenseCategory;
   myOrganizations: OrganizationWithPagination;
   organization: Organization;
+  organizationByUID: Organization;
   organizations: OrganizationWithPagination;
   product: Product;
   productCategories: ProductCategoryPagination;
   productCategory: ProductCategory;
   products: ProductPagination;
-  saving: BankAccount;
+  saving: Saving;
   savings: SavingPagination;
   task: TaskManagement;
   taskList: TaskManagementPagination;
@@ -850,6 +859,12 @@ export type QueryAllOrderArgs = {
 };
 
 
+export type QueryBankAccountArgs = {
+  _id: Scalars['String']['input'];
+  orgUID: Scalars['String']['input'];
+};
+
+
 export type QueryBankAccountsArgs = {
   input?: InputMaybe<BankAccountListQueryDto>;
   orgUID: Scalars['String']['input'];
@@ -890,6 +905,11 @@ export type QueryOrganizationArgs = {
 };
 
 
+export type QueryOrganizationByUidArgs = {
+  orgUID: Scalars['String']['input'];
+};
+
+
 export type QueryOrganizationsArgs = {
   input?: InputMaybe<OrganizationListQueryInput>;
 };
@@ -897,6 +917,7 @@ export type QueryOrganizationsArgs = {
 
 export type QueryProductArgs = {
   _id: Scalars['String']['input'];
+  orgUID: Scalars['String']['input'];
 };
 
 
@@ -1009,6 +1030,17 @@ export type ServerFileReferenceInput = {
   fileUrl: Scalars['String']['input'];
 };
 
+export type SizeInput = {
+  description: Scalars['String']['input'];
+  size: Scalars['String']['input'];
+};
+
+export type SizeSchema = {
+  __typename?: 'SizeSchema';
+  description: Scalars['String']['output'];
+  size: Scalars['String']['output'];
+};
+
 export enum SortType {
   Asc = 'ASC',
   Desc = 'DESC'
@@ -1016,14 +1048,16 @@ export enum SortType {
 
 export type StockHistoryInput = {
   date: Scalars['DateTime']['input'];
-  quantity: Scalars['Float']['input'];
+  quantity: Scalars['Int']['input'];
+  stockPrice: Scalars['Float']['input'];
   stockType: StockType;
 };
 
 export type StockHistorySchema = {
   __typename?: 'StockHistorySchema';
   date: Scalars['DateTime']['output'];
-  quantity: Scalars['Float']['output'];
+  quantity: Scalars['Int']['output'];
+  stockPrice: Scalars['Float']['output'];
   stockType: StockType;
 };
 
@@ -1198,20 +1232,23 @@ export type UpdateProductCategoryInput = {
 export type UpdateProductInput = {
   _id: Scalars['ID']['input'];
   brand?: InputMaybe<Scalars['String']['input']>;
+  carouselImages?: InputMaybe<Array<ServerFileInput>>;
   category?: InputMaybe<Scalars['String']['input']>;
   code?: InputMaybe<Scalars['String']['input']>;
   colors?: InputMaybe<Array<Scalars['String']['input']>>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   discountAmount?: InputMaybe<Scalars['Float']['input']>;
+  gallery?: InputMaybe<Array<ServerFileInput>>;
   model?: InputMaybe<Scalars['String']['input']>;
   orgUID?: InputMaybe<Scalars['String']['input']>;
   regularPrice?: InputMaybe<Scalars['Float']['input']>;
   salePrice?: InputMaybe<Scalars['Float']['input']>;
   shortDescription?: InputMaybe<Scalars['String']['input']>;
-  sizes?: InputMaybe<Array<Scalars['String']['input']>>;
+  sizes?: InputMaybe<Array<SizeInput>>;
   stock?: InputMaybe<Scalars['Float']['input']>;
-  stockHistory?: InputMaybe<StockHistoryInput>;
+  stockHistory?: InputMaybe<Array<StockHistoryInput>>;
+  thumbnail?: InputMaybe<ServerFileInput>;
   title?: InputMaybe<Scalars['String']['input']>;
   unit?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;

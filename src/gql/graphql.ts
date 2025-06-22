@@ -128,8 +128,12 @@ export type BankAccountPagination = {
 
 export type Brand = {
   __typename?: 'Brand';
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int']['output'];
+  _id?: Maybe<Scalars['ID']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  logo?: Maybe<ServerFileEntity>;
+  name: Scalars['String']['output'];
+  orgUID: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type ClientData = {
@@ -139,6 +143,17 @@ export type ClientData = {
   email?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   phone?: Maybe<Scalars['String']['output']>;
+};
+
+export type ColorInput = {
+  color: Scalars['String']['input'];
+  description: Scalars['String']['input'];
+};
+
+export type ColorSchema = {
+  __typename?: 'ColorSchema';
+  color: Scalars['String']['output'];
+  description: Scalars['String']['output'];
 };
 
 export type CommonMatchInput = {
@@ -231,7 +246,7 @@ export type CreateProductInput = {
   carouselImages?: InputMaybe<Array<ServerFileInput>>;
   category: Scalars['String']['input'];
   code: Scalars['String']['input'];
-  colors?: InputMaybe<Array<Scalars['String']['input']>>;
+  colors?: InputMaybe<Array<ColorInput>>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   discountAmount?: InputMaybe<Scalars['Float']['input']>;
@@ -729,7 +744,7 @@ export type Product = {
   carouselImages?: Maybe<Array<ServerFileEntity>>;
   category: ProductCategory;
   code: Scalars['String']['output'];
-  colors?: Maybe<Array<Scalars['String']['output']>>;
+  colors?: Maybe<Array<ColorSchema>>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   discountAmount?: Maybe<Scalars['Float']['output']>;
@@ -1133,8 +1148,12 @@ export enum User_Role {
 
 export type Unit = {
   __typename?: 'Unit';
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int']['output'];
+  _id?: Maybe<Scalars['ID']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  name: Scalars['String']['output'];
+  orgUID: Scalars['String']['output'];
+  unitCode: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type UpdateAdjustmentInput = {
@@ -1235,7 +1254,7 @@ export type UpdateProductInput = {
   carouselImages?: InputMaybe<Array<ServerFileInput>>;
   category?: InputMaybe<Scalars['String']['input']>;
   code?: InputMaybe<Scalars['String']['input']>;
-  colors?: InputMaybe<Array<Scalars['String']['input']>>;
+  colors?: InputMaybe<Array<ColorInput>>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   discountAmount?: InputMaybe<Scalars['Float']['input']>;

@@ -81,16 +81,10 @@ export const ProductForm: FC<ProductFormPropsType> = ({
 
 	// Define a submit handler.
 	function onSubmit(values: ProductFormStateType) {
-		actionType === 'ADD'
-			? createProduct.mutate({
-					...values,
-					orgUID: session?.orgUID!,
-				})
-			: updateProduct.mutate({
-					// _id: product?._id!,
-					...values,
-					orgUID: session?.orgUID!,
-				});
+		createProduct.mutate({
+			...values,
+			orgUID: session?.orgUID!,
+		});
 	}
 
 	return (
@@ -214,23 +208,6 @@ export const ProductForm: FC<ProductFormPropsType> = ({
 					)}
 				/>
 
-				{/* <FormField
-						control={form.control}
-						name='description'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Amount</FormLabel>
-								<FormControl>
-									<Textarea
-										placeholder='Description'
-										onChange={field.onChange}
-									/>
-								</FormControl>
-
-								<FormMessage />
-							</FormItem>
-						)}
-					/> */}
 				<Button type='submit' variant={'default'} className='w-full'>
 					{(createProduct?.isPending || updateProduct?.isPending) && (
 						<Loader2 className='animate-spin' />

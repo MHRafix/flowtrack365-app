@@ -55,21 +55,15 @@ function RouteComponent() {
 		<div>
 			<div className='flex justify-between items-center gap-5 mb-5'>
 				<h2 className='text-3xl font-bold'>All Products</h2>
-				<Link
-					to={`/organizations/$orgId/inventory-management/products/product-add`}
-					params={{ orgId: session?.orgUID! }}
+				<Button
+					variant={'outline'}
+					onClick={() => {
+						setOpenCreateDrawer(true);
+						setProduct(null);
+					}}
 				>
-					{' '}
-					<Button
-						variant={'outline'}
-						onClick={() => {
-							setOpenCreateDrawer(true);
-							setProduct(null);
-						}}
-					>
-						<Plus /> Add Product
-					</Button>
-				</Link>
+					<Plus /> Add Product
+				</Button>
 			</div>
 			<DataTable
 				columns={productsTableColumns}

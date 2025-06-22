@@ -1,3 +1,4 @@
+import { Product } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -5,6 +6,7 @@ import { ProductFormStateType } from '../components/ProductForm';
 import {
 	Create_Product_Mutation,
 	Remove_Product_Mutation,
+	Update_Product_Mutation,
 } from '../gql-query/query.gql';
 
 export const productApi = (onSuccess?: CallableFunction) => {
@@ -27,6 +29,25 @@ export const productApi = (onSuccess?: CallableFunction) => {
 			toast.error('Failed to  create product.');
 		},
 	});
+
+	// update product
+	const updateProduct = useMutation({
+		mutationKey: [`remove-product`],
+		mutationFn: async (payload: UpdatePayloadType) =>
+			await gqlRequest({
+				query: Update_Product_Mutation,
+				variables: payload,
+			}),
+
+		onSuccess: () => {
+			toast.success('Product has been updated successfully.');
+			onSuccess?.();
+		},
+		onError: () => {
+			toast.error('Failed to update product.');
+		},
+	});
+
 	// remove product
 	const removeProduct = useMutation({
 		mutationKey: [`remove-product`],
@@ -49,11 +70,16 @@ export const productApi = (onSuccess?: CallableFunction) => {
 
 	return {
 		createProduct,
-		updateProduct: createProduct,
+		updateProduct,
 		removeProduct,
 	};
 };
 
 interface CreatePayloadType extends ProductFormStateType {
 	orgUID: string;
+}
+
+interface UpdatePayloadType {
+	payload: Product;
+	orgUid: string;
 }

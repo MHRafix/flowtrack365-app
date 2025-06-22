@@ -1,12 +1,15 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Product } from '@/gql/graphql';
+import { Product, ProductCategoryPagination } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
-import { Product_details_Query } from '../../~module/gql-query/query.gql';
+import {
+	All_Product_Categories_For_DropDown_List_Query,
+	Product_details_Query,
+} from '../../~module/gql-query/query.gql';
 import Assignments from './~module/components/Assignments';
 import BasicInformation from './~module/components/BasicInformation';
 import ManageStock from './~module/components/ManageStock';
@@ -37,6 +40,20 @@ function RouteComponent() {
 				},
 			}),
 		enabled: Boolean(productId && session?.orgUID),
+	});
+
+	const { data: productCategories } = useQuery({
+		queryKey: ['all-product-category-for-dropdown-for-assignment'],
+		queryFn: async () =>
+			await gqlRequest<{
+				productCategories: ProductCategoryPagination;
+			}>({
+				query: All_Product_Categories_For_DropDown_List_Query,
+				variables: {
+					orgUid: session?.orgUID,
+				},
+			}),
+		enabled: Boolean(session?.orgUID),
 	});
 
 	return (
@@ -71,7 +88,10 @@ function RouteComponent() {
 							<MediaFiles product={data?.product!} />
 						</TabsContent>
 						<TabsContent value='assignment'>
-							<Assignments product={data?.product!} />
+							<Assignments
+								product={data?.product!}
+								productCategories={productCategories?.productCategories?.nodes!}
+							/>
 						</TabsContent>
 						<TabsContent value='manage_stock'>
 							<ManageStock product={data?.product!} />

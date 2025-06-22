@@ -19,22 +19,24 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Product } from '@/gql/graphql';
-import { Plus, Trash } from 'lucide-react';
+import { Product, ProductCategory } from '@/gql/graphql';
+import { userAtom } from '@/store/auth.atom';
+import { useAtom } from 'jotai';
+import { Loader2, Plus, Trash } from 'lucide-react';
 import { FC, useEffect } from 'react';
+import { productApi } from '../../../../~module/api/productApi';
 
 interface AssignmentProps {
 	product: Product;
+	productCategories: ProductCategory[];
 }
-const Assignments: FC<AssignmentProps> = ({ product }) => {
+const Assignments: FC<AssignmentProps> = ({ product, productCategories }) => {
+	const [session] = useAtom(userAtom);
+
 	const form = useForm<FormValues>({
 		resolver: yupResolver(schema),
 		defaultValues: {
-			category: '',
-			brand: '',
-			unit: '',
-			sizes: [{ size: '', description: '' }],
-			colors: [{ color: '', description: '' }],
+			category: product?.category?._id || '',
 		},
 	});
 
@@ -57,16 +59,24 @@ const Assignments: FC<AssignmentProps> = ({ product }) => {
 	});
 
 	useEffect(() => {
-		form.setValue('category', product?.category?._id!);
-		form.setValue('brand', product?.brand?._id!);
-		form.setValue('unit', product?.unit?._id!);
-		form.setValue('sizes', product?.sizes!);
-		form.setValue('colors', product?.colors!);
+		if (product) {
+			form.reset({
+				category: product.category?._id || '',
+				brand: product.brand?._id || '',
+				unit: product.unit?._id || '',
+				sizes: product.sizes || [],
+				colors: product.colors || [],
+			});
+		}
 	}, [product]);
 
+	const { updateProduct } = productApi();
+
 	const onSubmit = (values: FormValues) => {
-		console.log('Submitted:', values);
-		// handle submission
+		updateProduct.mutate({
+			orgUid: session?.orgUID!,
+			payload: { ...values, _id: product?._id } as any,
+		});
 	};
 
 	return (
@@ -74,7 +84,6 @@ const Assignments: FC<AssignmentProps> = ({ product }) => {
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
 					<div className='grid md:grid-cols-3 gap-5'>
-						{' '}
 						{/* Category */}
 						<FormField
 							control={form.control}
@@ -88,9 +97,11 @@ const Assignments: FC<AssignmentProps> = ({ product }) => {
 												<SelectValue placeholder='Select category' />
 											</SelectTrigger>
 											<SelectContent>
-												<SelectItem value='electronics'>Electronics</SelectItem>
-												<SelectItem value='fashion'>Fashion</SelectItem>
-												<SelectItem value='home'>Home</SelectItem>
+												{productCategories?.map((category, idx) => (
+													<SelectItem key={idx} value={category?._id!}>
+														{category?.name}
+													</SelectItem>
+												))}
 											</SelectContent>
 										</Select>
 									</FormControl>
@@ -98,7 +109,6 @@ const Assignments: FC<AssignmentProps> = ({ product }) => {
 								</FormItem>
 							)}
 						/>
-						{/* Brand */}
 						<FormField
 							control={form.control}
 							name='brand'
@@ -267,7 +277,13 @@ const Assignments: FC<AssignmentProps> = ({ product }) => {
 						))}
 					</div>
 
-					<Button type='submit' className='w-full'>
+					<Button
+						type='submit'
+						className='w-full'
+						disabled={updateProduct.isPending}
+					>
+						{' '}
+						{updateProduct?.isPending && <Loader2 className='animate-spin' />}
 						Save
 					</Button>
 				</form>

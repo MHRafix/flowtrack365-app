@@ -18,10 +18,12 @@ export const All_Products_Query = gql`
 					name
 				}
 				brand {
-					exampleField
+					_id
+					name
 				}
 				unit {
-					exampleField
+					_id
+					name
 				}
 
 				createdAt
@@ -40,6 +42,12 @@ export const All_Products_Query = gql`
 export const Create_Product_Mutation = gql`
 	mutation CreateProduct($payload: CreateProductInput!) {
 		createProduct(payload: $payload)
+	}
+`;
+
+export const Update_Product_Mutation = gql`
+	mutation UpdateProduct($payload: UpdateProductInput!, $orgUid: String!) {
+		updateProduct(payload: $payload, orgUID: $orgUid)
 	}
 `;
 
@@ -128,16 +136,14 @@ export const Product_details_Query = gql`
 			category {
 				_id
 				name
-				description
-				orgUID
-				createdAt
-				updatedAt
 			}
 			brand {
-				exampleField
+				_id
+				name
 			}
 			unit {
-				exampleField
+				_id
+				name
 			}
 			shortDescription
 			description
@@ -145,7 +151,10 @@ export const Product_details_Query = gql`
 				size
 				description
 			}
-			colors
+			colors {
+				color
+				description
+			}
 			createdAt
 			updatedAt
 		}

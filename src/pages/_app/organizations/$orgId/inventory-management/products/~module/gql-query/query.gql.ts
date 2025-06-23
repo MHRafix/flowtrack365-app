@@ -73,25 +73,23 @@ export const All_Product_Categories_For_DropDown_List_Query = gql`
 	}
 `;
 
-export const Product_Categories_Query = gql`
-	query ProductCategories(
-		$orgUid: String!
-		$input: ProductCategoriesListQueryDto
-	) {
-		productCategories(orgUID: $orgUid, input: $input) {
+export const All_Product_Brands_For_DropDown_List_Query = gql`
+	query Brands($orgUid: String!, $input: BrandListQueryInput) {
+		brands(orgUID: $orgUid, input: $input) {
 			nodes {
 				_id
 				name
-				description
-				orgUID
-				createdAt
-				updatedAt
 			}
-			meta {
-				totalCount
-				currentPage
-				hasNextPage
-				totalPages
+		}
+	}
+`;
+
+export const All_Product_Units_For_DropDown_List_Query = gql`
+	query Units($orgUid: String!, $input: UnitListQueryInput) {
+		units(orgUID: $orgUid, input: $input) {
+			nodes {
+				_id
+				name
 			}
 		}
 	}
@@ -157,20 +155,6 @@ export const Product_details_Query = gql`
 			}
 			createdAt
 			updatedAt
-		}
-	}
-`;
-
-export const Create_Product_Category_Mutation = gql`
-	mutation CreateProductCategory($payload: CreateProductCategoryInput!) {
-		createProductCategory(payload: $payload)
-	}
-`;
-
-export const Remove_Product_Category_Mutation = gql`
-	mutation RemoveProductCategory($id: String!) {
-		removeProductCategory(_id: $id) {
-			_id
 		}
 	}
 `;

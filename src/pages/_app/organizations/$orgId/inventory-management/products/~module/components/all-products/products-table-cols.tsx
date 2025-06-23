@@ -82,7 +82,11 @@ export const productsTableColumns: ColumnDef<Product>[] = [
 		accessorKey: 'stock',
 		header: 'Stock Quantity',
 		cell: ({ row }) => {
-			return <span>{row.original?.stock || 0} - KG</span>;
+			return (
+				<span>
+					{row.original?.stock || 0} - {row.original?.unit?.unitCode}
+				</span>
+			);
 		},
 	},
 	{
@@ -96,7 +100,7 @@ export const productsTableColumns: ColumnDef<Product>[] = [
 		accessorKey: 'brand',
 		header: 'Brand',
 		cell: ({ row }) => {
-			return <span>{row.original?.brand?.exampleField || 'N/A'}</span>;
+			return <span>{row.original?.brand?.name || 'N/A'}</span>;
 		},
 	},
 	{

@@ -29,12 +29,16 @@ const AppOrganizationsOrgIdIndexLazyImport = createFileRoute(
 )()
 const AppOrganizationsOrgIdOrdersManagementAllOrdersLazyImport =
   createFileRoute('/_app/organizations/$orgId/orders-management/all-orders')()
-const AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyImport =
-  createFileRoute(
-    '/_app/organizations/$orgId/inventory-management/products-categories',
-  )()
+const AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyImport =
+  createFileRoute('/_app/organizations/$orgId/inventory-management/units/')()
 const AppOrganizationsOrgIdInventoryManagementProductsIndexLazyImport =
   createFileRoute('/_app/organizations/$orgId/inventory-management/products/')()
+const AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyImport =
+  createFileRoute(
+    '/_app/organizations/$orgId/inventory-management/products-categories/',
+  )()
+const AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyImport =
+  createFileRoute('/_app/organizations/$orgId/inventory-management/brands/')()
 const AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyImport =
   createFileRoute(
     '/_app/organizations/$orgId/expense-management/expense-categories/',
@@ -131,14 +135,14 @@ const AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute =
     ).then((d) => d.Route),
   )
 
-const AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute =
-  AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyImport.update({
-    id: '/organizations/$orgId/inventory-management/products-categories',
-    path: '/organizations/$orgId/inventory-management/products-categories',
+const AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyRoute =
+  AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyImport.update({
+    id: '/organizations/$orgId/inventory-management/units/',
+    path: '/organizations/$orgId/inventory-management/units/',
     getParentRoute: () => AppRoute,
   } as any).lazy(() =>
     import(
-      './pages/_app/organizations/$orgId/inventory-management/products-categories.lazy'
+      './pages/_app/organizations/$orgId/inventory-management/units/index.lazy'
     ).then((d) => d.Route),
   )
 
@@ -150,6 +154,30 @@ const AppOrganizationsOrgIdInventoryManagementProductsIndexLazyRoute =
   } as any).lazy(() =>
     import(
       './pages/_app/organizations/$orgId/inventory-management/products/index.lazy'
+    ).then((d) => d.Route),
+  )
+
+const AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyRoute =
+  AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyImport.update(
+    {
+      id: '/organizations/$orgId/inventory-management/products-categories/',
+      path: '/organizations/$orgId/inventory-management/products-categories/',
+      getParentRoute: () => AppRoute,
+    } as any,
+  ).lazy(() =>
+    import(
+      './pages/_app/organizations/$orgId/inventory-management/products-categories/index.lazy'
+    ).then((d) => d.Route),
+  )
+
+const AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyRoute =
+  AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyImport.update({
+    id: '/organizations/$orgId/inventory-management/brands/',
+    path: '/organizations/$orgId/inventory-management/brands/',
+    getParentRoute: () => AppRoute,
+  } as any).lazy(() =>
+    import(
+      './pages/_app/organizations/$orgId/inventory-management/brands/index.lazy'
     ).then((d) => d.Route),
   )
 
@@ -283,13 +311,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrganizationsOrgIdIndexLazyImport
       parentRoute: typeof AppImport
     }
-    '/_app/organizations/$orgId/inventory-management/products-categories': {
-      id: '/_app/organizations/$orgId/inventory-management/products-categories'
-      path: '/organizations/$orgId/inventory-management/products-categories'
-      fullPath: '/organizations/$orgId/inventory-management/products-categories'
-      preLoaderRoute: typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyImport
-      parentRoute: typeof AppImport
-    }
     '/_app/organizations/$orgId/orders-management/all-orders': {
       id: '/_app/organizations/$orgId/orders-management/all-orders'
       path: '/organizations/$orgId/orders-management/all-orders'
@@ -339,11 +360,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/organizations/$orgId/inventory-management/brands/': {
+      id: '/_app/organizations/$orgId/inventory-management/brands/'
+      path: '/organizations/$orgId/inventory-management/brands'
+      fullPath: '/organizations/$orgId/inventory-management/brands'
+      preLoaderRoute: typeof AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/organizations/$orgId/inventory-management/products-categories/': {
+      id: '/_app/organizations/$orgId/inventory-management/products-categories/'
+      path: '/organizations/$orgId/inventory-management/products-categories'
+      fullPath: '/organizations/$orgId/inventory-management/products-categories'
+      preLoaderRoute: typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/organizations/$orgId/inventory-management/products/': {
       id: '/_app/organizations/$orgId/inventory-management/products/'
       path: '/organizations/$orgId/inventory-management/products'
       fullPath: '/organizations/$orgId/inventory-management/products'
       preLoaderRoute: typeof AppOrganizationsOrgIdInventoryManagementProductsIndexLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/organizations/$orgId/inventory-management/units/': {
+      id: '/_app/organizations/$orgId/inventory-management/units/'
+      path: '/organizations/$orgId/inventory-management/units'
+      fullPath: '/organizations/$orgId/inventory-management/units'
+      preLoaderRoute: typeof AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyImport
       parentRoute: typeof AppImport
     }
     '/_app/organizations/$orgId/inventory-management/products/product-edit/$productId': {
@@ -361,7 +403,6 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
   AppOrganizationsOrgIdIndexLazyRoute: typeof AppOrganizationsOrgIdIndexLazyRoute
-  AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute: typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute
   AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute: typeof AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute
   AppOrganizationsOrgIdTaskManagementIndexRoute: typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute: typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
@@ -369,15 +410,16 @@ interface AppRouteChildren {
   AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute: typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute: typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
   AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute: typeof AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute
+  AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyRoute: typeof AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyRoute
+  AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyRoute: typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyRoute
   AppOrganizationsOrgIdInventoryManagementProductsIndexLazyRoute: typeof AppOrganizationsOrgIdInventoryManagementProductsIndexLazyRoute
+  AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyRoute: typeof AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyRoute
   AppOrganizationsOrgIdInventoryManagementProductsProductEditProductIdLazyRoute: typeof AppOrganizationsOrgIdInventoryManagementProductsProductEditProductIdLazyRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
   AppOrganizationsOrgIdIndexLazyRoute: AppOrganizationsOrgIdIndexLazyRoute,
-  AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute:
-    AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute,
   AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute:
     AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute,
   AppOrganizationsOrgIdTaskManagementIndexRoute:
@@ -392,8 +434,14 @@ const AppRouteChildren: AppRouteChildren = {
     AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute,
   AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute:
     AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute,
+  AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyRoute:
+    AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyRoute,
+  AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyRoute:
+    AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyRoute,
   AppOrganizationsOrgIdInventoryManagementProductsIndexLazyRoute:
     AppOrganizationsOrgIdInventoryManagementProductsIndexLazyRoute,
+  AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyRoute:
+    AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyRoute,
   AppOrganizationsOrgIdInventoryManagementProductsProductEditProductIdLazyRoute:
     AppOrganizationsOrgIdInventoryManagementProductsProductEditProductIdLazyRoute,
 }
@@ -409,7 +457,6 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/organizations': typeof OrganizationsIndexRoute
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
-  '/organizations/$orgId/inventory-management/products-categories': typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute
   '/organizations/$orgId/orders-management/all-orders': typeof AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   '/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
@@ -417,7 +464,10 @@ export interface FileRoutesByFullPath {
   '/organizations/$orgId/accounts-management/bank-accounts': typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   '/organizations/$orgId/expense-management/all-expenses': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
   '/organizations/$orgId/expense-management/expense-categories': typeof AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute
+  '/organizations/$orgId/inventory-management/brands': typeof AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyRoute
+  '/organizations/$orgId/inventory-management/products-categories': typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyRoute
   '/organizations/$orgId/inventory-management/products': typeof AppOrganizationsOrgIdInventoryManagementProductsIndexLazyRoute
+  '/organizations/$orgId/inventory-management/units': typeof AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyRoute
   '/organizations/$orgId/inventory-management/products/product-edit/$productId': typeof AppOrganizationsOrgIdInventoryManagementProductsProductEditProductIdLazyRoute
 }
 
@@ -429,7 +479,6 @@ export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
   '/organizations': typeof OrganizationsIndexRoute
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
-  '/organizations/$orgId/inventory-management/products-categories': typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute
   '/organizations/$orgId/orders-management/all-orders': typeof AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   '/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
@@ -437,7 +486,10 @@ export interface FileRoutesByTo {
   '/organizations/$orgId/accounts-management/bank-accounts': typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   '/organizations/$orgId/expense-management/all-expenses': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
   '/organizations/$orgId/expense-management/expense-categories': typeof AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute
+  '/organizations/$orgId/inventory-management/brands': typeof AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyRoute
+  '/organizations/$orgId/inventory-management/products-categories': typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyRoute
   '/organizations/$orgId/inventory-management/products': typeof AppOrganizationsOrgIdInventoryManagementProductsIndexLazyRoute
+  '/organizations/$orgId/inventory-management/units': typeof AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyRoute
   '/organizations/$orgId/inventory-management/products/product-edit/$productId': typeof AppOrganizationsOrgIdInventoryManagementProductsProductEditProductIdLazyRoute
 }
 
@@ -451,7 +503,6 @@ export interface FileRoutesById {
   '/_app/': typeof AppIndexRoute
   '/organizations/': typeof OrganizationsIndexRoute
   '/_app/organizations/$orgId/': typeof AppOrganizationsOrgIdIndexLazyRoute
-  '/_app/organizations/$orgId/inventory-management/products-categories': typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesLazyRoute
   '/_app/organizations/$orgId/orders-management/all-orders': typeof AppOrganizationsOrgIdOrdersManagementAllOrdersLazyRoute
   '/_app/organizations/$orgId/task-management/': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   '/_app/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
@@ -459,7 +510,10 @@ export interface FileRoutesById {
   '/_app/organizations/$orgId/accounts-management/bank-accounts/': typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   '/_app/organizations/$orgId/expense-management/all-expenses/': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
   '/_app/organizations/$orgId/expense-management/expense-categories/': typeof AppOrganizationsOrgIdExpenseManagementExpenseCategoriesIndexLazyRoute
+  '/_app/organizations/$orgId/inventory-management/brands/': typeof AppOrganizationsOrgIdInventoryManagementBrandsIndexLazyRoute
+  '/_app/organizations/$orgId/inventory-management/products-categories/': typeof AppOrganizationsOrgIdInventoryManagementProductsCategoriesIndexLazyRoute
   '/_app/organizations/$orgId/inventory-management/products/': typeof AppOrganizationsOrgIdInventoryManagementProductsIndexLazyRoute
+  '/_app/organizations/$orgId/inventory-management/units/': typeof AppOrganizationsOrgIdInventoryManagementUnitsIndexLazyRoute
   '/_app/organizations/$orgId/inventory-management/products/product-edit/$productId': typeof AppOrganizationsOrgIdInventoryManagementProductsProductEditProductIdLazyRoute
 }
 
@@ -474,7 +528,6 @@ export interface FileRouteTypes {
     | '/'
     | '/organizations'
     | '/organizations/$orgId'
-    | '/organizations/$orgId/inventory-management/products-categories'
     | '/organizations/$orgId/orders-management/all-orders'
     | '/organizations/$orgId/task-management'
     | '/organizations/$orgId/accounts-management/statements/$accountId'
@@ -482,7 +535,10 @@ export interface FileRouteTypes {
     | '/organizations/$orgId/accounts-management/bank-accounts'
     | '/organizations/$orgId/expense-management/all-expenses'
     | '/organizations/$orgId/expense-management/expense-categories'
+    | '/organizations/$orgId/inventory-management/brands'
+    | '/organizations/$orgId/inventory-management/products-categories'
     | '/organizations/$orgId/inventory-management/products'
+    | '/organizations/$orgId/inventory-management/units'
     | '/organizations/$orgId/inventory-management/products/product-edit/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -493,7 +549,6 @@ export interface FileRouteTypes {
     | '/'
     | '/organizations'
     | '/organizations/$orgId'
-    | '/organizations/$orgId/inventory-management/products-categories'
     | '/organizations/$orgId/orders-management/all-orders'
     | '/organizations/$orgId/task-management'
     | '/organizations/$orgId/accounts-management/statements/$accountId'
@@ -501,7 +556,10 @@ export interface FileRouteTypes {
     | '/organizations/$orgId/accounts-management/bank-accounts'
     | '/organizations/$orgId/expense-management/all-expenses'
     | '/organizations/$orgId/expense-management/expense-categories'
+    | '/organizations/$orgId/inventory-management/brands'
+    | '/organizations/$orgId/inventory-management/products-categories'
     | '/organizations/$orgId/inventory-management/products'
+    | '/organizations/$orgId/inventory-management/units'
     | '/organizations/$orgId/inventory-management/products/product-edit/$productId'
   id:
     | '__root__'
@@ -513,7 +571,6 @@ export interface FileRouteTypes {
     | '/_app/'
     | '/organizations/'
     | '/_app/organizations/$orgId/'
-    | '/_app/organizations/$orgId/inventory-management/products-categories'
     | '/_app/organizations/$orgId/orders-management/all-orders'
     | '/_app/organizations/$orgId/task-management/'
     | '/_app/organizations/$orgId/accounts-management/statements/$accountId'
@@ -521,7 +578,10 @@ export interface FileRouteTypes {
     | '/_app/organizations/$orgId/accounts-management/bank-accounts/'
     | '/_app/organizations/$orgId/expense-management/all-expenses/'
     | '/_app/organizations/$orgId/expense-management/expense-categories/'
+    | '/_app/organizations/$orgId/inventory-management/brands/'
+    | '/_app/organizations/$orgId/inventory-management/products-categories/'
     | '/_app/organizations/$orgId/inventory-management/products/'
+    | '/_app/organizations/$orgId/inventory-management/units/'
     | '/_app/organizations/$orgId/inventory-management/products/product-edit/$productId'
   fileRoutesById: FileRoutesById
 }
@@ -567,7 +627,6 @@ export const routeTree = rootRoute
       "children": [
         "/_app/",
         "/_app/organizations/$orgId/",
-        "/_app/organizations/$orgId/inventory-management/products-categories",
         "/_app/organizations/$orgId/orders-management/all-orders",
         "/_app/organizations/$orgId/task-management/",
         "/_app/organizations/$orgId/accounts-management/statements/$accountId",
@@ -575,7 +634,10 @@ export const routeTree = rootRoute
         "/_app/organizations/$orgId/accounts-management/bank-accounts/",
         "/_app/organizations/$orgId/expense-management/all-expenses/",
         "/_app/organizations/$orgId/expense-management/expense-categories/",
+        "/_app/organizations/$orgId/inventory-management/brands/",
+        "/_app/organizations/$orgId/inventory-management/products-categories/",
         "/_app/organizations/$orgId/inventory-management/products/",
+        "/_app/organizations/$orgId/inventory-management/units/",
         "/_app/organizations/$orgId/inventory-management/products/product-edit/$productId"
       ]
     },
@@ -600,10 +662,6 @@ export const routeTree = rootRoute
     },
     "/_app/organizations/$orgId/": {
       "filePath": "_app/organizations/$orgId/index.lazy.tsx",
-      "parent": "/_app"
-    },
-    "/_app/organizations/$orgId/inventory-management/products-categories": {
-      "filePath": "_app/organizations/$orgId/inventory-management/products-categories.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/organizations/$orgId/orders-management/all-orders": {
@@ -634,8 +692,20 @@ export const routeTree = rootRoute
       "filePath": "_app/organizations/$orgId/expense-management/expense-categories/index.lazy.tsx",
       "parent": "/_app"
     },
+    "/_app/organizations/$orgId/inventory-management/brands/": {
+      "filePath": "_app/organizations/$orgId/inventory-management/brands/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/organizations/$orgId/inventory-management/products-categories/": {
+      "filePath": "_app/organizations/$orgId/inventory-management/products-categories/index.lazy.tsx",
+      "parent": "/_app"
+    },
     "/_app/organizations/$orgId/inventory-management/products/": {
       "filePath": "_app/organizations/$orgId/inventory-management/products/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/organizations/$orgId/inventory-management/units/": {
+      "filePath": "_app/organizations/$orgId/inventory-management/units/index.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/organizations/$orgId/inventory-management/products/product-edit/$productId": {

@@ -30,8 +30,8 @@ import { Loader2 } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
-import { productApi } from '../api/productApi';
-import { All_Product_Categories_For_DropDown_List_Query } from '../gql-query/query.gql';
+import { productApi } from '../../api/productApi';
+import { All_Product_Categories_For_DropDown_List_Query } from '../../gql-query/query.gql';
 
 interface ProductFormPropsType {
 	product?: Product;

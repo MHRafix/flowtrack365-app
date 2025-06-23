@@ -19,24 +19,35 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Product, ProductCategory } from '@/gql/graphql';
+import { Brand, Product, ProductCategory, Unit } from '@/gql/graphql';
 import { userAtom } from '@/store/auth.atom';
+import { UseMutationResult } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import { Loader2, Plus, Trash } from 'lucide-react';
 import { FC, useEffect } from 'react';
-import { productApi } from '../../../../~module/api/productApi';
 
 interface AssignmentProps {
 	product: Product;
 	productCategories: ProductCategory[];
+	updateProduct: UseMutationResult;
+	brands: Brand[];
+	units: Unit[];
 }
-const Assignments: FC<AssignmentProps> = ({ product, productCategories }) => {
+const Assignments: FC<AssignmentProps> = ({
+	product,
+	productCategories,
+	updateProduct,
+	brands,
+	units,
+}) => {
 	const [session] = useAtom(userAtom);
 
 	const form = useForm<FormValues>({
 		resolver: yupResolver(schema),
 		defaultValues: {
 			category: product?.category?._id || '',
+			brand: product.brand?._id || '',
+			unit: product.unit?._id || '',
 		},
 	});
 
@@ -69,8 +80,6 @@ const Assignments: FC<AssignmentProps> = ({ product, productCategories }) => {
 			});
 		}
 	}, [product]);
-
-	const { updateProduct } = productApi();
 
 	const onSubmit = (values: FormValues) => {
 		updateProduct.mutate({
@@ -121,16 +130,18 @@ const Assignments: FC<AssignmentProps> = ({ product, productCategories }) => {
 												<SelectValue placeholder='Select brand' />
 											</SelectTrigger>
 											<SelectContent>
-												<SelectItem value='apple'>Apple</SelectItem>
-												<SelectItem value='samsung'>Samsung</SelectItem>
-												<SelectItem value='sony'>Sony</SelectItem>
+												{brands?.map((brand, idx) => (
+													<SelectItem key={idx} value={brand?._id!}>
+														{brand?.name}
+													</SelectItem>
+												))}
 											</SelectContent>
 										</Select>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
-						/>{' '}
+						/>
 						{/* Unit */}
 						<FormField
 							control={form.control}
@@ -144,9 +155,11 @@ const Assignments: FC<AssignmentProps> = ({ product, productCategories }) => {
 												<SelectValue placeholder='Select unit' />
 											</SelectTrigger>
 											<SelectContent>
-												<SelectItem value='pcs'>Pcs</SelectItem>
-												<SelectItem value='kg'>Kg</SelectItem>
-												<SelectItem value='liter'>Liter</SelectItem>
+												{units?.map((unit, idx) => (
+													<SelectItem key={idx} value={unit?._id!}>
+														{unit?.name}
+													</SelectItem>
+												))}
 											</SelectContent>
 										</Select>
 									</FormControl>

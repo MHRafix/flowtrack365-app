@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Product } from '@/gql/graphql';
+import { ProductCategory } from '@/gql/graphql';
 import { userAtom } from '@/store/auth.atom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAtom } from 'jotai';
@@ -20,23 +20,25 @@ import * as Yup from 'yup';
 import { productCategoryApi } from '../api/productCategoryApi';
 
 interface CategoryFormFormPropsType {
-	product?: Product;
+	category?: ProductCategory;
 	actionType: 'ADD' | 'EDIT';
 	onRefetch: CallableFunction;
 	onCloseDrawer: CallableFunction;
 }
 export const CategoryForm: FC<CategoryFormFormPropsType> = ({
-	product,
+	category,
 	actionType,
 	onRefetch,
 	onCloseDrawer,
 }) => {
 	const [session] = useAtom(userAtom);
 
-	const { createProductCategory } = productCategoryApi(() => {
-		onCloseDrawer();
-		onRefetch();
-	});
+	const { createProductCategory, updateProductCategory } = productCategoryApi(
+		() => {
+			onCloseDrawer();
+			onRefetch();
+		}
+	);
 
 	// Define your form.
 	const form = useForm<CategoryFormStateType>({
@@ -44,22 +46,22 @@ export const CategoryForm: FC<CategoryFormFormPropsType> = ({
 	});
 
 	useEffect(() => {
-		form.setValue('name', product?.title!);
-		form.setValue('description', product?.code!);
-	}, [product]);
+		form.setValue('name', category?.name!);
+		form.setValue('description', category?.description!);
+	}, [category]);
 
 	// Define a submit handler.
 	function onSubmit(values: CategoryFormStateType) {
-		actionType === 'ADD' &&
-			createProductCategory.mutate({
-				...values,
-				orgUID: session?.orgUID!,
-			});
-		// : updateProduct.mutate({
-		// 	// _id: product?._id!,
-		// 	...values,
-		// 	orgUID: session?.orgUID!,
-		// });
+		actionType === 'ADD'
+			? createProductCategory.mutate({
+					...values,
+					orgUID: session?.orgUID!,
+				})
+			: updateProductCategory.mutate({
+					_id: category?._id!,
+					...values,
+					orgUID: session?.orgUID!,
+				});
 	}
 
 	return (
@@ -87,7 +89,11 @@ export const CategoryForm: FC<CategoryFormFormPropsType> = ({
 						<FormItem>
 							<FormLabel>Description</FormLabel>
 							<FormControl>
-								<Textarea placeholder='Description' onChange={field.onChange} />
+								<Textarea
+									placeholder='Description'
+									value={field.value}
+									onChange={field.onChange}
+								/>
 							</FormControl>
 
 							<FormMessage />
@@ -95,7 +101,8 @@ export const CategoryForm: FC<CategoryFormFormPropsType> = ({
 					)}
 				/>
 				<Button type='submit' variant={'default'} className='w-full'>
-					{createProductCategory?.isPending && (
+					{(createProductCategory?.isPending ||
+						updateProductCategory?.isPending) && (
 						<Loader2 className='animate-spin' />
 					)}
 					Save

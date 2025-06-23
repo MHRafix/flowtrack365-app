@@ -2,7 +2,7 @@ import { Product } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ProductFormStateType } from '../components/ProductForm';
+import { ProductFormStateType } from '../components/all-products/ProductForm';
 import {
 	Create_Product_Mutation,
 	Remove_Product_Mutation,
@@ -79,7 +79,7 @@ interface CreatePayloadType extends ProductFormStateType {
 	orgUID: string;
 }
 
-interface UpdatePayloadType {
+export interface UpdatePayloadType {
 	payload: Product;
 	orgUid: string;
 }

@@ -2,7 +2,7 @@ import { useAppConfirm } from '@/components/AppConfirm';
 import { DataTable } from '@/components/DataTable';
 import DrawerWrapper from '@/components/DrawerWrapper';
 import { Button } from '@/components/ui/button';
-import { Product, ProductPagination } from '@/gql/graphql';
+import { ProductPagination } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
@@ -10,10 +10,10 @@ import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
 import { Loader2, PenSquare, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
-import { productApi } from '../~module/api/productApi';
-import { ProductForm } from '../~module/components/ProductForm';
-import { productsTableColumns } from '../~module/components/products-table-cols';
-import { All_Products_Query } from '../~module/gql-query/query.gql';
+import { productApi } from './~module/api/productApi';
+import { ProductForm } from './~module/components/all-products/ProductForm';
+import { productsTableColumns } from './~module/components/all-products/products-table-cols';
+import { All_Products_Query } from './~module/gql-query/query.gql';
 
 export const Route = createLazyFileRoute(
 	'/_app/organizations/$orgId/inventory-management/products/'
@@ -22,9 +22,7 @@ export const Route = createLazyFileRoute(
 });
 
 function RouteComponent() {
-	const [isOpenEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
 	const [isOpenCreateDrawer, setOpenCreateDrawer] = useState<boolean>(false);
-	const [product, setProduct] = useState<Product | null>(null);
 	const [rowId, setRowId] = useState<string>('');
 	const [session] = useAtom(userAtom);
 	const { show } = useAppConfirm();
@@ -59,7 +57,6 @@ function RouteComponent() {
 					variant={'outline'}
 					onClick={() => {
 						setOpenCreateDrawer(true);
-						setProduct(null);
 					}}
 				>
 					<Plus /> Add Product
@@ -113,7 +110,6 @@ function RouteComponent() {
 				isOpen={isOpenCreateDrawer}
 				onCloseDrawer={() => {
 					setOpenCreateDrawer(false);
-					setProduct(null);
 				}}
 			>
 				<ProductForm
@@ -123,7 +119,6 @@ function RouteComponent() {
 					}}
 					onCloseDrawer={() => {
 						setOpenCreateDrawer(false);
-						setProduct(null);
 					}}
 				/>
 			</DrawerWrapper>

@@ -13,13 +13,23 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { userAtom } from '@/store/auth.atom';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { UseMutationResult } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
+import { Loader2 } from 'lucide-react';
 
 interface PriceAssignmentProps {
 	product: Product;
+	updateProduct: UseMutationResult;
 }
 
-const PriceAssignment: FC<PriceAssignmentProps> = ({ product }) => {
+const PriceAssignment: FC<PriceAssignmentProps> = ({
+	product,
+	updateProduct,
+}) => {
+	const [session] = useAtom(userAtom);
+
 	const form = useForm<FormValues>({
 		resolver: yupResolver(schema),
 	});
@@ -30,8 +40,10 @@ const PriceAssignment: FC<PriceAssignmentProps> = ({ product }) => {
 	}, [product]);
 
 	const onSubmit = (values: FormValues) => {
-		console.log('Price Form Submitted:', values);
-		// API call or logic here
+		updateProduct.mutate({
+			orgUid: session?.orgUID!,
+			payload: { ...values, _id: product?._id } as any,
+		});
 	};
 	return (
 		<div className='bg-neutral-100 border dark:bg-slate-900 p-5 rounded-md'>
@@ -55,6 +67,13 @@ const PriceAssignment: FC<PriceAssignmentProps> = ({ product }) => {
 							</FormItem>
 						)}
 					/>
+					<FormItem>
+						<FormLabel>Sale Price</FormLabel>
+						<FormControl>
+							<Input type='number' value={product?.salePrice!} disabled />
+						</FormControl>
+						<FormMessage />
+					</FormItem>
 
 					{/* Discount Amount */}
 					<FormField
@@ -76,7 +95,12 @@ const PriceAssignment: FC<PriceAssignmentProps> = ({ product }) => {
 					/>
 
 					{/* Submit */}
-					<Button type='submit' className='w-full'>
+					<Button
+						type='submit'
+						className='w-full'
+						disabled={updateProduct.isPending}
+					>
+						{updateProduct?.isPending && <Loader2 className='animate-spin' />}
 						Save
 					</Button>
 				</form>

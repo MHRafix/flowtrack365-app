@@ -15,12 +15,22 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { userAtom } from '@/store/auth.atom';
+import { UseMutationResult } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
+import { Loader2 } from 'lucide-react';
 
 interface BasicInformationProps {
 	product: Product;
+	updateProduct: UseMutationResult;
 }
 
-const BasicInformation: FC<BasicInformationProps> = ({ product }) => {
+const BasicInformation: FC<BasicInformationProps> = ({
+	product,
+	updateProduct,
+}) => {
+	const [session] = useAtom(userAtom);
+
 	const form = useForm<FormValues>({
 		resolver: yupResolver(schema),
 	});
@@ -34,8 +44,10 @@ const BasicInformation: FC<BasicInformationProps> = ({ product }) => {
 	}, [product]);
 
 	const onSubmit = (values: FormValues) => {
-		console.log('Submitted:', values);
-		// handle your API call here
+		updateProduct.mutate({
+			orgUid: session?.orgUID!,
+			payload: { ...values, _id: product?._id } as any,
+		});
 	};
 
 	return (
@@ -118,9 +130,13 @@ const BasicInformation: FC<BasicInformationProps> = ({ product }) => {
 					/>
 
 					{/* Submit Button */}
-					<Button type='submit' className='w-full'>
-						{/* Uncomment this if you integrate mutation */}
-						{/* {createProductCategory?.isPending && <Loader2 className="animate-spin mr-2" />} */}
+					<Button
+						type='submit'
+						className='w-full'
+						disabled={updateProduct.isPending}
+					>
+						{' '}
+						{updateProduct?.isPending && <Loader2 className='animate-spin' />}
 						Save
 					</Button>
 				</form>

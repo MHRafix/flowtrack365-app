@@ -7,6 +7,7 @@ import {
 	Create_Product_Mutation,
 	Remove_Product_Mutation,
 	Update_Product_Mutation,
+	Update_Product_Stock_Mutation,
 } from '../gql-query/query.gql';
 
 export const productApi = (onSuccess?: CallableFunction) => {
@@ -48,6 +49,24 @@ export const productApi = (onSuccess?: CallableFunction) => {
 		},
 	});
 
+	// update stock
+	const updateStock = useMutation({
+		mutationKey: [`update-product-stock`],
+		mutationFn: async (payload: UpdateStockPayloadType) =>
+			await gqlRequest({
+				query: Update_Product_Stock_Mutation,
+				variables: payload,
+			}),
+
+		onSuccess: () => {
+			toast.success('Stock has been updated successfully.');
+			onSuccess?.();
+		},
+		onError: () => {
+			toast.error('Failed to update stock.');
+		},
+	});
+
 	// remove product
 	const removeProduct = useMutation({
 		mutationKey: [`remove-product`],
@@ -71,6 +90,7 @@ export const productApi = (onSuccess?: CallableFunction) => {
 	return {
 		createProduct,
 		updateProduct,
+		updateStock,
 		removeProduct,
 	};
 };
@@ -82,4 +102,16 @@ interface CreatePayloadType extends ProductFormStateType {
 export interface UpdatePayloadType {
 	payload: Product;
 	orgUid: string;
+}
+
+export interface UpdateStockPayloadType {
+	payload: {
+		quantity: number;
+		stockPrice: number;
+		stockType: string;
+		updatedBy: string;
+		date: Date;
+	};
+	orgUid: string;
+	id: string;
 }

@@ -51,6 +51,16 @@ export const Update_Product_Mutation = gql`
 	}
 `;
 
+export const Update_Product_Stock_Mutation = gql`
+	mutation UpdateStock(
+		$payload: StockHistoryInput!
+		$orgUid: String!
+		$id: String!
+	) {
+		updateStock(payload: $payload, orgUID: $orgUid, _id: $id)
+	}
+`;
+
 export const Remove_Product_Mutation = gql`
 	mutation RemoveProduct($id: String!) {
 		removeProduct(_id: $id) {

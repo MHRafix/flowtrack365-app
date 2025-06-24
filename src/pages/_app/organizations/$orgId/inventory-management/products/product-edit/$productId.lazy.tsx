@@ -163,7 +163,7 @@ function RouteComponent() {
 						<TabsContent value='manage_stock'>
 							<ManageStock
 								product={data?.product!}
-								updateProduct={updateProduct as UseMutationResult}
+								onRefetch={productDetailsRefetch}
 							/>
 						</TabsContent>
 					</div>

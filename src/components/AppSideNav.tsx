@@ -16,21 +16,24 @@ import { Link, useRouter } from '@tanstack/react-router';
 import {
 	BanknoteArrowDown,
 	Blocks,
-	ChartNetwork,
 	ChevronDown,
 	ChevronRight,
+	Flower,
 	Frame,
 	HandCoins,
-	Headphones,
 	HomeIcon,
 	Landmark,
 	LayoutGrid,
 	LayoutList,
 	ListTodo,
+	LockKeyhole,
 	LogOutIcon,
 	Plus,
+	Repeat2,
+	Settings,
 	ShoppingCart,
 	SquareStack,
+	Users,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAppConfirm } from './AppConfirm';
@@ -79,10 +82,23 @@ const items = [
 			},
 		],
 	},
+
 	{
-		title: 'All Orders',
-		url: `/organizations/${organizationUID}/orders-management/all-orders`,
+		title: 'Orders Management',
+		url: `/organizations/${organizationUID}/orders-management/`,
 		icon: ShoppingCart,
+		items: [
+			{
+				title: 'All Orders',
+				url: `/organizations/${organizationUID}/orders-management/all-orders`,
+				icon: ShoppingCart,
+			},
+			{
+				title: 'POS Sale',
+				url: `/organizations/${organizationUID}/orders-management/pos-sale`,
+				icon: Repeat2,
+			},
+		],
 	},
 	{
 		title: 'Account Management',
@@ -101,7 +117,6 @@ const items = [
 			},
 		],
 	},
-
 	{
 		title: 'Expense Management',
 		url: `/organizations/${organizationUID}/expense-management/all-expenses`,
@@ -119,16 +134,44 @@ const items = [
 			},
 		],
 	},
+
 	{
-		title: 'Task Management',
-		url: `/organizations/${organizationUID}/task-management`,
-		icon: ChartNetwork,
+		title: 'Organization Settings',
+		url: `/organizations/${organizationUID}/organization-settings/`,
+		icon: Settings,
+		items: [
+			{
+				title: 'General',
+				url: `/organizations/${organizationUID}/organization-settings/general`,
+				icon: Settings,
+			},
+			{
+				title: 'Members',
+				url: `/organizations/${organizationUID}/organization-settings/members`,
+				icon: Users,
+			},
+			{
+				title: 'API Credentials',
+				url: `/organizations/${organizationUID}/organization-settings/api-credentials`,
+				icon: LockKeyhole,
+			},
+			{
+				title: 'Plan & Features',
+				url: `/organizations/${organizationUID}/organization-settings/plan-features`,
+				icon: Flower,
+			},
+		],
 	},
-	{
-		title: 'CRM Management',
-		url: `/organizations/${organizationUID}/crm-management`,
-		icon: Headphones,
-	},
+	// {
+	// 	title: 'Task Management',
+	// 	url: `/organizations/${organizationUID}/task-management`,
+	// 	icon: ChartNetwork,
+	// },
+	// {
+	// 	title: 'CRM Management',
+	// 	url: `/organizations/${organizationUID}/crm-management`,
+	// 	icon: Headphones,
+	// },
 ];
 
 const AppSidenav = () => {

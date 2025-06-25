@@ -248,9 +248,12 @@ export type CreateOrganizationInput = {
   cover?: InputMaybe<ServerFileInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   employees?: InputMaybe<Array<Scalars['String']['input']>>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
   orgUID?: InputMaybe<Scalars['String']['input']>;
   owner?: InputMaybe<Scalars['String']['input']>;
+  settings?: InputMaybe<OrganizationSettingsInput>;
+  status?: InputMaybe<Organization_Status>;
   tagline?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
@@ -464,6 +467,9 @@ export type Mutation = {
   createSaving: Saving;
   createTask: TaskManagement;
   createUnit: Scalars['Boolean']['output'];
+  disableOrganization: Scalars['Boolean']['output'];
+  generateApiKey: Scalars['Boolean']['output'];
+  generateApiToken: Scalars['Boolean']['output'];
   registration: ApiCommonActionOutput;
   removeAdjustment: Adjustment;
   removeAllOrder: AllOrder;
@@ -473,7 +479,6 @@ export type Mutation = {
   removeEmployee?: Maybe<Scalars['Boolean']['output']>;
   removeExpense?: Maybe<Scalars['Boolean']['output']>;
   removeExpenseCategory?: Maybe<Scalars['Boolean']['output']>;
-  removeOrganization: Organization;
   removeProduct: Product;
   removeProductCategory: ProductCategory;
   removeSaving: Saving;
@@ -494,6 +499,7 @@ export type Mutation = {
   updateProduct: Scalars['Boolean']['output'];
   updateProductCategory: ProductCategory;
   updateSaving: Saving;
+  updateStock: Scalars['Boolean']['output'];
   updateTask: Scalars['Boolean']['output'];
   updateUnit: Scalars['Boolean']['output'];
   updateUser: User;
@@ -578,6 +584,24 @@ export type MutationCreateUnitArgs = {
 };
 
 
+export type MutationDisableOrganizationArgs = {
+  _id: Scalars['String']['input'];
+  orgUID: Scalars['String']['input'];
+};
+
+
+export type MutationGenerateApiKeyArgs = {
+  _id: Scalars['String']['input'];
+  orgUID: Scalars['String']['input'];
+};
+
+
+export type MutationGenerateApiTokenArgs = {
+  _id: Scalars['String']['input'];
+  orgUID: Scalars['String']['input'];
+};
+
+
 export type MutationRegistrationArgs = {
   input: RegistrationUserInput;
 };
@@ -621,11 +645,6 @@ export type MutationRemoveExpenseArgs = {
 
 export type MutationRemoveExpenseCategoryArgs = {
   input: CommonMatchInput;
-};
-
-
-export type MutationRemoveOrganizationArgs = {
-  _id: Scalars['String']['input'];
 };
 
 
@@ -712,6 +731,7 @@ export type MutationUpdateExpenseCategoryArgs = {
 
 
 export type MutationUpdateOrganizationArgs = {
+  orgUID: Scalars['String']['input'];
   updatePayload: UpdateOrganizationInput;
 };
 
@@ -729,6 +749,13 @@ export type MutationUpdateProductCategoryArgs = {
 
 export type MutationUpdateSavingArgs = {
   payload: UpdateSavingInput;
+};
+
+
+export type MutationUpdateStockArgs = {
+  _id: Scalars['String']['input'];
+  orgUID: Scalars['String']['input'];
+  payload: StockHistoryInput;
 };
 
 
@@ -772,9 +799,12 @@ export type Organization = {
   cover?: Maybe<ServerFileEntity>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   employees?: Maybe<Array<Employee>>;
+  isVerified?: Maybe<Scalars['Boolean']['output']>;
   name: Scalars['String']['output'];
   orgUID?: Maybe<Scalars['String']['output']>;
   owner?: Maybe<Employee>;
+  settings?: Maybe<OrganizationSettingsSchema>;
+  status?: Maybe<Organization_Status>;
   tagline?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -788,11 +818,29 @@ export type OrganizationListQueryInput = {
   whereOperator?: InputMaybe<Where_Operator>;
 };
 
+export type OrganizationSettingsInput = {
+  apiKey?: InputMaybe<Scalars['String']['input']>;
+  apiToken?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type OrganizationSettingsSchema = {
+  __typename?: 'OrganizationSettingsSchema';
+  apiKey?: Maybe<Scalars['String']['output']>;
+  apiToken?: Maybe<Scalars['String']['output']>;
+};
+
 export type OrganizationWithPagination = {
   __typename?: 'OrganizationWithPagination';
   meta?: Maybe<PaginationMeta>;
   nodes?: Maybe<Array<Organization>>;
 };
+
+export enum Organization_Status {
+  Active = 'Active',
+  Disable = 'Disable',
+  InActive = 'InActive',
+  Pending = 'Pending'
+}
 
 export type PaginationMeta = {
   __typename?: 'PaginationMeta';
@@ -1167,6 +1215,7 @@ export type StockHistoryInput = {
   quantity: Scalars['Int']['input'];
   stockPrice: Scalars['Float']['input'];
   stockType: StockType;
+  updatedBy: Scalars['String']['input'];
 };
 
 export type StockHistorySchema = {
@@ -1175,6 +1224,7 @@ export type StockHistorySchema = {
   quantity: Scalars['Int']['output'];
   stockPrice: Scalars['Float']['output'];
   stockType: StockType;
+  updatedBy: Employee;
 };
 
 export enum StockType {
@@ -1357,9 +1407,12 @@ export type UpdateOrganizationInput = {
   cover?: InputMaybe<ServerFileInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   employees?: InputMaybe<Array<Scalars['String']['input']>>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   orgUID?: InputMaybe<Scalars['String']['input']>;
   owner?: InputMaybe<Scalars['String']['input']>;
+  settings?: InputMaybe<OrganizationSettingsInput>;
+  status?: InputMaybe<Organization_Status>;
   tagline?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };

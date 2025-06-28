@@ -189,14 +189,14 @@ function RouteComponent() {
 					}}
 				/>
 			</DrawerWrapper>
-			<div className='flex justify-between items-center gap-5 mb-5'>
+			<div className='md:flex grid justify-between items-center gap-5 mb-5'>
 				<h2 className='text-3xl font-bold'>All Expenses</h2>
-				<div className='flex items-center gap-5'>
+				<div className='flex items-center !justify-end gap-5'>
 					<Select
 						onValueChange={setCategory}
 						defaultValue={expense?.category?._id}
 					>
-						<SelectTrigger className='w-[250px]'>
+						<SelectTrigger className='md:w-[250px] w-[140px]'>
 							<SelectValue placeholder='Filter by category' />
 						</SelectTrigger>
 						<SelectContent>

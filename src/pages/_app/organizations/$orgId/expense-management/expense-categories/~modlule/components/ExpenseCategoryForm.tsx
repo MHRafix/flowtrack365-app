@@ -9,8 +9,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { userAtom } from '@/store/auth.atom';
 import { IExpenseCategory } from '@/types/expenseCategoriesType';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAtom } from 'jotai';
 import { Loader2 } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -29,6 +31,8 @@ export const ExpenseCategoryForm: FC<ExpenseFormPropsType> = ({
 	onRefetch,
 	onCloseDrawer,
 }) => {
+	const [session] = useAtom(userAtom);
+
 	const { createExpenseCategory, updateExpenseCategory } = expenseCategoryApi(
 		() => {
 			onRefetch();
@@ -49,8 +53,12 @@ export const ExpenseCategoryForm: FC<ExpenseFormPropsType> = ({
 	// Define a submit handler.
 	function onSubmit(values: ExpenseCategoryFormStateType) {
 		actionType === 'ADD'
-			? createExpenseCategory.mutate(values)
-			: updateExpenseCategory.mutate({ _id: expenseCategory?._id!, ...values });
+			? createExpenseCategory.mutate({ ...values, orgUID: session?.orgUID })
+			: updateExpenseCategory.mutate({
+					_id: expenseCategory?._id!,
+					...values,
+					orgUID: session?.orgUID,
+				});
 	}
 	return (
 		<Form {...form}>

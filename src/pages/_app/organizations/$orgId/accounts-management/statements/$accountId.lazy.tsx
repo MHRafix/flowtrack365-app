@@ -73,7 +73,7 @@ function RouteComponent() {
 	return (
 		<div>
 			<div className='flex justify-between items-center gap-5 mb-5'>
-				<h2 className='text-3xl font-bold'>Bank Statements</h2>
+				<h2 className='md:text-3xl text-xl font-bold'>Bank Statements</h2>
 				<Button disabled={statements_loading}>
 					<Download /> Download PDF
 				</Button>
@@ -83,17 +83,16 @@ function RouteComponent() {
 				<Skeleton className='h-[300px] my-2 bg-slate-200 dark:bg-slate-800' />
 			) : (
 				<div className='my-5'>
-					<div className='grid grid-cols-3 p-5 my-2'>
+					<div className='md:flex grid justify-left gap-5 py-5 my-2'>
 						<img
 							src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzmiYHapAtv6Y2o_oNclqsqkpwkwi0O6Cr4A&s'
 							alt='logo'
 							className='rounded-md w-[130px] h-[130px] object-cover'
 						/>
-						<div className='grid gap-2 text-center'>
-							<h1 className='text-3xl font-semibold'>
-								{organization?.name + ' - ' + organization?.tagline}
-							</h1>
-							<div className='text-left mx-auto'>
+						<div className='grid gap-2'>
+							<h1 className='text-3xl font-semibold'>{organization?.name}</h1>
+							<p className='text-xl text-teal-300'>{organization?.tagline}</p>
+							<div className='text-left'>
 								<h1 className='text-lg'>
 									Email: {organization?.businessEmail}
 								</h1>
@@ -105,7 +104,7 @@ function RouteComponent() {
 						</div>
 					</div>
 					<hr />
-					<div className='my-2 p-5'>
+					<div className='my-2 py-5'>
 						<div className='text-left mx-auto'>
 							<h1 className='text-lg font-medium'>
 								Account Holder: {bankAccountDetails?.bankAccount?.holderName}

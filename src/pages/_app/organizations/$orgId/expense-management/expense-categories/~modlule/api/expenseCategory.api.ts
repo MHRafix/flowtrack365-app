@@ -1,7 +1,10 @@
+import {
+	CreateExpenseCategoryInput,
+	UpdateExpenseCategoryInput,
+} from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ExpenseCategoryFormStateType } from '../components/ExpenseCategoryForm';
 import {
 	Create_Expense_Category_Mutation,
 	Remove_Expense_Category_Mutation,
@@ -10,7 +13,7 @@ import {
 
 export const expenseCategoryApi = (onSuccess?: CallableFunction) => {
 	const createExpenseCategory = useMutation({
-		mutationFn: (payload: ExpenseCategoryFormStateType) =>
+		mutationFn: (payload: CreateExpenseCategoryInput) =>
 			gqlRequest({
 				query: Create_Expense_Category_Mutation,
 				variables: { input: payload },
@@ -19,10 +22,13 @@ export const expenseCategoryApi = (onSuccess?: CallableFunction) => {
 			toast.success('Expense category creation has been success');
 			onSuccess?.();
 		},
-		onError: () => toast.error('Failed to create expense category'),
+		onError: (error) => {
+			console.log({ error });
+			toast.error(error?.message || 'Failed to create expense category');
+		},
 	});
 	const updateExpenseCategory = useMutation({
-		mutationFn: (payload: ExpenseCategoryUpdatePayloadType) =>
+		mutationFn: (payload: UpdateExpenseCategoryInput) =>
 			gqlRequest({
 				query: Update_Expense_Category_Mutation,
 				variables: {
@@ -66,7 +72,7 @@ export const expenseCategoryApi = (onSuccess?: CallableFunction) => {
 	};
 };
 
-interface ExpenseCategoryUpdatePayloadType
-	extends ExpenseCategoryFormStateType {
-	_id: string;
-}
+// interface ExpenseCategoryUpdatePayloadType
+// 	extends ExpenseCategoryFormStateType {
+// 	_id: string;
+// }

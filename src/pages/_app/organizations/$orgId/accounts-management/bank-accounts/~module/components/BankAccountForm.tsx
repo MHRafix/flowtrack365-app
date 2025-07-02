@@ -45,7 +45,6 @@ export const BankAccountForm: FC<BankAccountFormPropsType> = ({
 	useEffect(() => {
 		form.setValue('bankName', account?.bankName!);
 		form.setValue('branch', account?.branch!);
-		form.setValue('balance', account?.balance!);
 		form.setValue('reference', account?.reference!);
 		form.setValue('holderName', account?.holderName!);
 	}, [account]);
@@ -123,21 +122,6 @@ export const BankAccountForm: FC<BankAccountFormPropsType> = ({
 					)}
 				/>
 
-				<FormField
-					control={form.control}
-					name='balance'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Balance</FormLabel>
-							<FormControl>
-								<Input placeholder='Balance amount' {...field} />
-							</FormControl>
-
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
 				<Button type='submit' variant={'default'} className='w-full'>
 					{(createBankAccount?.isPending || updateBankAccount?.isPending) && (
 						<Loader2 className='animate-spin' />
@@ -154,7 +138,6 @@ const Bank_Account_Form_Schema = Yup.object({
 	reference: Yup.string().required().label('Reference'),
 	holderName: Yup.string().required().label('Holder name'),
 	branch: Yup.string().required().label('Branch'),
-	balance: Yup.number().required().label('Balance'),
 });
 
 export type BankAccountFormStateType = Yup.InferType<

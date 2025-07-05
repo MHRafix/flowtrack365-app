@@ -70,4 +70,5 @@ interface ExpenseApiPayloadType extends ExpenseFormStateType {
 	_id?: string;
 	orgUID: string;
 	creator: string;
+	statement?: string;
 }

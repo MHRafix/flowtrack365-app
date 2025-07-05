@@ -40,6 +40,13 @@ export const statementTableColumns: ColumnDef<Adjustment>[] = [
 		},
 	},
 	{
+		accessorKey: 'description',
+		header: 'Note',
+		cell: ({ row }) => {
+			return <span>{row.original?.description || 'N/A'} </span>;
+		},
+	},
+	{
 		accessorKey: 'balance',
 		header: 'Balance',
 		cell: ({ row }) => {

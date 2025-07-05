@@ -23,6 +23,13 @@ export const All_Expense_List_Query = gql`
 					createdAt
 					updatedAt
 				}
+				fromAccount {
+					_id
+				}
+
+				statement {
+					_id
+				}
 				creator {
 					_id
 				}

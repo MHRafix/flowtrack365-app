@@ -21,6 +21,7 @@ export type Scalars = {
 
 export enum ActionType {
   Deposit = 'Deposit',
+  Expense = 'Expense',
   Withdraw = 'Withdraw'
 }
 
@@ -32,6 +33,7 @@ export type Adjustment = {
   balance?: Maybe<Scalars['Float']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
+  expense?: Maybe<Expense>;
   orgUID: Scalars['String']['output'];
   type: ActionType;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -101,7 +103,7 @@ export enum Attendance_Status {
 export type BankAccount = {
   __typename?: 'BankAccount';
   _id?: Maybe<Scalars['ID']['output']>;
-  balance: Scalars['Float']['output'];
+  balance?: Maybe<Scalars['Float']['output']>;
   bankName: Scalars['String']['output'];
   branch: Scalars['String']['output'];
   createdAt?: Maybe<Scalars['DateTime']['output']>;
@@ -184,6 +186,7 @@ export type CreateAdjustmentInput = {
   balance?: InputMaybe<Scalars['Float']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
+  expense?: InputMaybe<Scalars['String']['input']>;
   orgUID: Scalars['String']['input'];
   type: ActionType;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -207,7 +210,7 @@ export type CreateAttendanceInput = {
 
 export type CreateBankAccountInput = {
   _id?: InputMaybe<Scalars['ID']['input']>;
-  balance: Scalars['Float']['input'];
+  balance?: InputMaybe<Scalars['Float']['input']>;
   bankName: Scalars['String']['input'];
   branch: Scalars['String']['input'];
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -235,7 +238,7 @@ export type CreateExpenseCategoryInput = {
   _id?: InputMaybe<Scalars['ID']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  orgUID?: InputMaybe<Scalars['String']['input']>;
+  orgUID: Scalars['String']['input'];
   title: Scalars['String']['input'];
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
@@ -371,7 +374,9 @@ export type Expense = {
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   creator: Employee;
   description?: Maybe<Scalars['String']['output']>;
+  fromAccount?: Maybe<BankAccount>;
   orgUID: Scalars['String']['output'];
+  statement?: Maybe<Adjustment>;
   title: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -383,7 +388,9 @@ export type ExpenseCalculationInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   creator: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
+  fromAccount?: InputMaybe<Scalars['String']['input']>;
   orgUID: Scalars['String']['input'];
+  statement?: InputMaybe<Scalars['String']['input']>;
   title: Scalars['String']['input'];
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
@@ -399,7 +406,7 @@ export type ExpenseCategory = {
   _id?: Maybe<Scalars['ID']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  orgUID?: Maybe<Scalars['String']['output']>;
+  orgUID: Scalars['String']['output'];
   title: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -1329,6 +1336,7 @@ export type UpdateAdjustmentInput = {
   balance?: InputMaybe<Scalars['Float']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
+  expense?: InputMaybe<Scalars['String']['input']>;
   orgUID?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<ActionType>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -1385,7 +1393,9 @@ export type UpdateExpenseCalculationInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   creator?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
+  fromAccount?: InputMaybe<Scalars['String']['input']>;
   orgUID?: InputMaybe<Scalars['String']['input']>;
+  statement?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };

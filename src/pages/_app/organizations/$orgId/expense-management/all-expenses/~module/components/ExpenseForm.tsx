@@ -16,13 +16,13 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { BankAccountPagination, Expense } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import {
 	IExpenseCategory,
 	IExpenseCategoryListWithPagination,
 } from '@/types/expenseCategoriesType';
-import { IExpense } from '@/types/expenseType';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
@@ -30,11 +30,12 @@ import { Loader2 } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
+import { Bank_Accounts_For_Dropdown_Query } from '../../../../accounts-management/bank-accounts/~module/gql-query/query.gql';
 import { expenseApi } from '../api/expenseApi';
 import { All_Expense_Categories_For_DropDown_List_Query } from '../gql-query/query.gql';
 
 interface ExpenseFormPropsType {
-	expense?: IExpense;
+	expense?: Expense;
 	actionType: 'ADD' | 'EDIT';
 	onRefetch: CallableFunction;
 	onCloseDrawer: CallableFunction;
@@ -64,6 +65,21 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 			}),
 	});
 
+	const { data } = useQuery({
+		queryKey: ['accounts-dropdown-list-in-expense'],
+		queryFn: () =>
+			gqlRequest<{ bankAccounts: BankAccountPagination }>({
+				query: Bank_Accounts_For_Dropdown_Query,
+				variables: {
+					orgUid: session?.orgUID,
+					input: {
+						limit: 1000,
+						page: 1,
+					},
+				},
+			}),
+	});
+
 	const { createExpense, updateExpense } = expenseApi(() => {
 		onCloseDrawer();
 		onRefetch();
@@ -78,6 +94,7 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 		form.setValue('title', expense?.title!);
 		form.setValue('category', expense?.category?._id!);
 		form.setValue('amount', expense?.amount!);
+		form.setValue('fromAccount', expense?.fromAccount?._id!);
 	}, [expense]);
 
 	// Define a submit handler.
@@ -93,6 +110,7 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 					...values,
 					orgUID: session?.orgUID!,
 					creator: session?.userEmployeeProfile?._id!,
+					statement: expense?.statement?._id!,
 				});
 	}
 	return (
@@ -135,7 +153,7 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 							<FormControl>
 								<Select
 									onValueChange={field.onChange}
-									defaultValue={expense?.category?._id}
+									defaultValue={expense?.category?._id!}
 								>
 									<SelectTrigger className='w-full'>
 										<SelectValue placeholder='Select a category' />
@@ -149,6 +167,39 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 													</SelectItem>
 												)
 											)}
+										</SelectGroup>
+									</SelectContent>
+								</Select>
+							</FormControl>
+
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='fromAccount'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Select Account</FormLabel>
+							<FormControl>
+								<Select
+									onValueChange={field.onChange}
+									defaultValue={expense?.fromAccount?._id!}
+								>
+									<SelectTrigger className='w-full'>
+										<SelectValue placeholder='Select a account' />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectGroup>
+											{data?.bankAccounts?.nodes?.map((accountData, idx) => (
+												<SelectItem value={accountData?._id!} key={idx}>
+													<p className='font-medium'>{accountData?.bankName}</p>
+													<p className='text-sm text-teal-400'>
+														[{accountData?.reference}]
+													</p>
+												</SelectItem>
+											))}
 										</SelectGroup>
 									</SelectContent>
 								</Select>
@@ -173,6 +224,7 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 const Expense_Form_Schema = Yup.object({
 	title: Yup.string().required().label('Title'),
 	category: Yup.string().required().label('Category'),
+	fromAccount: Yup.string().required().label('Account'),
 	amount: Yup.number().required().label('Amount'),
 	// description: Yup.string().nullable().label('Description'),
 });

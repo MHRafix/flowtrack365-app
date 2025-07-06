@@ -67,6 +67,20 @@ export const AdjustmentForm: FC<BankAccountFormPropsType> = ({
 						</FormItem>
 					)}
 				/>
+				<FormField
+					control={form.control}
+					name='description'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Description</FormLabel>
+							<FormControl>
+								<Input placeholder='Description' {...field} />
+							</FormControl>
+
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
 				<Button type='submit' variant={'default'} className='w-full'>
 					{balanceAdjustment?.isPending && <Loader2 className='animate-spin' />}
@@ -79,6 +93,7 @@ export const AdjustmentForm: FC<BankAccountFormPropsType> = ({
 
 const Adjustment_Form_Schema = Yup.object({
 	amount: Yup.number().required().label('Amount'),
+	description: Yup.string().required().label('Description'),
 });
 
 export type AdjustmentFormStateType = Yup.InferType<

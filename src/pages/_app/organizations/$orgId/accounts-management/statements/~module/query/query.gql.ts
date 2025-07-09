@@ -1,8 +1,12 @@
 import { gql } from '@/lib/api-client';
 
 export const Statements_Query = gql`
-	query Adjustments($orgUid: String!, $account: String!) {
-		adjustments(orgUID: $orgUid, account: $account) {
+	query Adjustments(
+		$orgUid: String!
+		$account: String!
+		$input: AdjustmentListQueryDto
+	) {
+		adjustments(orgUID: $orgUid, account: $account, input: $input) {
 			nodes {
 				_id
 				account {

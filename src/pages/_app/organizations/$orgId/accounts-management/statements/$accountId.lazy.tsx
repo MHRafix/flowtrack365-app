@@ -1,7 +1,12 @@
 import { DataTable } from '@/components/DataTable';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AdjustmentPagination, BankAccount, Organization } from '@/gql/graphql';
+import {
+	AdjustmentPagination,
+	BankAccount,
+	Organization,
+	SortType,
+} from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
@@ -34,8 +39,10 @@ function RouteComponent() {
 					orgUid: session?.orgUID,
 					account: accountId,
 					input: {
-						limit: 10000,
+						limit: 1000000,
 						page: 1,
+						sort: SortType.Asc,
+						sortBy: 'createdAt',
 					},
 				},
 			}),

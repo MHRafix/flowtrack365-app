@@ -10,11 +10,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { Expense } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { formatDate } from '@/lib/formater.utils';
 import { userAtom } from '@/store/auth.atom';
 import { IExpenseCategoryListWithPagination } from '@/types/expenseCategoriesType';
-import { IExpense, IExpenseListWithPagination } from '@/types/expenseType';
+import { IExpenseListWithPagination } from '@/types/expenseType';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
@@ -37,7 +38,7 @@ export const Route = createLazyFileRoute(
 function RouteComponent() {
 	const [isOpenCreateDrawer, setOpenCreateDrawer] = useState<boolean>(false);
 	const [isOpenEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
-	const [expense, setExpense] = useState<IExpense | null>(null);
+	const [expense, setExpense] = useState<Expense | null>(null);
 	const [rowId, setRowId] = useState<string>('');
 	const [session] = useAtom(userAtom);
 	const [category, setCategory] = useState<null | string>(null);
@@ -194,7 +195,7 @@ function RouteComponent() {
 				<div className='flex items-center !justify-end gap-5'>
 					<Select
 						onValueChange={setCategory}
-						defaultValue={expense?.category?._id}
+						defaultValue={expense?.category?._id!}
 					>
 						<SelectTrigger className='md:w-[250px] w-[140px]'>
 							<SelectValue placeholder='Filter by category' />
@@ -244,7 +245,7 @@ function RouteComponent() {
 							variant={'outline'}
 							onClick={() => {
 								setOpenEditDrawer(true);
-								setExpense(row);
+								setExpense(row as Expense);
 							}}
 						>
 							<PenSquare /> Edit
@@ -303,7 +304,7 @@ function RouteComponent() {
 							variant={'outline'}
 							onClick={() => {
 								setOpenEditDrawer(true);
-								setExpense(row);
+								setExpense(row as Expense);
 							}}
 						>
 							<PenSquare /> Edit
@@ -360,7 +361,7 @@ function RouteComponent() {
 							variant={'outline'}
 							onClick={() => {
 								setOpenEditDrawer(true);
-								setExpense(row);
+								setExpense(row as Expense);
 							}}
 						>
 							<PenSquare /> Edit

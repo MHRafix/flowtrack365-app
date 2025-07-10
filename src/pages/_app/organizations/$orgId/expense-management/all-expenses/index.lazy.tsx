@@ -65,7 +65,7 @@ function RouteComponent() {
 			}),
 	});
 
-	// expense of today
+	// expense of today adaddagit
 	const { data: todaysExpenses, refetch } = useQuery({
 		queryKey: [
 			`all-expenses-${currentDate}`,

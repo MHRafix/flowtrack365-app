@@ -116,7 +116,10 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 	}
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className='space-y-5 !h-[600px] !overflow-auto'
+			>
 				<FormField
 					control={form.control}
 					name='title'
@@ -225,6 +228,7 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 									onSelect={(date) => {
 										form.setValue('createdAt', date!);
 									}}
+									className='block'
 								/>
 							</FormControl>
 

@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
 	Form,
 	FormControl,
@@ -210,6 +211,28 @@ export const ExpenseForm: FC<ExpenseFormPropsType> = ({
 					)}
 				/>
 
+				<FormField
+					control={form.control}
+					name='createdAt'
+					render={() => (
+						<FormItem>
+							<FormLabel>Created At</FormLabel>
+							<FormControl>
+								<Calendar
+									mode='single'
+									selected={form.watch('createdAt')}
+									captionLayout='dropdown'
+									onSelect={(date) => {
+										form.setValue('createdAt', date!);
+									}}
+								/>
+							</FormControl>
+
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
 				<Button type='submit' variant={'default'} className='w-full'>
 					{(createExpense?.isPending || updateExpense?.isPending) && (
 						<Loader2 className='animate-spin' />
@@ -226,6 +249,7 @@ const Expense_Form_Schema = Yup.object({
 	category: Yup.string().required().label('Category'),
 	fromAccount: Yup.string().required().label('Account'),
 	amount: Yup.number().required().label('Amount'),
+	createdAt: Yup.date().required().label('Date'),
 	// description: Yup.string().nullable().label('Description'),
 });
 

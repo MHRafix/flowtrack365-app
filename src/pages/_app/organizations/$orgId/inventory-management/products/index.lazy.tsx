@@ -8,7 +8,7 @@ import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
-import { Loader2, PenSquare, Plus, Trash } from 'lucide-react';
+import { Copy, Loader2, PenSquare, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { productApi } from './~module/api/productApi';
 import { ProductForm } from './~module/components/all-products/ProductForm';
@@ -47,7 +47,7 @@ function RouteComponent() {
 			}),
 	});
 
-	const { removeProduct } = productApi(() => refetch());
+	const { createProduct, removeProduct } = productApi(() => refetch());
 
 	return (
 		<div>
@@ -71,6 +71,25 @@ function RouteComponent() {
 				}
 				ActionCell={({ row }) => (
 					<div className='flex gap-2'>
+						<Button
+							variant={'outline'}
+							onClick={() => {
+								createProduct.mutate({
+									title: row?.title,
+									category: row?.category?._id!,
+									code: row?.code,
+									model: row?.model!,
+									regularPrice: row?.regularPrice,
+									stock: row?.stock,
+									thumbnail: { externalUrl: row?.thumbnail?.externalUrl },
+									// @ts-ignore
+									discountAmount: row?.discountAmount,
+									orgUID: session?.orgUID!,
+								});
+							}}
+						>
+							<Copy /> Make Clone
+						</Button>
 						<Link
 							to={`/organizations/$orgId/inventory-management/products/product-edit/$productId`}
 							params={{ orgId: session?.orgUID!, productId: row?._id! }}
@@ -79,7 +98,6 @@ function RouteComponent() {
 								<PenSquare /> Edit
 							</Button>
 						</Link>
-
 						<Button
 							variant={'destructive'}
 							onClick={() => {

@@ -12,6 +12,7 @@ export const productsTableColumns: ColumnDef<Product>[] = [
 					<div>
 						<img
 							src={
+								row?.original?.thumbnail?.externalUrl ||
 								'https://www.upoharbd.com/images/uploads/Ramadan/attar_c.jpg'
 							}
 							alt='product_image'

@@ -33,7 +33,7 @@ export const productApi = (onSuccess?: CallableFunction) => {
 
 	// update product
 	const updateProduct = useMutation({
-		mutationKey: [`remove-product`],
+		mutationKey: [`update-product`],
 		mutationFn: async (payload: UpdatePayloadType) =>
 			await gqlRequest({
 				query: Update_Product_Mutation,

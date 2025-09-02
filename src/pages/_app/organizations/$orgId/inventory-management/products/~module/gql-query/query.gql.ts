@@ -13,6 +13,9 @@ export const All_Products_Query = gql`
 				regularPrice
 				discountAmount
 				stock
+				thumbnail {
+					externalUrl
+				}
 				category {
 					_id
 					name

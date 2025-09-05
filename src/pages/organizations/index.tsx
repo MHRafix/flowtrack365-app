@@ -49,7 +49,7 @@ function RouteComponent() {
 				<div className='w-full bg-slate-100 dark:bg-slate-800 p-6 rounded-sm'>
 					<div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 items-stretch'>
 						<Link to='/organizations/create-organization'>
-							<div className='h-[200px] sm:w-full  sm:h-full cursor-pointer dark:bg-slate-900 bg-slate-200 hover:bg-slate-200 hover:dark:bg-slate-900 hover:duration-500 rounded-md flex justify-center items-center'>
+							<div className='!h-[200px] sm:w-full  sm:h-full cursor-pointer dark:bg-slate-900 bg-slate-200 hover:bg-slate-200 hover:dark:bg-slate-900 hover:duration-500 rounded-md flex justify-center items-center'>
 								<Plus size={40} />
 							</div>
 						</Link>

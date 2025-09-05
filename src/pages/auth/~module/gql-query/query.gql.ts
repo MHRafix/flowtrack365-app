@@ -117,3 +117,14 @@ export const Organizations_List_Query = gql`
 		}
 	}
 `;
+
+export const Create_Employee_For_Register_User_Mutation = gql`
+	mutation CreateEmployee($input: CreateEmployeeInput!) {
+		createEmployee(input: $input) {
+			_id
+			employeeDetails {
+				_id
+			}
+		}
+	}
+`;

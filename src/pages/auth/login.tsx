@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
@@ -81,6 +81,16 @@ function RouteComponent() {
 						</Button>
 					</form>
 				</Form>
+
+				<div className='text-red-300 mt-2'>
+					Don't have an account ?{' '}
+					<Link
+						to='/auth/registration'
+						className='underline font-medium text-teal-500'
+					>
+						Signup
+					</Link>
+				</div>
 			</div>
 		</div>
 	);

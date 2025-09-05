@@ -9,7 +9,12 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useNavigate,
+} from '@tanstack/react-router';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
@@ -107,6 +112,16 @@ function RouteComponent() {
 						</Button>
 					</form>
 				</Form>
+
+				<div className='text-red-300 mt-2'>
+					Already have an account ?{' '}
+					<Link
+						to='/auth/login'
+						className='underline font-medium text-teal-500'
+					>
+						Login
+					</Link>
+				</div>
 			</div>
 		</div>
 	);

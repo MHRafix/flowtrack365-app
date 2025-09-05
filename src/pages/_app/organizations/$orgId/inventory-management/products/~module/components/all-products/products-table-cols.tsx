@@ -8,8 +8,8 @@ export const productsTableColumns: ColumnDef<Product>[] = [
 		header: 'Product Title',
 		cell: ({ row }) => {
 			return (
-				<div className='flex gap-3 items-center'>
-					<div>
+				<div className='flex flex-wrap gap-3 items-center'>
+					<div className=''>
 						<img
 							src={
 								row?.original?.thumbnail?.externalUrl ||

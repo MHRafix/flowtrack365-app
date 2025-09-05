@@ -10,8 +10,11 @@ function RouteComponent() {
 	const [user] = useAtom(userAtom);
 	return (
 		<div className='my-5 flex items-center justify-between'>
-			<h3 className='text-2xl font-bold'>
-				{user?.user?.email} Dashboard Pages
+			<h3 className='text-xl font-semibold'>
+				<span className='text-teal-500 text-2xl font-bold'>
+					Hey {user?.user?.name},
+				</span>
+				<br /> Welcome to Dashboard
 			</h3>
 		</div>
 	);

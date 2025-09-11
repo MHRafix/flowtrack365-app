@@ -54,12 +54,6 @@ export type AdjustmentPagination = {
   nodes?: Maybe<Array<Adjustment>>;
 };
 
-export type AllOrder = {
-  __typename?: 'AllOrder';
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int']['output'];
-};
-
 export type ApiCommonActionOutput = {
   __typename?: 'ApiCommonActionOutput';
   data?: Maybe<Scalars['JSON']['output']>;
@@ -128,6 +122,23 @@ export type BankAccountPagination = {
   nodes?: Maybe<Array<BankAccount>>;
 };
 
+export type Billing = {
+  __typename?: 'Billing';
+  address: Scalars['String']['output'];
+  district?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  phone: Scalars['String']['output'];
+};
+
+export type BillingInput = {
+  address: Scalars['String']['input'];
+  district?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  phone: Scalars['String']['input'];
+};
+
 export type Brand = {
   __typename?: 'Brand';
   _id?: Maybe<Scalars['ID']['output']>;
@@ -192,11 +203,6 @@ export type CreateAdjustmentInput = {
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
-export type CreateAllOrderInput = {
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int']['input'];
-};
-
 export type CreateAttendanceInput = {
   _id?: InputMaybe<Scalars['ID']['input']>;
   attendee: Scalars['String']['input'];
@@ -231,7 +237,7 @@ export type CreateBrandInput = {
 
 export type CreateEmployeeInput = {
   employeeDetails: Scalars['String']['input'];
-  organizations: Array<EmployeeOrganizationInput>;
+  organizations?: InputMaybe<Array<EmployeeOrganizationInput>>;
 };
 
 export type CreateExpenseCategoryInput = {
@@ -241,6 +247,20 @@ export type CreateExpenseCategoryInput = {
   orgUID: Scalars['String']['input'];
   title: Scalars['String']['input'];
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type CreateOrderInput = {
+  _id?: InputMaybe<Scalars['ID']['input']>;
+  billing: BillingInput;
+  delivery?: InputMaybe<DeliveryInput>;
+  deliveryFee?: InputMaybe<Scalars['Float']['input']>;
+  isPaid?: InputMaybe<Scalars['Boolean']['input']>;
+  items: Array<LineItemInput>;
+  orgUID: Scalars['String']['input'];
+  payment?: InputMaybe<PaymentInput>;
+  status?: InputMaybe<OrderStatus>;
+  total?: InputMaybe<Scalars['Float']['input']>;
+  user?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateOrganizationInput = {
@@ -331,11 +351,26 @@ export type CreateUnitInput = {
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
+export type Delivery = {
+  __typename?: 'Delivery';
+  courier?: Maybe<Scalars['String']['output']>;
+  deliveredAt?: Maybe<Scalars['DateTime']['output']>;
+  estimatedDeliveryAt?: Maybe<Scalars['DateTime']['output']>;
+  trackingNumber?: Maybe<Scalars['String']['output']>;
+};
+
+export type DeliveryInput = {
+  courier?: InputMaybe<Scalars['String']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  estimatedDeliveryAt?: InputMaybe<Scalars['DateTime']['input']>;
+  trackingNumber?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Employee = {
   __typename?: 'Employee';
   _id?: Maybe<Scalars['ID']['output']>;
   employeeDetails: User;
-  organizations: Array<EmployeeOrganizationSchema>;
+  organizations?: Maybe<Array<EmployeeOrganizationSchema>>;
 };
 
 export type EmployeeListQueryDto = {
@@ -371,7 +406,7 @@ export type Expense = {
   _id?: Maybe<Scalars['ID']['output']>;
   amount: Scalars['Float']['output'];
   category: ExpenseCategory;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdAt: Scalars['DateTime']['output'];
   creator: Employee;
   description?: Maybe<Scalars['String']['output']>;
   fromAccount?: Maybe<BankAccount>;
@@ -385,7 +420,7 @@ export type ExpenseCalculationInput = {
   _id?: InputMaybe<Scalars['ID']['input']>;
   amount: Scalars['Float']['input'];
   category: Scalars['String']['input'];
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt: Scalars['DateTime']['input'];
   creator: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
   fromAccount?: InputMaybe<Scalars['String']['input']>;
@@ -440,6 +475,27 @@ export type InviteMemberToOrganizationInput = {
   orgId: Scalars['String']['input'];
 };
 
+export type LineItem = {
+  __typename?: 'LineItem';
+  code?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['String']['output']>;
+  price: Scalars['Float']['output'];
+  product: Product;
+  quantity: Scalars['Int']['output'];
+  size?: Maybe<Scalars['String']['output']>;
+  subtotal: Scalars['Float']['output'];
+};
+
+export type LineItemInput = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['String']['input']>;
+  price: Scalars['Float']['input'];
+  product: Scalars['String']['input'];
+  quantity: Scalars['Int']['input'];
+  size?: InputMaybe<Scalars['String']['input']>;
+  subtotal: Scalars['Float']['input'];
+};
+
 export type MagicLinkAuthenticationInput = {
   email: Scalars['String']['input'];
 };
@@ -461,7 +517,6 @@ export type Mutation = {
   __typename?: 'Mutation';
   bulkRemoveEmployee?: Maybe<Scalars['Boolean']['output']>;
   createAdjustment: Scalars['Boolean']['output'];
-  createAllOrder: AllOrder;
   createAttendance: Scalars['Boolean']['output'];
   createBankAccount: Scalars['Boolean']['output'];
   createBrand: Scalars['Boolean']['output'];
@@ -477,16 +532,16 @@ export type Mutation = {
   disableOrganization: Scalars['Boolean']['output'];
   generateApiKey: Scalars['Boolean']['output'];
   generateApiToken: Scalars['Boolean']['output'];
+  placeOrder: Order;
   registration: ApiCommonActionOutput;
   removeAdjustment: Adjustment;
-  removeAllOrder: AllOrder;
   removeAttendance?: Maybe<Scalars['Boolean']['output']>;
   removeBankAccount: BankAccount;
   removeBrand: Scalars['Boolean']['output'];
   removeEmployee?: Maybe<Scalars['Boolean']['output']>;
   removeExpense?: Maybe<Scalars['Boolean']['output']>;
   removeExpenseCategory?: Maybe<Scalars['Boolean']['output']>;
-  removeProduct: Product;
+  removeProduct: Order;
   removeProductCategory: ProductCategory;
   removeSaving: Saving;
   removeTask?: Maybe<Scalars['Boolean']['output']>;
@@ -495,13 +550,13 @@ export type Mutation = {
   sendInviteToMember: ApiCommonActionOutput;
   sendMagicLink: ApiCommonActionOutput;
   updateAdjustment: Adjustment;
-  updateAllOrder: AllOrder;
   updateAttendance: Scalars['Boolean']['output'];
   updateBankAccount: BankAccount;
   updateBrand: Scalars['Boolean']['output'];
   updateEmployee: Employee;
   updateExpenseCalculation: Scalars['Boolean']['output'];
   updateExpenseCategory: Scalars['Boolean']['output'];
+  updateOrder: Scalars['Boolean']['output'];
   updateOrganization: Organization;
   updateProduct: Scalars['Boolean']['output'];
   updateProductCategory: ProductCategory;
@@ -523,11 +578,6 @@ export type MutationBulkRemoveEmployeeArgs = {
 
 export type MutationCreateAdjustmentArgs = {
   payload: CreateAdjustmentInput;
-};
-
-
-export type MutationCreateAllOrderArgs = {
-  createAllOrderInput: CreateAllOrderInput;
 };
 
 
@@ -609,6 +659,11 @@ export type MutationGenerateApiTokenArgs = {
 };
 
 
+export type MutationPlaceOrderArgs = {
+  payload: CreateOrderInput;
+};
+
+
 export type MutationRegistrationArgs = {
   input: RegistrationUserInput;
 };
@@ -616,11 +671,6 @@ export type MutationRegistrationArgs = {
 
 export type MutationRemoveAdjustmentArgs = {
   _id: Scalars['String']['input'];
-};
-
-
-export type MutationRemoveAllOrderArgs = {
-  id: Scalars['Int']['input'];
 };
 
 
@@ -701,11 +751,6 @@ export type MutationUpdateAdjustmentArgs = {
 };
 
 
-export type MutationUpdateAllOrderArgs = {
-  updateAllOrderInput: UpdateAllOrderInput;
-};
-
-
 export type MutationUpdateAttendanceArgs = {
   input: UpdateAttendanceInput;
 };
@@ -734,6 +779,12 @@ export type MutationUpdateExpenseCalculationArgs = {
 
 export type MutationUpdateExpenseCategoryArgs = {
   payload: UpdateExpenseCategoryInput;
+};
+
+
+export type MutationUpdateOrderArgs = {
+  orgUID: Scalars['String']['input'];
+  payload: UpdateOrderInput;
 };
 
 
@@ -796,6 +847,48 @@ export type MutationVerifyMemberInvitationArgs = {
   payload: VerifyInviteMemberToOrganizationInput;
 };
 
+export type Order = {
+  __typename?: 'Order';
+  _id?: Maybe<Scalars['ID']['output']>;
+  billing: Billing;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  delivery?: Maybe<Delivery>;
+  deliveryFee: Scalars['Float']['output'];
+  isPaid: Scalars['Boolean']['output'];
+  items: Array<LineItem>;
+  orgUID: Scalars['String']['output'];
+  payment?: Maybe<Payment>;
+  status: OrderStatus;
+  total: Scalars['Float']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  user?: Maybe<User>;
+};
+
+export type OrderListQueryDto = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<SortType>;
+  sortBy?: InputMaybe<Scalars['String']['input']>;
+  where?: InputMaybe<Array<CommonMatchInput>>;
+  whereOperator?: InputMaybe<Where_Operator>;
+};
+
+export type OrderPagination = {
+  __typename?: 'OrderPagination';
+  meta?: Maybe<PaginationMeta>;
+  nodes?: Maybe<Array<Order>>;
+};
+
+export enum OrderStatus {
+  Cancelled = 'CANCELLED',
+  Confirmed = 'CONFIRMED',
+  Delivered = 'DELIVERED',
+  Pending = 'PENDING',
+  Processing = 'PROCESSING',
+  Refunded = 'REFUNDED',
+  Shipped = 'SHIPPED'
+}
+
 export type Organization = {
   __typename?: 'Organization';
   Logo?: Maybe<ServerFileEntity>;
@@ -856,6 +949,35 @@ export type PaginationMeta = {
   totalCount: Scalars['Float']['output'];
   totalPages: Scalars['Float']['output'];
 };
+
+export type Payment = {
+  __typename?: 'Payment';
+  amount?: Maybe<Scalars['Float']['output']>;
+  method: PaymentMethod;
+  paidAt?: Maybe<Scalars['DateTime']['output']>;
+  status: PaymentStatus;
+  transactionId?: Maybe<Scalars['String']['output']>;
+};
+
+export type PaymentInput = {
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  method: PaymentMethod;
+  paidAt?: InputMaybe<Scalars['DateTime']['input']>;
+  status: PaymentStatus;
+  transactionId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum PaymentMethod {
+  CashOnDelivery = 'CASH_ON_DELIVERY',
+  OnlinePayment = 'ONLINE_PAYMENT'
+}
+
+export enum PaymentStatus {
+  Due = 'DUE',
+  Paid = 'PAID',
+  Refunded = 'REFUNDED',
+  Unpaid = 'UNPAID'
+}
 
 export enum Payment_Status {
   Cancelled = 'CANCELLED',
@@ -940,8 +1062,6 @@ export type Query = {
   adjustments: AdjustmentPagination;
   allEmployeeIds: Array<Scalars['String']['output']>;
   allEmployees: EmployeePagination;
-  allOrder: AllOrder;
-  allOrders: Array<AllOrder>;
   bankAccount: BankAccount;
   bankAccounts: BankAccountPagination;
   brand: Brand;
@@ -951,6 +1071,8 @@ export type Query = {
   expenseCategories: ExpenseCategoryPagination;
   expenseCategory: ExpenseCategory;
   myOrganizations: OrganizationWithPagination;
+  orderByOrganization: Order;
+  ordersByOrganization: OrderPagination;
   organization: Organization;
   organizationByUID: Organization;
   organizations: OrganizationWithPagination;
@@ -998,11 +1120,6 @@ export type QueryAdjustmentsArgs = {
 
 export type QueryAllEmployeesArgs = {
   input?: InputMaybe<EmployeeListQueryDto>;
-};
-
-
-export type QueryAllOrderArgs = {
-  id: Scalars['Int']['input'];
 };
 
 
@@ -1056,6 +1173,18 @@ export type QueryExpenseCategoryArgs = {
 export type QueryMyOrganizationsArgs = {
   _id: Scalars['String']['input'];
   input?: InputMaybe<OrganizationListQueryInput>;
+};
+
+
+export type QueryOrderByOrganizationArgs = {
+  _id: Scalars['String']['input'];
+  orgUID: Scalars['String']['input'];
+};
+
+
+export type QueryOrdersByOrganizationArgs = {
+  input?: InputMaybe<OrderListQueryDto>;
+  orgUID: Scalars['String']['input'];
 };
 
 
@@ -1330,7 +1459,7 @@ export type UnitPagination = {
 };
 
 export type UpdateAdjustmentInput = {
-  _id: Scalars['ID']['input'];
+  _id?: InputMaybe<Scalars['ID']['input']>;
   account?: InputMaybe<Scalars['String']['input']>;
   amount?: InputMaybe<Scalars['Int']['input']>;
   balance?: InputMaybe<Scalars['Float']['input']>;
@@ -1340,12 +1469,6 @@ export type UpdateAdjustmentInput = {
   orgUID?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<ActionType>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
-};
-
-export type UpdateAllOrderInput = {
-  /** Example field (placeholder) */
-  exampleField?: InputMaybe<Scalars['Int']['input']>;
-  id: Scalars['Int']['input'];
 };
 
 export type UpdateAttendanceInput = {
@@ -1407,6 +1530,20 @@ export type UpdateExpenseCategoryInput = {
   orgUID?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type UpdateOrderInput = {
+  _id: Scalars['ID']['input'];
+  billing?: InputMaybe<BillingInput>;
+  delivery?: InputMaybe<DeliveryInput>;
+  deliveryFee?: InputMaybe<Scalars['Float']['input']>;
+  isPaid?: InputMaybe<Scalars['Boolean']['input']>;
+  items?: InputMaybe<Array<LineItemInput>>;
+  orgUID?: InputMaybe<Scalars['String']['input']>;
+  payment?: InputMaybe<PaymentInput>;
+  status?: InputMaybe<OrderStatus>;
+  total?: InputMaybe<Scalars['Float']['input']>;
+  user?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateOrganizationInput = {

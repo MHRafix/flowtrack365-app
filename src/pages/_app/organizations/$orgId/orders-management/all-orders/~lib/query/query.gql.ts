@@ -39,6 +39,7 @@ export const All_Orders_By_Organization_Query = gql`
 					subtotal
 				}
 				orgUID
+				specialNote
 				payment {
 					method
 					status

@@ -1,6 +1,6 @@
-import { Badge } from '@/components/ui/badge';
-import { Order } from '@/gql/graphql';
+import { Order, OrderStatus, PaymentStatus } from '@/gql/graphql';
 import { formatDate } from '@/lib/formater.utils';
+import { OrderStatusBadge, PaymentStatusBadge } from '@/lib/StatusBadge';
 import { ColumnDef } from '@tanstack/react-table';
 
 export const ordersTableColumns: ColumnDef<Order>[] = [
@@ -20,6 +20,19 @@ export const ordersTableColumns: ColumnDef<Order>[] = [
 		},
 	},
 	{
+		accessorKey: 'billing.address',
+		header: 'Customer Address',
+		cell: ({ row }) => {
+			return (
+				<span>
+					{row.original?.billing?.address +
+						', ' +
+						row.original?.billing?.district || 'N/A'}{' '}
+				</span>
+			);
+		},
+	},
+	{
 		accessorKey: 'total',
 		header: 'Total Amount',
 		cell: ({ row }) => {
@@ -30,7 +43,7 @@ export const ordersTableColumns: ColumnDef<Order>[] = [
 		accessorKey: 'status',
 		header: 'Order Status',
 		cell: ({ row }) => {
-			return <Badge variant={'destructive'}>{row.original?.status}</Badge>;
+			return <OrderStatusBadge status={row.original?.status as OrderStatus} />;
 		},
 	},
 	{
@@ -38,7 +51,9 @@ export const ordersTableColumns: ColumnDef<Order>[] = [
 		header: 'Payment Status',
 		cell: ({ row }) => {
 			return (
-				<Badge variant={'destructive'}>{row.original?.payment?.status}</Badge>
+				<PaymentStatusBadge
+					status={row.original?.payment?.status as PaymentStatus}
+				/>
 			);
 		},
 	},

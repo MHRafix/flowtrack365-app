@@ -1,10 +1,14 @@
 import { DataTable } from '@/components/DataTable';
-import { OrderPagination } from '@/gql/graphql';
+import DrawerWrapper from '@/components/DrawerWrapper';
+import { Button } from '@/components/ui/button';
+import { Order, OrderPagination } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
+import { useState } from 'react';
+import OrderDetails from './~lib/components/OrderDetails';
 import { ordersTableColumns } from './~lib/components/orders-table-cols';
 import { All_Orders_By_Organization_Query } from './~lib/query/query.gql';
 
@@ -16,6 +20,9 @@ export const Route = createLazyFileRoute(
 
 function RouteComponent() {
 	const [session] = useAtom(userAtom);
+	const [openDetails, setOpenDetails] = useState<boolean>(false);
+	const [order, setOrder] = useState<Order | null>(null);
+
 	const { data: orders } = useQuery({
 		queryKey: [`all-orders`],
 		queryFn: async () =>
@@ -42,6 +49,17 @@ function RouteComponent() {
 
 	return (
 		<div>
+			<DrawerWrapper
+				title={'Order Details'}
+				isOpen={openDetails}
+				onCloseDrawer={() => {
+					setOpenDetails(false);
+					setOrder(null);
+				}}
+				size='full'
+			>
+				<OrderDetails order={order as Order} />
+			</DrawerWrapper>
 			<div className='grid gap-3 md:flex justify-between items-center bg-blue-200 text-black p-3 rounded-md mb-2'>
 				<h2 className='text-xl font-semibold'>
 					<span className='bg-blue-300 p-1 rounded-md'>Today's</span> Orders
@@ -57,30 +75,17 @@ function RouteComponent() {
 						...order,
 					})) || []
 				}
-				ActionCell={({}) => (
+				ActionCell={({ row }) => (
 					<div className='flex gap-2'>
-						{/* 
 						<Button
 							variant={'destructive'}
 							onClick={() => {
-								setRowId(row?._id);
-								show({
-									title: 'Are you sure to remove expense ?',
-									children: (
-										<span>Please proceed to complete this action.</span>
-									),
-									onConfirm() {
-										removeExpense.mutate(row?._id);
-									},
-								});
+								setOpenDetails(true);
+								setOrder(row);
 							}}
-							disabled={removeExpense?.isPending}
 						>
-							{removeExpense?.isPending && row?._id === rowId && (
-								<Loader2 className='animate-spin' />
-							)}
-							<Trash /> Remove
-						</Button> */}
+							Order Details
+						</Button>
 					</div>
 				)}
 			/>

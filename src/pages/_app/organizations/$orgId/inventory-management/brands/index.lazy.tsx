@@ -29,7 +29,7 @@ function RouteComponent() {
 	const [rowId, setRowId] = useState<string>('');
 	const { show } = useAppConfirm();
 
-	const { data, isLoading, refetch } = useQuery({
+	const { data, refetch } = useQuery({
 		queryKey: ['brand-query'],
 		queryFn: () =>
 			gqlRequest<{ brands: BrandPagination }>({

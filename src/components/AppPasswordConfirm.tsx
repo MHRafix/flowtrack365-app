@@ -23,10 +23,10 @@ export const useAppPasswordConfirm = () => {
 			title: options?.title ?? 'Put your password to confirm',
 			children: (
 				<PasswordConfirmForm
-					onDone={() => {
-						appConfirmHandler.closeModal();
-						options.onVerifiedPassword?.();
-					}}
+				// onDone={() => {
+				// 	appConfirmHandler.closeModal();
+				// 	options.onVerifiedPassword?.();
+				// }}
 				/>
 			),
 			isShowCancel: false,
@@ -39,14 +39,14 @@ export const useAppPasswordConfirm = () => {
 	};
 };
 
-const PasswordConfirmForm = ({ onDone }: { onDone?: () => void }) => {
+const PasswordConfirmForm = () => {
 	// const passwordVerifyMutation = useMutation({
 	// 	mutationFn: (password: string) => {
 	// 		return identityApi.post('/auth/verify-my-password', { password });
 	// 	},
 	// });
 
-	const passwordVerifyMutation = () => {};
+	// const passwordVerifyMutation = () => {};
 
 	const form = useForm({
 		defaultValues: {

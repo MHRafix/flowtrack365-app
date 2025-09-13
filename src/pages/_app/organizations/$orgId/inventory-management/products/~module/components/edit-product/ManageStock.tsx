@@ -54,6 +54,7 @@ const ManageStock: FC<ManageStockProps> = ({ product, onRefetch }) => {
 			<br />
 			<DataTable
 				columns={stockTableColumns}
+				// @ts-ignore
 				data={
 					product?.stockHistory?.map((stock) => ({
 						...stock,

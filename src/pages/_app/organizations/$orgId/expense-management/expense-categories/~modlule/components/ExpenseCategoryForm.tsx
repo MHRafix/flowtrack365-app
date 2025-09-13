@@ -53,7 +53,7 @@ export const ExpenseCategoryForm: FC<ExpenseFormPropsType> = ({
 	// Define a submit handler.
 	function onSubmit(values: ExpenseCategoryFormStateType) {
 		actionType === 'ADD'
-			? createExpenseCategory.mutate({ ...values, orgUID: session?.orgUID })
+			? createExpenseCategory.mutate({ ...values, orgUID: session?.orgUID! })
 			: updateExpenseCategory.mutate({
 					_id: expenseCategory?._id!,
 					...values,

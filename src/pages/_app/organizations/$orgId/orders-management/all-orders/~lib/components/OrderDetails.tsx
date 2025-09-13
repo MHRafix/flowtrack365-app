@@ -28,9 +28,9 @@ const OrderDetails: FC<{ order: Order }> = ({ order }) => {
 							{item?.product?.title || 'N/A'}
 						</h3>
 						<div className='text-sm text-gray-500 dark:text-gray-400'>
-							{item.color && <span>Color: {item?.color || 'N/A'} </span>}
-							{item.size && <span> | Size: {item?.size || 'N/A'}</span>}
-							{item.size && <span> | Code: {item?.code || 'N/A'}</span>}
+							{item.color && <span>Color: {item?.color || 'N/A'} |</span>}
+							{item.size && <span> Size: {item?.size || 'N/A'}|</span>}
+							{item.code && <span> Code: {item?.code || 'N/A'}</span>}
 						</div>
 					</div>
 
@@ -39,14 +39,23 @@ const OrderDetails: FC<{ order: Order }> = ({ order }) => {
 						<p className='text-sm text-gray-500'>
 							Qty: {item.quantity} Price: {item?.price}
 						</p>
-						<p className='font-medium text-gray-900 dark:text-white'>
-							৳{item.subtotal.toFixed(2)}
+						<p className='font-extrabold text-gray-900 dark:text-white '>
+							৳ {item.subtotal.toFixed(2)}
 						</p>
 					</div>
 				</div>
 			))}
 
-			<div className='mt-6 border p-4 shadow-sm bg-gray-50 dark:bg-gray-800 space-y-3'>
+			<div className='mt-6 border p-4 rounded-sm bg-gray-50 dark:bg-gray-800 space-y-2'>
+				<h4 className='text-sm font-medium text-gray-500 dark:text-gray-400'>
+					📌 Special Note
+				</h4>
+				<p className='text-base text-gray-700 dark:text-gray-200'>
+					{order?.specialNote || 'N/A'}
+				</p>
+			</div>
+
+			<div className='mt-6 border p-4 rounded-sm bg-gray-50 dark:bg-gray-800 space-y-3'>
 				<div className='flex justify-between text-sm text-gray-600 dark:text-gray-300'>
 					<span className='font-medium'>Total Order Amount</span>
 					<span className='font-semibold text-gray-900 dark:text-white'>

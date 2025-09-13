@@ -25,9 +25,8 @@ export const ordersTableColumns: ColumnDef<Order>[] = [
 		cell: ({ row }) => {
 			return (
 				<span>
-					{row.original?.billing?.address +
-						', ' +
-						row.original?.billing?.district || 'N/A'}{' '}
+					{row.original?.billing?.address}{' '}
+					{row.original?.billing?.district && row.original?.billing?.district}
 				</span>
 			);
 		},

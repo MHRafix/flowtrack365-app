@@ -29,7 +29,7 @@ function RouteComponent() {
 	const [session] = useAtom(userAtom);
 	const { show } = useAppConfirm();
 
-	const { data, isLoading, refetch } = useQuery({
+	const { data, refetch } = useQuery({
 		queryKey: ['product_categories'],
 		queryFn: async () => {
 			const res = await gqlRequest<{

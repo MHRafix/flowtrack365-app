@@ -24,36 +24,7 @@ export const All_Orders_By_Organization_Query = gql`
 							key
 							externalUrl
 						}
-						carouselImages {
-							bucket
-							region
-							key
-							externalUrl
-						}
-						gallery {
-							bucket
-							region
-							key
-							externalUrl
-						}
-						code
-						orgUID
-						model
-						salePrice
-						regularPrice
-						discountAmount
-						stock
 
-						shortDescription
-						description
-						sizes {
-							size
-							description
-						}
-						colors {
-							color
-							description
-						}
 						createdAt
 						updatedAt
 					}

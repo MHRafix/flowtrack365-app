@@ -258,6 +258,7 @@ export type CreateOrderInput = {
   items: Array<LineItemInput>;
   orgUID: Scalars['String']['input'];
   payment?: InputMaybe<PaymentInput>;
+  specialNote?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<OrderStatus>;
   total?: InputMaybe<Scalars['Float']['input']>;
   user?: InputMaybe<Scalars['String']['input']>;
@@ -858,6 +859,7 @@ export type Order = {
   items: Array<LineItem>;
   orgUID: Scalars['String']['output'];
   payment?: Maybe<Payment>;
+  specialNote?: Maybe<Scalars['String']['output']>;
   status: OrderStatus;
   total: Scalars['Float']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -1541,6 +1543,7 @@ export type UpdateOrderInput = {
   items?: InputMaybe<Array<LineItemInput>>;
   orgUID?: InputMaybe<Scalars['String']['input']>;
   payment?: InputMaybe<PaymentInput>;
+  specialNote?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<OrderStatus>;
   total?: InputMaybe<Scalars['Float']['input']>;
   user?: InputMaybe<Scalars['String']['input']>;

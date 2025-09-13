@@ -41,7 +41,6 @@ interface ProductFormPropsType {
 }
 export const ProductForm: FC<ProductFormPropsType> = ({
 	product,
-	actionType,
 	onRefetch,
 	onCloseDrawer,
 }) => {

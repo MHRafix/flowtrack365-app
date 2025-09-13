@@ -7,6 +7,7 @@ import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
+import { Info } from 'lucide-react';
 import { useState } from 'react';
 import OrderDetails from './~lib/components/OrderDetails';
 import { ordersTableColumns } from './~lib/components/orders-table-cols';
@@ -78,13 +79,13 @@ function RouteComponent() {
 				ActionCell={({ row }) => (
 					<div className='flex gap-2'>
 						<Button
-							variant={'destructive'}
+							variant={'outline'}
 							onClick={() => {
 								setOpenDetails(true);
 								setOrder(row);
 							}}
 						>
-							Order Details
+							<Info /> Order Details
 						</Button>
 					</div>
 				)}

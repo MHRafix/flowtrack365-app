@@ -1,8 +1,11 @@
 import { gql } from '@/lib/api-client';
 
 export const All_Orders_By_Organization_Query = gql`
-	query OrdersByOrganization($orgUid: String!) {
-		ordersByOrganization(orgUID: $orgUid) {
+	query OrdersByOrganization($orgUid: String!, $input: OrderListQueryDto) {
+		ordersByOrganization(orgUID: $orgUid, input: $input) {
+			meta {
+				totalCount
+			}
 			nodes {
 				billing {
 					name

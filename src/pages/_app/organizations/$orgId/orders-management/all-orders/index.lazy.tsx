@@ -38,7 +38,7 @@ function RouteComponent() {
 						sort: 'DESC',
 						sortBy: 'createdAt',
 					},
-					creatorId: session?.userEmployeeProfile?._id,
+					// creatorId: session?.userEmployeeProfile?._id,
 					orgUid: session?.orgUID,
 				},
 			}),

@@ -7,7 +7,7 @@ import { userAtom } from '@/store/auth.atom';
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
-import { Info } from 'lucide-react';
+import { Info, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import OrderDetails from './~lib/components/OrderDetails';
 import { ordersTableColumns } from './~lib/components/orders-table-cols';
@@ -24,7 +24,11 @@ function RouteComponent() {
 	const [openDetails, setOpenDetails] = useState<boolean>(false);
 	const [order, setOrder] = useState<Order | null>(null);
 
-	const { data: orders } = useQuery({
+	const {
+		data: orders,
+		refetch,
+		isRefetching,
+	} = useQuery({
 		queryKey: [`all-orders`],
 		queryFn: async () =>
 			await gqlRequest<{
@@ -65,8 +69,18 @@ function RouteComponent() {
 				<h2 className='text-xl font-semibold'>
 					<span className='bg-blue-300 p-1 rounded-md'>Today's</span> Orders
 				</h2>
-				<div className='text-xl font-semibold ml-auto bg-blue-300 p-1 rounded-md px-2'>
-					<span>{totalMoneyOrdersOfToday || 0.0} BDT</span>
+				<div className='flex justify-between items-center gap-5'>
+					<div className='text-xl font-semibold ml-auto bg-blue-300 p-1 rounded-md px-2'>
+						<span>{totalMoneyOrdersOfToday || 0.0} BDT</span>
+					</div>
+					<Button
+						onClick={() => refetch()}
+						disabled={isRefetching}
+						className='cursor-pointer'
+					>
+						<RefreshCcw className={isRefetching ? `animate-spin` : ''} />{' '}
+						Refresh
+					</Button>
 				</div>
 			</div>
 			<DataTable

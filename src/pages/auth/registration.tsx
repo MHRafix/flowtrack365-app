@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Form,
 	FormControl,
@@ -16,6 +17,7 @@ import {
 	useNavigate,
 } from '@tanstack/react-router';
 import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { authApi } from './~module/api/auth.api';
@@ -35,6 +37,7 @@ export const Route = createFileRoute('/auth/registration')({
 function RouteComponent() {
 	// handle redirect
 	const navigate = useNavigate();
+	const [passType, setPassType] = useState<'password' | 'text'>('password');
 
 	const handleRedirect = () => {
 		navigate({ to: '/auth/login' }); // Replace '/settings' with any route path
@@ -65,7 +68,11 @@ function RouteComponent() {
 								<FormItem>
 									<FormLabel>Username</FormLabel>
 									<FormControl>
-										<Input placeholder='Enter your username' {...field} />
+										<Input
+											placeholder='Enter your username'
+											{...field}
+											className='py-6'
+										/>
 									</FormControl>
 
 									<FormMessage />
@@ -79,7 +86,11 @@ function RouteComponent() {
 								<FormItem>
 									<FormLabel>Email</FormLabel>
 									<FormControl>
-										<Input placeholder='Enter your email' {...field} />
+										<Input
+											placeholder='Enter your email'
+											{...field}
+											className='py-6'
+										/>
 									</FormControl>
 
 									<FormMessage />
@@ -97,8 +108,46 @@ function RouteComponent() {
 											type='tel'
 											placeholder='Enter your phone'
 											{...field}
+											className='py-6'
 										/>
 									</FormControl>
+
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name='password'
+							render={({ field }) => (
+								<FormItem className='relative'>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										{/* <div className='relative'> */}
+										<Input
+											type={passType}
+											placeholder='Enter your password'
+											{...field}
+											className='py-6'
+										/>
+										{/* </div> */}
+									</FormControl>
+									<FormItem className='flex flex-row items-center gap-2'>
+										<FormControl>
+											<Checkbox
+												checked={passType === 'text'}
+												onCheckedChange={() =>
+													setPassType((type) =>
+														type === 'text' ? 'password' : 'text'
+													)
+												}
+											/>
+										</FormControl>
+										<FormLabel className='text-sm font-normal'>
+											Show Password
+										</FormLabel>
+									</FormItem>
 
 									<FormMessage />
 								</FormItem>
@@ -131,6 +180,7 @@ const Registration_Form_Schema = Yup.object({
 	name: Yup.string().required().label('Username'),
 	email: Yup.string().email().required().label('Email'),
 	phone: Yup.string().required().label('Phone'),
+	password: Yup.string().min(8).required().label('Password'),
 });
 
 export type RegistrationFormStateType = Yup.InferType<

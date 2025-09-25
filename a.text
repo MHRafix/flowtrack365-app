@@ -1,0 +1,223 @@
+{
+  "_id": { "$oid": "68d542a7b069dff14c534c15" },
+  "title": "সালাত খিমার",
+  "carouselImages": [
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320485/BLOG_THUMBNAIL_AND_BANNER/irna915e1tpjugsqw9cd.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320487/BLOG_THUMBNAIL_AND_BANNER/us2cqwhbbztrda1ol5l6.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320487/BLOG_THUMBNAIL_AND_BANNER/mkdbxi5tr5qpv4vfj2ow.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320484/BLOG_THUMBNAIL_AND_BANNER/iwpszktx2jxcqx9mf0fv.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320487/BLOG_THUMBNAIL_AND_BANNER/xdrymkah5cbblwizry4y.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320488/BLOG_THUMBNAIL_AND_BANNER/z4iaxgqksz6jt6edkgvj.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320492/BLOG_THUMBNAIL_AND_BANNER/pwqdm9omlqinbfhqm8oy.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320492/BLOG_THUMBNAIL_AND_BANNER/im83gvzx43es9sa7hzst.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320490/BLOG_THUMBNAIL_AND_BANNER/jyjnjmbfbqdet6vaxrlc.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320491/BLOG_THUMBNAIL_AND_BANNER/zq2mzf4lkziv3fdyhzrg.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320492/BLOG_THUMBNAIL_AND_BANNER/qdqoeouuyf55a0jiuzay.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320481/BLOG_THUMBNAIL_AND_BANNER/vfgizcyjwlrmofl3xkou.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320483/BLOG_THUMBNAIL_AND_BANNER/flnr1jnp8qddopix0fwy.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320483/BLOG_THUMBNAIL_AND_BANNER/vkeshwqdwqoelytam18z.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320481/BLOG_THUMBNAIL_AND_BANNER/yxpxygkpt0fyil4hma3f.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320481/BLOG_THUMBNAIL_AND_BANNER/g0shgoh7zqcxdzd9unwy.jpg"
+    },
+    {
+      "externalUrl": "https://res.cloudinary.com/coderxone/image/upload/v1758320486/BLOG_THUMBNAIL_AND_BANNER/wcl3no5dwknmxxetlalg.jpg"
+    }
+  ],
+  "gallery": [],
+  "code": "SK- 101",
+  "orgUID": "@rihla-mart-2025-435-3",
+  "model": "SK- 101",
+  "salePrice": { "$numberInt": "900" },
+  "regularPrice": { "$numberInt": "1150" },
+  "discountAmount": { "$numberInt": "250" },
+  "stock": { "$numberInt": "30" },
+  "stockHistory": [],
+  "category": {
+    "$oid": "68ba716ea7ec130064ee3169"
+  },
+  "sizes": [],
+  "colors": [],
+  "createdAt": {
+    "$date": { "$numberLong": "1757049386035" }
+  },
+  "updatedAt": {
+    "$date": { "$numberLong": "1757967954197" }
+  },
+  "__v": { "$numberInt": "0" },
+  "thumbnail": {
+    "externalUrl": "https://i.ibb.co.com/JwC11dVR/20250704-013106.jpg",
+    "_id": { "$oid": "68c87652aa71c214108a464e" }
+  }
+}
+
+
+
+
+{
+  "_id": { "$oid": "68d542d2b069dff14c534c16" },
+  "title": "Urban Casual",
+  "thumbnail": {
+    "externalUrl": "https://i.ibb.co.com/HDx88963/file-00000000d22462469b8dfe479100fffc.png",
+    "_id": { "$oid": "68c298a80625fbf7a7a05eb0" }
+  },
+  "carouselImages": [
+    {
+      "externalUrl": "https://i.ibb.co.com/HDx88963/file-00000000d22462469b8dfe479100fffc.png"
+    },
+    {
+      "externalUrl": "https://i.ibb.co.com/gZLDxDV0/IMG-20250911-WA0006.jpg"
+    },
+    {
+      "externalUrl": "https://i.ibb.co.com/XkLsp7jS/IMG-20250910-WA0008.jpg"
+    }
+  ],
+  "gallery": [],
+  "code": "UC-000",
+  "orgUID": "@loafinity-2025-643-2",
+  "model": "UC-000",
+  "salePrice": { "$numberInt": "1790" },
+  "regularPrice": { "$numberInt": "1990" },
+  "discountAmount": { "$numberInt": "200" },
+  "stock": { "$numberInt": "12" },
+  "stockHistory": [],
+  "category": {
+    "$oid": "68c0ec3664e5e417137c0963"
+  },
+  "sizes": [
+    { "size": "39", "description": "Bata - 5" },
+    { "size": "40", "description": "Bata - 6" },
+    { "size": "41", "description": "Bata - 7" },
+    { "size": "42", "description": "Bata - 8" },
+    { "size": "43", "description": "Bata - 9" },
+    { "size": "44", "description": "Bata - 44" }
+  ],
+  "colors": [
+    { "color": "Master", "description": "Master" }
+  ],
+  "createdAt": {
+    "$date": { "$numberLong": "1757480473856" }
+  },
+  "updatedAt": {
+    "$date": { "$numberLong": "1758719171707" }
+  },
+  "__v": { "$numberInt": "0" },
+  "description": "<div style=\"font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; padding: 20px; border-radius: 12px;);\">\n  <h2>✨ আপনার পা রাখুন সুস্থ ও সতেজ – <span style=\"color:#5A2D82;\">Urban Casual Leather Shoe </span> by Loafinity! ✨</h2>\n  \n  <p style=\"font-size: 18px; text-align:center;\">“<b>ঘাম নেই, দুর্গন্ধ নেই – শুধু সতেজ!</b>”</p>\n\n  <h3>👞 <b>Elite Step Leather Shoe – 100% অরিজিনাল বফ লেদার</b></h3>\n  <ul>\n    <li>✅ <b>হ্যান্ডমেড – প্রিমিয়াম ফিনিশ</b></li>\n    <li>✅ চায়না সুপার লাইটওয়েট ফ্লেক্সিবল হাওয়াই সোল</li>\n    <li>✅ ডক্টর/মেডিকেল ইনসোল – <b>অতিরিক্ত আরামের জন্য</b></li>\n    <li>✅ <b>লং লাস্টিং - দীর্ঘদিন ব্যবহারের উপযোগী</b></li>\n<li>✅ <b>৬ মাসের রিপ্লেসমেন্ট গ্যারান্টি</b></li>\n    <li>✅ অফিস, ইভেন্ট, হ্যাংআউট, ক্যাজুয়াল সব জায়গায় পারফেক্ট</li>\n  </ul>\n\n  <p style=\"font-size:18px; background:yellow; padding:10px; border-radius:8px; margin:10px 0px; color: black\">\n    🤲 💰 <b>আপনার ফ্যাশন হোক দানের অংশ 🤲💰 প্রতিটি জুতার মুনাফার ১০% ব্যয় হবে উম্মাহর কল্যাণে।</b>\n  </p>\n\n  <h3>👞 <b>এই জুতা পরলে যে সুবিধাগুলো পাবেন:</b></h3>\n  <ul>\n    <li>🔹 <b>দীর্ঘ হাঁটাতেও ক্লান্তি? নেই!</b></li>\n<li>🔹 <b>দীর্ঘদিন ব্যবহারে ছিড়বে? না!</b></li>\n    <li>🔹 সহজে খুলতে-পরা যায় – নিরাপদ ও আরামদায়ক</li>\n    <li>🔹 <b>পরিপাটি ও মার্জিত লুক – সাদামাটা কিন্তু স্টাইলিশ</b></li>\n    <li>🔹 হালকা ও ফ্লেক্সিবল – যেকোনো কাজে ব্যবহারযোগ্য</li>\n    <li>🔹 ডক্টর ইনসোল – পায়ের সম্পূর্ণ সাপোর্ট</li>\n    <li>🔹 <b>ঘাম বা দুর্গন্ধ হবে না – দীর্ঘ সময় ব্যবহারেও সতেজ অনুভূতি ✅</b></li>\n    <li>🔹 <b>আপনার প্রতিটি পদক্ষেপ মূল্যবান – আরাম + স্টাইল একসাথে</b></li>\n  </ul>\n\n\n<p style=\"font-size:18px; background:yellow; padding:10px; border-radius:8px; color: black; margin: 10px 0px;\">\n     💰 <b>নকল প্রমান করতে পারলে পাচ্ছেন ২ লক্ষ টাকা পুরস্কার - ইনশাআল্লাহ।</b>\n  </p>\n\n\n\n  <p style=\"text-align:center;\">📞 কল/WhatsApp: <b>01343808032</b> – আমাদের সাথে সরাসরি চ্যাট করুন</p>\n  <p style=\"text-align:center;\">🚚 ক্যাশ অন ডেলিভারি • দেশের যেকোনো জায়গায় ডেলিভারিp</p>\n</div>\n",
+  "shortDescription": "Loafinity তে চলে আস আসছে \"Urban Casual Leather Shoe\" - ১০০% অরিজিনাল  বফ লেদার। আপনার পা রাখুন আরামে, সুস্থ ও সতেজ। ",
+  "brand": { "$oid": "68c0f05664e5e417137c09c0" },
+  "unit": { "$oid": "68c0f04b64e5e417137c09b8" }
+}
+
+
+{
+  "_id": { "$oid": "68d542e7b069dff14c534c17" },
+  "title": "Elite Step",
+  "carouselImages": [
+    {
+      "externalUrl": "https://i.ibb.co.com/gL1McVPc/IMG-20250921-WA0013.jpg"
+    },
+    {
+      "externalUrl": "https://i.ibb.co.com/B5Dfg302/IMG-20250921-WA0005.jpg"
+    },
+    {
+      "externalUrl": "https://i.ibb.co.com/Hf9MjNvc/IMG-20250921-WA0019.jpg"
+    },
+    {
+      "externalUrl": "https://i.ibb.co.com/vvKFV5dF/IMG-20250921-WA0018.jpg"
+    },
+    {
+      "externalUrl": "https://i.ibb.co.com/Q7r9nSjn/IMG-20250921-WA0020.jpg"
+    }
+  ],
+  "gallery": [],
+  "code": "ES-000",
+  "orgUID": "@loafinity-2025-643-2",
+  "model": "ES-000",
+  "salePrice": { "$numberInt": "1690" },
+  "regularPrice": { "$numberInt": "1890" },
+  "discountAmount": { "$numberInt": "200" },
+  "stock": { "$numberInt": "12" },
+  "stockHistory": [
+    {
+      "quantity": { "$numberInt": "12" },
+      "stockType": "STOCK_IN",
+      "stockPrice": { "$numberInt": "1500" },
+      "updatedBy": "686a07b5c0fa81966874cd77",
+      "date": {
+        "$date": {
+          "$numberLong": "1757474959116"
+        }
+      }
+    },
+    {
+      "quantity": { "$numberInt": "12" },
+      "stockType": "STOCK_OUT",
+      "stockPrice": { "$numberInt": "1500" },
+      "updatedBy": "686a07b5c0fa81966874cd77",
+      "date": {
+        "$date": {
+          "$numberLong": "1757474980781"
+        }
+      }
+    }
+  ],
+  "category": {
+    "$oid": "68c0ec3664e5e417137c0963"
+  },
+  "sizes": [
+    { "size": "39", "description": "Bata - 5" },
+    { "size": "40", "description": "Bata - 6" },
+    { "size": "41", "description": "Bata - 7" },
+    { "size": "42", "description": "Bata - 8" },
+    { "size": "43", "description": "Bata - 9" },
+    { "size": "44", "description": "Bata - 44" }
+  ],
+  "colors": [
+    { "color": "Black", "description": "Black" }
+  ],
+  "createdAt": {
+    "$date": { "$numberLong": "1757473927048" }
+  },
+  "updatedAt": {
+    "$date": { "$numberLong": "1758719602030" }
+  },
+  "__v": { "$numberInt": "0" },
+  "thumbnail": {
+    "externalUrl": "https://i.ibb.co.com/bjBWpM4w/Whats-App-Image-2025-09-10-at-9-22-51-AM.jpg",
+    "_id": { "$oid": "68d3e621aa71c214108b9747" }
+  },
+  "brand": { "$oid": "68c0f05664e5e417137c09c0" },
+  "unit": { "$oid": "68c0f04b64e5e417137c09b8" },
+  "description": "<div style=\"font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; padding: 20px; border-radius: 12px;);\">\n  <h2>✨ আপনার পা রাখুন আরামে – <span style=\"color:#5A2D82;\">Elite Step Leather Shoe </span> by Loafinity! ✨</h2>\n  \n  <p style=\"font-size: 18px; text-align:center;\">“<b>ঘাম নেই, দুর্গন্ধ নেই – শুধু সতেজ!</b>”</p>\n\n  <h3>👞 <b>Elite Step Leather Shoe – ১০০% অরিজিনাল প্রিমিয়াম মেইলিং লেদার।</b></h3>\n  <ul>\n    <li>✅ <b>হ্যান্ডমেড – প্রিমিয়াম ফিনিশ</b></li>\n    <li>✅ চায়না সুপার লাইটওয়েট ফ্লেক্সিবল হাওয়াই সোল</li>\n    <li>✅ ডক্টর/মেডিকেল ইনসোল – <b>অতিরিক্ত আরামের জন্য</b></li>\n    <li>✅ <b>৬ মাসের রিপ্লেসমেন্ট গ্যারান্টি</b></li>\n    <li>✅ অফিস, ইভেন্ট, হ্যাংআউট, ক্যাজুয়াল সব জায়গায় পারফেক্ট</li>\n  </ul>\n\n  <p style=\"font-size:18px; background:yellow; padding:10px; border-radius:8px; margin:10px 0px; color: black\">\n    🤲 💰 <b>আপনার ফ্যাশন হোক দানের অংশ 🤲💰 প্রতিটি জুতার মুনাফার ১০% ব্যয় হবে উম্মাহর কল্যাণে!</b>\n  </p>\n\n  <h3>👞 <b>এই জুতা পরলে যে সুবিধাগুলো পাবেন:</b></h3>\n  <ul>\n    <li>🔹 <b>দীর্ঘ হাঁটাতেও ক্লান্তি? নেই!</b></li>\n    <li>🔹 সহজে খুলতে-পরা যায় – নিরাপদ ও আরামদায়ক</li>\n    <li>🔹 <b>পরিপাটি ও মার্জিত লুক – সাদামাটা কিন্তু স্টাইলিশ</b></li>\n    <li>🔹 হালকা ও ফ্লেক্সিবল – যেকোনো কাজে ব্যবহারযোগ্য</li>\n    <li>🔹 ডক্টর ইনসোল – পায়ের সম্পূর্ণ সাপোর্ট</li>\n    <li>🔹 <b>ঘাম বা দুর্গন্ধ হবে না – দীর্ঘ সময় ব্যবহারেও সতেজ অনুভূতি ✅</b></li>\n    <li>🔹 <b>আপনার প্রতিটি পদক্ষেপ মূল্যবান – আরাম + স্টাইল একসাথে</b></li>\n  </ul>\n  <p style=\"font-size:18px; background:yellow; padding:10px; border-radius:8px; margin:10px 0px; color: black\">\n     💰 <b>নকল প্রমান করতে পারলে পাচ্ছেন ২ লক্ষ টাকা পুরস্কার - ইনশাআল্লাহ।</b>\n  </p>\n\n\n  <p style=\"text-align:center;\">📞 কল/WhatsApp: <b>01343808032</b> – আমাদের সাথে সরাসরি চ্যাট করুন</p>\n  <p style=\"text-align:center;\">🚚 ক্যাশ অন ডেলিভারি • দেশের যেকোনো জায়গায় ডেলিভারি</p>\n</div>\n",
+  "shortDescription": "✨ Elite Step Leather Shoe - ১০০% প্রিমিয়াম মেইলিং লেদার দিয়ে তৈরি কালো এই ক্যাজুয়াল সুটি আপনাকে দিবে ইলিগ্যান্ট লুক। "
+}

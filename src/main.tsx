@@ -31,6 +31,9 @@ const InnerApp = () => {
 	const [auth] = useAuth();
 	return <RouterProvider router={router} context={{ auth }} />;
 };
+if (typeof global === 'undefined') {
+	window.global = window;
+}
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>

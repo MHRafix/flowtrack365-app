@@ -13,8 +13,8 @@ const OrderDetails: FC<{ order: Order }> = ({ order }) => {
 					<div className='w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden'>
 						{item?.product?.thumbnail ? (
 							<img
-								src={item.product.thumbnail?.externalUrl!}
-								alt={item.product.title}
+								src={item?.product?.thumbnail?.externalUrl!}
+								alt={item?.product?.title}
 								className='w-full h-full object-cover'
 							/>
 						) : (

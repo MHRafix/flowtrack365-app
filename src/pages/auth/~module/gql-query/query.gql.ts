@@ -10,11 +10,10 @@ export const Registration_User_Mutation = gql`
 	}
 `;
 
-export const Magic_Login_User_Mutation = gql`
-	mutation MagicLogin($payload: MagicLinkAuthenticationInput!) {
-		sendMagicLink(payload: $payload) {
-			isSuccess
-			message
+export const Login_User_Mutation = gql`
+	mutation Login($payload: LoginInput!) {
+		login(payload: $payload) {
+			data
 		}
 	}
 `;

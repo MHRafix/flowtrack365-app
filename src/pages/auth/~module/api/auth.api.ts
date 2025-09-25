@@ -7,7 +7,7 @@ import { RegistrationFormStateType } from '../../registration';
 import { VerifyMagicLoginFormStateType } from '../../verify-login';
 import {
 	Login_User_Details_Query,
-	Magic_Login_User_Mutation,
+	Login_User_Mutation,
 	Registration_User_Mutation,
 	Verify_Magic_Login_Mutation,
 } from '../gql-query/query.gql';
@@ -29,12 +29,13 @@ export const authApi = (onRedirect?: CallableFunction) => {
 	const loginMutation = useMutation({
 		mutationFn: (payload: LoginFormStateType) =>
 			gqlRequest({
-				query: Magic_Login_User_Mutation,
+				query: Login_User_Mutation,
 				variables: { payload },
 			}),
-		onSuccess: () => {
-			toast.success('Login link has been sent to your mail.');
-			// joinRequestsQuery.refetch();
+		onSuccess: (res: any) => {
+			localStorage.setItem('token', res?.login?.data?.token);
+			toast.success('Login has been success.');
+			onRedirect?.();
 		},
 		onError: () => toast.error('Failed to login'),
 	});

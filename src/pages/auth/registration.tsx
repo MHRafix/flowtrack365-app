@@ -153,7 +153,11 @@ function RouteComponent() {
 								</FormItem>
 							)}
 						/>
-						<Button type='submit' variant={'default'}>
+						<Button
+							disabled={registrationMutation?.isPending}
+							type='submit'
+							variant={'default'}
+						>
 							{registrationMutation?.isPending && (
 								<Loader2 className='animate-spin' />
 							)}{' '}

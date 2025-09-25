@@ -115,7 +115,11 @@ function RouteComponent() {
 							)}
 						/>
 
-						<Button type='submit' variant={'default'}>
+						<Button
+							disabled={loginMutation?.isPending}
+							type='submit'
+							variant={'default'}
+						>
 							{loginMutation?.isPending && <Loader2 className='animate-spin' />}
 							Login Now
 						</Button>

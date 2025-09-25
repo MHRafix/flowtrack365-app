@@ -19,17 +19,18 @@ export const All_Orders_By_Organization_Query = gql`
 				isPaid
 				items {
 					product {
-						_id
 						title
+						code
+						model
+						orgUID
+						regularPrice
+						salePrice
 						thumbnail {
 							bucket
 							region
 							key
 							externalUrl
 						}
-
-						createdAt
-						updatedAt
 					}
 					quantity
 					code

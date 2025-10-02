@@ -63,7 +63,14 @@ function RouteComponent() {
 				}}
 				size='full'
 			>
-				<OrderDetails order={order as Order} />
+				<OrderDetails
+					order={order as Order}
+					onRefetch={() => {
+						refetch();
+						setOpenDetails(false);
+						setOrder(null);
+					}}
+				/>
 			</DrawerWrapper>
 			<div className='grid gap-3 md:flex justify-between items-center bg-blue-200 text-black p-3 rounded-md mb-2'>
 				<h2 className='text-xl font-semibold'>

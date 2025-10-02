@@ -55,3 +55,9 @@ export const All_Orders_By_Organization_Query = gql`
 		}
 	}
 `;
+
+export const Update_Order_Mutation = gql`
+	mutation UpdateOrder($payload: UpdateOrderInput!, $orgUid: String!) {
+		updateOrder(payload: $payload, orgUID: $orgUid)
+	}
+`;

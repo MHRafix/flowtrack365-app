@@ -24,7 +24,7 @@ const DrawerWrapper: FC<DrawerWrapperPropsType> = ({
 	isOpen,
 	children,
 	onCloseDrawer,
-	size = 'md',
+	size = 'xl',
 }) => {
 	return (
 		<Drawer open={isOpen} direction='right' onClose={() => onCloseDrawer()}>
@@ -33,7 +33,7 @@ const DrawerWrapper: FC<DrawerWrapperPropsType> = ({
 			>
 				<div className='flex flex-col h-full'>
 					<DrawerHeader>
-						<DrawerTitle>{title}</DrawerTitle>
+						<DrawerTitle className='font-bold text-xl'>{title}</DrawerTitle>
 					</DrawerHeader>
 					<div className='p-4 pb-0 flex-1 overflow-y-auto'>{children}</div>
 				</div>

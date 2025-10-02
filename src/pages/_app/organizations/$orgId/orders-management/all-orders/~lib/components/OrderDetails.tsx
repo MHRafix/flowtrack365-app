@@ -1,7 +1,38 @@
-import { Order } from '@/gql/graphql';
+import { Button } from '@/components/ui/button';
+import { Order, OrderStatus, UpdateOrderInput } from '@/gql/graphql';
+import { gqlRequest } from '@/lib/api-client';
+import { OrderStatusBadge } from '@/lib/StatusBadge';
+import { userAtom } from '@/store/auth.atom';
+import { useMutation } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
+import { Loader2 } from 'lucide-react';
 import { FC } from 'react';
+import { Update_Order_Mutation } from '../query/query.gql';
 
-const OrderDetails: FC<{ order: Order }> = ({ order }) => {
+const OrderDetails: FC<{ order: Order; onRefetch: CallableFunction }> = ({
+	order,
+	onRefetch,
+}) => {
+	const [session] = useAtom(userAtom);
+
+	const updateOrder = useMutation({
+		mutationFn: (payload: UpdateOrderPayloadType) =>
+			gqlRequest({
+				query: Update_Order_Mutation,
+				variables: payload,
+			}),
+
+		onSuccess: () => {
+			onRefetch();
+		},
+	});
+
+	const handleUpdateOrder = (status: OrderStatus) => {
+		updateOrder.mutate({
+			payload: { _id: order?._id!, status },
+			orgUid: session?.orgUID!,
+		});
+	};
 	return (
 		<div className='space-y-2'>
 			{order?.items?.map((item, idx) => (
@@ -54,6 +85,30 @@ const OrderDetails: FC<{ order: Order }> = ({ order }) => {
 					{order?.specialNote || 'N/A'}
 				</p>
 			</div>
+			<div className='mt-6 border p-4 rounded-sm bg-gray-50 dark:bg-gray-800 space-y-2'>
+				<h4 className='text-sm font-medium text-gray-500 dark:text-gray-400'>
+					Customer Name:
+				</h4>
+				<p className='text-base text-gray-900 dark:text-gray-200'>
+					{order?.billing?.name || 'N/A'}
+				</p>{' '}
+				<h4 className='text-sm font-medium text-gray-500 dark:text-gray-400'>
+					Customer Phone:
+				</h4>
+				<p className='text-base text-gray-900 dark:text-gray-200'>
+					{order?.billing?.phone || 'N/A'}
+				</p>{' '}
+				<h4 className='text-sm font-medium text-gray-500 dark:text-gray-400'>
+					Customer Email:
+				</h4>
+				<p className='text-base text-gray-900 dark:text-gray-200'>
+					{order?.billing?.email || 'N/A'}
+				</p>{' '}
+				<h4 className='text-sm font-medium text-gray-500 dark:text-gray-400'>
+					Order Status
+				</h4>
+				<OrderStatusBadge status={order?.status as OrderStatus} />
+			</div>
 
 			<div className='mt-6 border p-4 rounded-sm bg-gray-50 dark:bg-gray-800 space-y-3'>
 				<div className='flex justify-between text-sm text-gray-600 dark:text-gray-300'>
@@ -76,8 +131,74 @@ const OrderDetails: FC<{ order: Order }> = ({ order }) => {
 					</span>
 				</div>
 			</div>
+
+			<div className='mt-6 grid grid-cols-3 items-center gap-3'>
+				{order?.status === OrderStatus.Pending && (
+					<Button
+						onClick={() => handleUpdateOrder(OrderStatus.Confirmed)}
+						disabled={updateOrder?.isPending}
+						className='px-3 py-2 rounded-md cursor-pointer bg-indigo-500 hover:bg-indigo-700 hover:duration-300 text-white font-medium'
+					>
+						{updateOrder?.isPending && <Loader2 className='animate-spin' />}{' '}
+						Confirmed
+					</Button>
+				)}
+				{order?.status === OrderStatus.Confirmed && (
+					<Button
+						onClick={() => handleUpdateOrder(OrderStatus.Processing)}
+						disabled={updateOrder?.isPending}
+						className='px-3 py-2 rounded-md cursor-pointer bg-blue-500 hover:bg-blue-700 hover:duration-300 text-white font-medium'
+					>
+						{updateOrder?.isPending && <Loader2 className='animate-spin' />}{' '}
+						Processing
+					</Button>
+				)}
+				{order?.status === OrderStatus.Processing && (
+					<Button
+						onClick={() => handleUpdateOrder(OrderStatus.Shipped)}
+						disabled={updateOrder?.isPending}
+						className='px-3 py-2 rounded-md cursor-pointer bg-orange-500 hover:bg-orange-600 hover:duration-300 text-white font-medium'
+					>
+						{updateOrder?.isPending && <Loader2 className='animate-spin' />}{' '}
+						Shipped
+					</Button>
+				)}
+				<Button
+					onClick={() => handleUpdateOrder(OrderStatus.Cancelled)}
+					disabled={updateOrder?.isPending}
+					className='px-3 py-2 rounded-md cursor-pointer bg-red-500 hover:bg-red-700 hover:duration-300 text-white font-medium'
+				>
+					{updateOrder?.isPending && <Loader2 className='animate-spin' />}{' '}
+					Cancelled
+				</Button>
+				{order?.status === OrderStatus.Delivered && (
+					<Button
+						onClick={() => handleUpdateOrder(OrderStatus.Refunded)}
+						disabled={updateOrder?.isPending}
+						className='px-3 py-2 rounded-md cursor-pointer bg-violet-500 hover:bg-violet-700 hover:duration-300 text-white font-medium'
+					>
+						{updateOrder?.isPending && <Loader2 className='animate-spin' />}{' '}
+						Refunded
+					</Button>
+				)}{' '}
+				{order?.status === OrderStatus.Shipped && (
+					<Button
+						onClick={() => handleUpdateOrder(OrderStatus.Delivered)}
+						disabled={updateOrder?.isPending}
+						className=' px-3 py-2 rounded-md cursor-pointer bg-green-500 hover:bg-green-700 hover:duration-300 text-white font-medium'
+					>
+						{updateOrder?.isPending && <Loader2 className='animate-spin' />}{' '}
+						Delivered
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 };
 
 export default OrderDetails;
+
+export interface UpdateOrderPayloadType {
+	payload: UpdateOrderInput;
+	orgUid: string;
+}

@@ -9,6 +9,7 @@ const orderStatusVariantMap: Record<OrderStatus, string> = {
 	[OrderStatus.Processing]: 'bg-teal-500 text-white',
 	[OrderStatus.Refunded]: 'bg-orange-500 text-white',
 	[OrderStatus.Shipped]: 'bg-purple-500 text-white',
+	[OrderStatus.Hold]: 'bg-gray-500 text-white',
 };
 
 const paymentStatusVariantMap: Record<PaymentStatus, string> = {

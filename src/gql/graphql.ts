@@ -888,7 +888,8 @@ export enum OrderStatus {
   Pending = 'PENDING',
   Processing = 'PROCESSING',
   Refunded = 'REFUNDED',
-  Shipped = 'SHIPPED'
+  Shipped = 'SHIPPED',
+  Hold = 'HOLD'
 }
 
 export type Organization = {

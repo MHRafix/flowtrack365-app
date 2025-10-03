@@ -1,5 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { Order, OrderStatus, UpdateOrderInput } from '@/gql/graphql';
+import {
+	Order,
+	OrderStatus,
+	PaymentMethod,
+	PaymentStatus,
+	UpdateOrderInput,
+} from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { OrderStatusBadge } from '@/lib/StatusBadge';
 import { userAtom } from '@/store/auth.atom';
@@ -27,9 +33,19 @@ const OrderDetails: FC<{ order: Order; onRefetch: CallableFunction }> = ({
 		},
 	});
 
-	const handleUpdateOrder = (status: OrderStatus) => {
+	const handleUpdateOrder = (
+		status: OrderStatus,
+		paymentStatus?: PaymentStatus
+	) => {
 		updateOrder.mutate({
-			payload: { _id: order?._id!, status },
+			payload: {
+				_id: order?._id!,
+				status,
+				payment: {
+					method: PaymentMethod.CashOnDelivery,
+					status: paymentStatus! || PaymentStatus.Due,
+				},
+			},
 			orgUid: session?.orgUID!,
 		});
 	};
@@ -133,7 +149,8 @@ const OrderDetails: FC<{ order: Order; onRefetch: CallableFunction }> = ({
 			</div>
 
 			<div className='mt-6 grid grid-cols-3 items-center gap-3'>
-				{order?.status === OrderStatus.Pending && (
+				{(order?.status === OrderStatus.Pending ||
+					order?.status === OrderStatus.Hold) && (
 					<Button
 						onClick={() => handleUpdateOrder(OrderStatus.Confirmed)}
 						disabled={updateOrder?.isPending}
@@ -141,6 +158,17 @@ const OrderDetails: FC<{ order: Order; onRefetch: CallableFunction }> = ({
 					>
 						{updateOrder?.isPending && <Loader2 className='animate-spin' />}{' '}
 						Confirmed
+					</Button>
+				)}
+				{(order?.status === OrderStatus.Pending ||
+					order?.status === OrderStatus.Confirmed) && (
+					<Button
+						onClick={() => handleUpdateOrder(OrderStatus.Hold)}
+						disabled={updateOrder?.isPending}
+						className='px-3 py-2 rounded-md cursor-pointer bg-gray-500 hover:bg-gray-700 hover:duration-300 text-white font-medium'
+					>
+						{updateOrder?.isPending && <Loader2 className='animate-spin' />}{' '}
+						Hold
 					</Button>
 				)}
 				{order?.status === OrderStatus.Confirmed && (
@@ -173,17 +201,21 @@ const OrderDetails: FC<{ order: Order; onRefetch: CallableFunction }> = ({
 				</Button>
 				{order?.status === OrderStatus.Delivered && (
 					<Button
-						onClick={() => handleUpdateOrder(OrderStatus.Refunded)}
+						onClick={() =>
+							handleUpdateOrder(OrderStatus.Refunded, PaymentStatus.Refunded)
+						}
 						disabled={updateOrder?.isPending}
 						className='px-3 py-2 rounded-md cursor-pointer bg-violet-500 hover:bg-violet-700 hover:duration-300 text-white font-medium'
 					>
 						{updateOrder?.isPending && <Loader2 className='animate-spin' />}{' '}
 						Refunded
 					</Button>
-				)}{' '}
+				)}
 				{order?.status === OrderStatus.Shipped && (
 					<Button
-						onClick={() => handleUpdateOrder(OrderStatus.Delivered)}
+						onClick={() =>
+							handleUpdateOrder(OrderStatus.Delivered, PaymentStatus.Paid)
+						}
 						disabled={updateOrder?.isPending}
 						className=' px-3 py-2 rounded-md cursor-pointer bg-green-500 hover:bg-green-700 hover:duration-300 text-white font-medium'
 					>

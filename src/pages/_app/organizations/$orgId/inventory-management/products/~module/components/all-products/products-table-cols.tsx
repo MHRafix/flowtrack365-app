@@ -85,7 +85,7 @@ export const productsTableColumns: ColumnDef<Product>[] = [
 		cell: ({ row }) => {
 			return (
 				<span>
-					{row.original?.stock || 0} - {row.original?.unit?.unitCode}
+					{row.original?.stock || 0} - {row.original?.unit?.name}
 				</span>
 			);
 		},

@@ -37,16 +37,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAppConfirm } from './AppConfirm';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from './ui/dropdown-menu';
 const organizationUID = localStorage.getItem('orgUID');
 const items = [
 	{
@@ -283,7 +274,7 @@ const AppSidenav = () => {
 
 			<SidebarFooter>
 				<Button
-					variant={'ghost'}
+					variant={'destructive'}
 					onClick={() => {
 						appConfirmHandle.show({
 							title: 'Logout',
@@ -295,11 +286,12 @@ const AppSidenav = () => {
 							},
 						});
 					}}
+					className='!cursor-pointer'
 				>
 					<LogOutIcon />
 					Logout
 				</Button>
-				<DropdownMenu>
+				{/* <DropdownMenu>
 					<DropdownMenuTrigger>
 						<Avatar>
 							<AvatarImage src='https://github.com/shadcn.png' />
@@ -312,7 +304,7 @@ const AppSidenav = () => {
 						<DropdownMenuItem>Settings</DropdownMenuItem>
 						<DropdownMenuItem>Logout</DropdownMenuItem>
 					</DropdownMenuContent>
-				</DropdownMenu>
+				</DropdownMenu> */}
 			</SidebarFooter>
 		</Sidebar>
 	);

@@ -34,6 +34,7 @@ import {
 	ShoppingCart,
 	SquareStack,
 	Users,
+	Zap,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAppConfirm } from './AppConfirm';
@@ -150,6 +151,11 @@ const items = [
 				title: 'Plan & Features',
 				url: `/organizations/${organizationUID}/organization-settings/plan-features`,
 				icon: Flower,
+			},
+			{
+				title: 'Setup Meta',
+				url: `/organizations/${organizationUID}/organization-settings/setup-meta`,
+				icon: Zap,
 			},
 		],
 	},

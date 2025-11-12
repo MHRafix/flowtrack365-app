@@ -10,6 +10,7 @@ import { useAtom } from 'jotai';
 import { Organization_BY_OrgUID_Query } from '../~module/gql-query/query.gql';
 import OrganizationBasicInformation from './~module/components/OrganizationBasicInformation';
 import OrganizationMedia from './~module/components/OrganizationMedia';
+import SocialLinksForm from './~module/components/SocialLinksForm';
 
 export const Route = createLazyFileRoute(
 	'/_app/organizations/$orgId/organization-settings/general/'
@@ -58,6 +59,7 @@ function RouteComponent() {
 				<TabsList className='w-full border grid grid-cols-2 lg:grid-cols-5 gap-3 h-auto'>
 					<TabsTrigger value='basic_information'>Basic Information</TabsTrigger>
 					<TabsTrigger value='logo_&_cover'>Logo & Cover</TabsTrigger>
+					<TabsTrigger value='social_links'>Social Links</TabsTrigger>
 				</TabsList>
 				{isLoading ? (
 					<Skeleton className='h-[400px] rounded-md bg-slate-200 dark:bg-slate-900' />
@@ -71,6 +73,12 @@ function RouteComponent() {
 						</TabsContent>
 						<TabsContent value='logo_&_cover'>
 							<OrganizationMedia
+								organization={data?.organizationByUID!}
+								updateOrganization={updateOrganization as UseMutationResult}
+							/>
+						</TabsContent>
+						<TabsContent value='social_links'>
+							<SocialLinksForm
 								organization={data?.organizationByUID!}
 								updateOrganization={updateOrganization as UseMutationResult}
 							/>

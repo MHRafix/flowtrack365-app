@@ -61,3 +61,10 @@ export const Update_Order_Mutation = gql`
 		updateOrder(payload: $payload, orgUID: $orgUid)
 	}
 `;
+export const Remove_Order_Mutation = gql`
+	mutation RemoveOrder($id: String!) {
+		removeOrder(_id: $id) {
+			_id
+		}
+	}
+`;

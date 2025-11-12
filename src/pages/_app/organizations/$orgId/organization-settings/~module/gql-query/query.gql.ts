@@ -18,6 +18,13 @@ export const Organization_BY_OrgUID_Query = gql`
 				key
 				externalUrl
 			}
+			socialLinks {
+				facebook
+				x
+				instagram
+				youtube
+				daraz
+			}
 			Logo {
 				bucket
 				region

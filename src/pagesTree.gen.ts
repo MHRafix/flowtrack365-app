@@ -19,6 +19,7 @@ import { Route as AuthVerifyLoginRouteImport } from './pages/auth/verify-login'
 import { Route as AuthRegistrationRouteImport } from './pages/auth/registration'
 import { Route as AuthLoginRouteImport } from './pages/auth/login'
 import { Route as AppOrganizationsOrgIdTaskManagementIndexRouteImport } from './pages/_app/organizations/$orgId/task-management/index'
+import { Route as AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRouteImport } from './pages/_app/organizations/$orgId/organization-settings/setup-meta/index'
 
 const AppOrganizationsOrgIdIndexLazyRouteImport = createFileRoute(
   '/_app/organizations/$orgId/',
@@ -275,6 +276,12 @@ const AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute =
       './pages/_app/organizations/$orgId/accounts-management/adjustments/index.lazy'
     ).then((d) => d.Route),
   )
+const AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute =
+  AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRouteImport.update({
+    id: '/organizations/$orgId/organization-settings/setup-meta/',
+    path: '/organizations/$orgId/organization-settings/setup-meta/',
+    getParentRoute: () => AppRoute,
+  } as any)
 const AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute =
   AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRouteImport.update(
     {
@@ -310,6 +317,7 @@ export interface FileRoutesByFullPath {
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   '/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
+  '/organizations/$orgId/organization-settings/setup-meta': typeof AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute
   '/organizations/$orgId/accounts-management/adjustments': typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
   '/organizations/$orgId/accounts-management/bank-accounts': typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   '/organizations/$orgId/expense-management/all-expenses': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -336,6 +344,7 @@ export interface FileRoutesByTo {
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   '/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
+  '/organizations/$orgId/organization-settings/setup-meta': typeof AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute
   '/organizations/$orgId/accounts-management/adjustments': typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
   '/organizations/$orgId/accounts-management/bank-accounts': typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   '/organizations/$orgId/expense-management/all-expenses': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -364,6 +373,7 @@ export interface FileRoutesById {
   '/_app/organizations/$orgId/': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/_app/organizations/$orgId/task-management/': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   '/_app/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
+  '/_app/organizations/$orgId/organization-settings/setup-meta/': typeof AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute
   '/_app/organizations/$orgId/accounts-management/adjustments/': typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
   '/_app/organizations/$orgId/accounts-management/bank-accounts/': typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   '/_app/organizations/$orgId/expense-management/all-expenses/': typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -392,6 +402,7 @@ export interface FileRouteTypes {
     | '/organizations/$orgId'
     | '/organizations/$orgId/task-management'
     | '/organizations/$orgId/accounts-management/statements/$accountId'
+    | '/organizations/$orgId/organization-settings/setup-meta'
     | '/organizations/$orgId/accounts-management/adjustments'
     | '/organizations/$orgId/accounts-management/bank-accounts'
     | '/organizations/$orgId/expense-management/all-expenses'
@@ -418,6 +429,7 @@ export interface FileRouteTypes {
     | '/organizations/$orgId'
     | '/organizations/$orgId/task-management'
     | '/organizations/$orgId/accounts-management/statements/$accountId'
+    | '/organizations/$orgId/organization-settings/setup-meta'
     | '/organizations/$orgId/accounts-management/adjustments'
     | '/organizations/$orgId/accounts-management/bank-accounts'
     | '/organizations/$orgId/expense-management/all-expenses'
@@ -445,6 +457,7 @@ export interface FileRouteTypes {
     | '/_app/organizations/$orgId/'
     | '/_app/organizations/$orgId/task-management/'
     | '/_app/organizations/$orgId/accounts-management/statements/$accountId'
+    | '/_app/organizations/$orgId/organization-settings/setup-meta/'
     | '/_app/organizations/$orgId/accounts-management/adjustments/'
     | '/_app/organizations/$orgId/accounts-management/bank-accounts/'
     | '/_app/organizations/$orgId/expense-management/all-expenses/'
@@ -634,6 +647,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/organizations/$orgId/organization-settings/setup-meta/': {
+      id: '/_app/organizations/$orgId/organization-settings/setup-meta/'
+      path: '/organizations/$orgId/organization-settings/setup-meta'
+      fullPath: '/organizations/$orgId/organization-settings/setup-meta'
+      preLoaderRoute: typeof AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/organizations/$orgId/accounts-management/statements/$accountId': {
       id: '/_app/organizations/$orgId/accounts-management/statements/$accountId'
       path: '/organizations/$orgId/accounts-management/statements/$accountId'
@@ -656,6 +676,7 @@ interface AppRouteChildren {
   AppOrganizationsOrgIdIndexLazyRoute: typeof AppOrganizationsOrgIdIndexLazyRoute
   AppOrganizationsOrgIdTaskManagementIndexRoute: typeof AppOrganizationsOrgIdTaskManagementIndexRoute
   AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute: typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
+  AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute: typeof AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute
   AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute: typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
   AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute: typeof AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute
   AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute: typeof AppOrganizationsOrgIdExpenseManagementAllExpensesIndexLazyRoute
@@ -680,6 +701,8 @@ const AppRouteChildren: AppRouteChildren = {
     AppOrganizationsOrgIdTaskManagementIndexRoute,
   AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute:
     AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute,
+  AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute:
+    AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute,
   AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute:
     AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute,
   AppOrganizationsOrgIdAccountsManagementBankAccountsIndexLazyRoute:

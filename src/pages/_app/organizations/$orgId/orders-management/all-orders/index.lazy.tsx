@@ -4,14 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Order, OrderPagination } from '@/gql/graphql';
 import { gqlRequest } from '@/lib/api-client';
 import { userAtom } from '@/store/auth.atom';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useAtom } from 'jotai';
-import { Info, RefreshCcw } from 'lucide-react';
+import { Info, Loader2, RefreshCcw, Trash } from 'lucide-react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import OrderDetails from './~lib/components/OrderDetails';
 import { ordersTableColumns } from './~lib/components/orders-table-cols';
-import { All_Orders_By_Organization_Query } from './~lib/query/query.gql';
+import {
+	All_Orders_By_Organization_Query,
+	Remove_Order_Mutation,
+} from './~lib/query/query.gql';
 
 export const Route = createLazyFileRoute(
 	'/_app/organizations/$orgId/orders-management/all-orders/'
@@ -46,6 +50,18 @@ function RouteComponent() {
 					orgUid: session?.orgUID,
 				},
 			}),
+	});
+
+	const removeOrder = useMutation({
+		mutationFn: (id: string) =>
+			gqlRequest({
+				query: Remove_Order_Mutation,
+				variables: { id },
+			}),
+		onSuccess() {
+			toast.success('Order has been removed successfully');
+			refetch();
+		},
 	});
 
 	const totalMoneyOrdersOfToday = orders?.ordersByOrganization?.nodes
@@ -107,6 +123,15 @@ function RouteComponent() {
 							}}
 						>
 							<Info /> Order Details
+						</Button>
+						<Button
+							variant={'destructive'}
+							onClick={() => {
+								removeOrder.mutate(row?._id!);
+							}}
+						>
+							{removeOrder.isPending && <Loader2 className='animate-spin' />}
+							<Trash /> Remove
 						</Button>
 					</div>
 				)}

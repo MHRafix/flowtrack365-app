@@ -52,7 +52,7 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 
 	const onSubmit = (values: FormValues) => {
 		updateOrganization.mutate({
-			...values,
+			socialLinks: { ...values },
 			_id: organization?._id,
 			orgUID: session?.orgUID,
 		});
@@ -73,7 +73,7 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 									<Input
 										placeholder='www.facebook.com/page_username'
 										{...field}
-										value={organization?.socialLinks?.facebook!}
+										defaultValue={organization?.socialLinks?.facebook!}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -86,7 +86,7 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 						<FormControl>
 							<Input
 								placeholder='www.x.com/page_username'
-								value={organization?.socialLinks?.x!}
+								defaultValue={organization?.socialLinks?.x!}
 							/>
 						</FormControl>
 						<FormMessage />
@@ -103,7 +103,7 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 									<Input
 										placeholder='www.instagram.com/page_username'
 										{...field}
-										value={organization?.socialLinks?.instagram!}
+										defaultValue={organization?.socialLinks?.instagram!}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -122,7 +122,7 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 									<Input
 										placeholder='www.youtube.com/chanel_name'
 										{...field}
-										value={organization?.socialLinks?.youtube!}
+										defaultValue={organization?.socialLinks?.youtube!}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -141,7 +141,7 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 									<Input
 										placeholder='www.daraz.com.bd/username'
 										{...field}
-										value={organization?.socialLinks?.daraz!}
+										defaultValue={organization?.socialLinks?.daraz!}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -169,11 +169,59 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 export default SocialLinksForm;
 
 const schema = Yup.object().shape({
-	facebook: Yup.string().optional().nullable().label('Facebook'),
-	x: Yup.string().optional().nullable().label('X'),
-	instagram: Yup.string().optional().nullable().label('Instagram'),
-	youtube: Yup.string().optional().nullable().label('Youtube'),
-	daraz: Yup.string().optional().nullable().label('Daraz'),
+	facebook: Yup.string()
+		.nullable()
+		.notRequired()
+		.test(
+			'facebook-url',
+			'Facebook URL must start with "https://facebook.com" or "https://www.facebook.com"',
+			(value) => !value || /^https?:\/\/(www\.)?facebook\.com\/.+$/i.test(value)
+		)
+		.label('Facebook'),
+
+	x: Yup.string()
+		.nullable()
+		.notRequired()
+		.test(
+			'x-url',
+			'X URL must start with "https://x.com" or "https://www.x.com"',
+			(value) => !value || /^https?:\/\/(www\.)?x\.com\/.+$/i.test(value)
+		)
+		.label('X'),
+
+	instagram: Yup.string()
+		.nullable()
+		.notRequired()
+		.test(
+			'instagram-url',
+			'Instagram URL must start with "https://instagram.com"',
+			(value) =>
+				!value || /^https?:\/\/(www\.)?instagram\.com\/.+$/i.test(value)
+		)
+		.label('Instagram'),
+
+	youtube: Yup.string()
+		.nullable()
+		.notRequired()
+		.test(
+			'youtube-url',
+			'YouTube URL must start with "https://youtube.com" or "https://youtu.be"',
+			(value) =>
+				!value ||
+				/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/.+$/i.test(value)
+		)
+		.label('YouTube'),
+
+	daraz: Yup.string()
+		.nullable()
+		.notRequired()
+		.test(
+			'daraz-url',
+			'Daraz URL must start with "https://daraz.com" or its regional variant (e.g., daraz.pk)',
+			(value) =>
+				!value || /^https?:\/\/(www\.)?daraz\.[a-z.]+\/.+$/i.test(value)
+		)
+		.label('Daraz'),
 });
 
 type FormValues = Yup.InferType<typeof schema>;

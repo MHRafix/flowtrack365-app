@@ -288,7 +288,7 @@ const AppSidenav = () => {
 								StorageUtil.removeItem('token');
 								StorageUtil.removeItem('orgUID');
 								await fetchME();
-								router.invalidate();
+								location.href = '/auth/login';
 							},
 						});
 					}}

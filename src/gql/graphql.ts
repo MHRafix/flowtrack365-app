@@ -25,6 +25,15 @@ export enum ActionType {
   Withdraw = 'Withdraw'
 }
 
+export type ActivityListQueryDto = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<SortType>;
+  sortBy?: InputMaybe<Scalars['String']['input']>;
+  where?: InputMaybe<Array<CommonMatchInput>>;
+  whereOperator?: InputMaybe<Where_Operator>;
+};
+
 export type Adjustment = {
   __typename?: 'Adjustment';
   _id?: Maybe<Scalars['ID']['output']>;
@@ -235,6 +244,17 @@ export type CreateBrandInput = {
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
+export type CreateDailyActivityDto = {
+  _id?: InputMaybe<Scalars['ID']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  ebadah?: InputMaybe<EbadahInputDto>;
+  exercise?: InputMaybe<ExerciseInputDto>;
+  jikirAjkar?: InputMaybe<JikirInputDto>;
+  orgUID: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  user?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type CreateEmployeeInput = {
   employeeDetails: Scalars['String']['input'];
   organizations?: InputMaybe<Array<EmployeeOrganizationInput>>;
@@ -354,6 +374,24 @@ export type CreateUnitInput = {
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
+export type DailyActivity = {
+  __typename?: 'DailyActivity';
+  _id?: Maybe<Scalars['ID']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  ebadah?: Maybe<EbadahInput>;
+  exercise?: Maybe<ExerciseInput>;
+  jikirAjkar?: Maybe<JikirInput>;
+  orgUID: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  user?: Maybe<User>;
+};
+
+export type DailyActivityPagination = {
+  __typename?: 'DailyActivityPagination';
+  meta?: Maybe<PaginationMeta>;
+  nodes?: Maybe<Array<DailyActivity>>;
+};
+
 export type Delivery = {
   __typename?: 'Delivery';
   courier?: Maybe<Scalars['String']['output']>;
@@ -367,6 +405,33 @@ export type DeliveryInput = {
   deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
   estimatedDeliveryAt?: InputMaybe<Scalars['DateTime']['input']>;
   trackingNumber?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EbadahInput = {
+  __typename?: 'EbadahInput';
+  extraNamaj?: Maybe<Scalars['Float']['output']>;
+  hadith?: Maybe<Scalars['Float']['output']>;
+  ishraq?: Maybe<Scalars['Boolean']['output']>;
+  mulk?: Maybe<Scalars['Boolean']['output']>;
+  namajWithJamath?: Maybe<Scalars['Float']['output']>;
+  readingBook?: Maybe<Scalars['String']['output']>;
+  tahajjud?: Maybe<Scalars['Boolean']['output']>;
+  tilwat?: Maybe<Scalars['String']['output']>;
+  translation?: Maybe<Scalars['String']['output']>;
+  waqiyah?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type EbadahInputDto = {
+  extraNamaj?: InputMaybe<Scalars['Float']['input']>;
+  hadith?: InputMaybe<Scalars['Float']['input']>;
+  ishraq?: InputMaybe<Scalars['Boolean']['input']>;
+  mulk?: InputMaybe<Scalars['Boolean']['input']>;
+  namajWithJamath?: InputMaybe<Scalars['Float']['input']>;
+  readingBook?: InputMaybe<Scalars['String']['input']>;
+  tahajjud?: InputMaybe<Scalars['Boolean']['input']>;
+  tilwat?: InputMaybe<Scalars['String']['input']>;
+  translation?: InputMaybe<Scalars['String']['input']>;
+  waqiyah?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type Employee = {
@@ -402,6 +467,29 @@ export type EmployeePagination = {
   __typename?: 'EmployeePagination';
   meta?: Maybe<PaginationMeta>;
   nodes?: Maybe<Array<Employee>>;
+};
+
+export type ExerciseInput = {
+  __typename?: 'ExerciseInput';
+  dumbbleCurl?: Maybe<Scalars['Float']['output']>;
+  jumpingJack?: Maybe<Scalars['Float']['output']>;
+  others?: Maybe<Scalars['String']['output']>;
+  plank?: Maybe<Scalars['Float']['output']>;
+  pushUp?: Maybe<Scalars['Float']['output']>;
+  running?: Maybe<Scalars['Float']['output']>;
+  seatUp?: Maybe<Scalars['Float']['output']>;
+  squats?: Maybe<Scalars['Float']['output']>;
+};
+
+export type ExerciseInputDto = {
+  dumbbleCurl?: InputMaybe<Scalars['Float']['input']>;
+  jumpingJack?: InputMaybe<Scalars['Float']['input']>;
+  others?: InputMaybe<Scalars['String']['input']>;
+  plank?: InputMaybe<Scalars['Float']['input']>;
+  pushUp?: InputMaybe<Scalars['Float']['input']>;
+  running?: InputMaybe<Scalars['Float']['input']>;
+  seatUp?: InputMaybe<Scalars['Float']['input']>;
+  squats?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type Expense = {
@@ -478,6 +566,21 @@ export type InviteMemberToOrganizationInput = {
   orgId: Scalars['String']['input'];
 };
 
+export type JikirInput = {
+  __typename?: 'JikirInput';
+  doaTawhid?: Maybe<Scalars['Float']['output']>;
+  durud?: Maybe<Scalars['Float']['output']>;
+  durudYunus?: Maybe<Scalars['Float']['output']>;
+  istigfar?: Maybe<Scalars['Float']['output']>;
+};
+
+export type JikirInputDto = {
+  doaTawhid?: InputMaybe<Scalars['Float']['input']>;
+  durud?: InputMaybe<Scalars['Float']['input']>;
+  durudYunus?: InputMaybe<Scalars['Float']['input']>;
+  istigfar?: InputMaybe<Scalars['Float']['input']>;
+};
+
 export type LineItem = {
   __typename?: 'LineItem';
   code?: Maybe<Scalars['String']['output']>;
@@ -535,6 +638,7 @@ export type MetaSetupDataSchema = {
 export type Mutation = {
   __typename?: 'Mutation';
   bulkRemoveEmployee?: Maybe<Scalars['Boolean']['output']>;
+  createActivity: DailyActivity;
   createAdjustment: Scalars['Boolean']['output'];
   createAttendance: Scalars['Boolean']['output'];
   createBankAccount: Scalars['Boolean']['output'];
@@ -554,6 +658,7 @@ export type Mutation = {
   login: ApiCommonActionOutput;
   placeOrder: Order;
   registration: ApiCommonActionOutput;
+  removeActivity: DailyActivity;
   removeAdjustment: Adjustment;
   removeAttendance?: Maybe<Scalars['Boolean']['output']>;
   removeBankAccount: BankAccount;
@@ -570,6 +675,7 @@ export type Mutation = {
   removeUser?: Maybe<Scalars['Boolean']['output']>;
   sendInviteToMember: ApiCommonActionOutput;
   sendMagicLink: ApiCommonActionOutput;
+  updateActivity: Scalars['Boolean']['output'];
   updateAdjustment: Adjustment;
   updateAttendance: Scalars['Boolean']['output'];
   updateBankAccount: BankAccount;
@@ -593,6 +699,11 @@ export type Mutation = {
 
 export type MutationBulkRemoveEmployeeArgs = {
   uIds: Array<Scalars['String']['input']>;
+};
+
+
+export type MutationCreateActivityArgs = {
+  payload: CreateDailyActivityDto;
 };
 
 
@@ -694,6 +805,11 @@ export type MutationRegistrationArgs = {
 };
 
 
+export type MutationRemoveActivityArgs = {
+  _id: Scalars['String']['input'];
+};
+
+
 export type MutationRemoveAdjustmentArgs = {
   _id: Scalars['String']['input'];
 };
@@ -773,6 +889,13 @@ export type MutationSendInviteToMemberArgs = {
 
 export type MutationSendMagicLinkArgs = {
   payload: MagicLinkAuthenticationInput;
+};
+
+
+export type MutationUpdateActivityArgs = {
+  orgUID: Scalars['String']['input'];
+  payload: UpdateDailyActivityInputDto;
+  userId: Scalars['String']['input'];
 };
 
 
@@ -1108,6 +1231,8 @@ export type Query = {
   Attendance: Attendance;
   Attendances: AttendancePagination;
   Employee: Employee;
+  activitiesByOrgAndUser: DailyActivityPagination;
+  activityByOrgAndUser: DailyActivity;
   adjustment: Adjustment;
   adjustments: AdjustmentPagination;
   allEmployeeIds: Array<Scalars['String']['output']>;
@@ -1153,6 +1278,20 @@ export type QueryAttendancesArgs = {
 
 export type QueryEmployeeArgs = {
   input: CommonMatchInput;
+};
+
+
+export type QueryActivitiesByOrgAndUserArgs = {
+  input?: InputMaybe<ActivityListQueryDto>;
+  orgUID: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+
+export type QueryActivityByOrgAndUserArgs = {
+  _id: Scalars['String']['input'];
+  orgUID: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
 };
 
 
@@ -1569,6 +1708,17 @@ export type UpdateBrandInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   orgUID?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type UpdateDailyActivityInputDto = {
+  _id: Scalars['ID']['input'];
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  ebadah?: InputMaybe<EbadahInputDto>;
+  exercise?: InputMaybe<ExerciseInputDto>;
+  jikirAjkar?: InputMaybe<JikirInputDto>;
+  orgUID?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  user?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateEmployeeInput = {

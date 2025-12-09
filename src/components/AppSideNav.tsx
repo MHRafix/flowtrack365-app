@@ -14,6 +14,7 @@ import { StorageUtil } from '@/lib/storage.util';
 import { fetchME } from '@/store/auth.atom';
 import { Link, useRouter } from '@tanstack/react-router';
 import {
+	Activity,
 	BanknoteArrowDown,
 	Blocks,
 	ChevronDown,
@@ -169,6 +170,12 @@ const items = [
 	// 	url: `/organizations/${organizationUID}/crm-management`,
 	// 	icon: Headphones,
 	// },
+
+	{
+		title: 'Daily Activity',
+		url: `/organizations/${organizationUID}/daily-activity`,
+		icon: Activity,
+	},
 ];
 
 const AppSidenav = () => {

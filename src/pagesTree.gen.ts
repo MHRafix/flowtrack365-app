@@ -24,6 +24,9 @@ import { Route as AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRouteIm
 const AppOrganizationsOrgIdIndexLazyRouteImport = createFileRoute(
   '/_app/organizations/$orgId/',
 )()
+const AppOrganizationsOrgIdDailyActivityIndexLazyRouteImport = createFileRoute(
+  '/_app/organizations/$orgId/daily-activity/',
+)()
 const AppOrganizationsOrgIdOrganizationSettingsPlanFeaturesIndexLazyRouteImport =
   createFileRoute(
     '/_app/organizations/$orgId/organization-settings/plan-features/',
@@ -117,6 +120,16 @@ const AppOrganizationsOrgIdIndexLazyRoute =
     getParentRoute: () => AppRoute,
   } as any).lazy(() =>
     import('./pages/_app/organizations/$orgId/index.lazy').then((d) => d.Route),
+  )
+const AppOrganizationsOrgIdDailyActivityIndexLazyRoute =
+  AppOrganizationsOrgIdDailyActivityIndexLazyRouteImport.update({
+    id: '/organizations/$orgId/daily-activity/',
+    path: '/organizations/$orgId/daily-activity/',
+    getParentRoute: () => AppRoute,
+  } as any).lazy(() =>
+    import('./pages/_app/organizations/$orgId/daily-activity/index.lazy').then(
+      (d) => d.Route,
+    ),
   )
 const AppOrganizationsOrgIdTaskManagementIndexRoute =
   AppOrganizationsOrgIdTaskManagementIndexRouteImport.update({
@@ -316,6 +329,7 @@ export interface FileRoutesByFullPath {
   '/organizations': typeof OrganizationsIndexRoute
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  '/organizations/$orgId/daily-activity': typeof AppOrganizationsOrgIdDailyActivityIndexLazyRoute
   '/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
   '/organizations/$orgId/organization-settings/setup-meta': typeof AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute
   '/organizations/$orgId/accounts-management/adjustments': typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
@@ -343,6 +357,7 @@ export interface FileRoutesByTo {
   '/organizations': typeof OrganizationsIndexRoute
   '/organizations/$orgId': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/organizations/$orgId/task-management': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  '/organizations/$orgId/daily-activity': typeof AppOrganizationsOrgIdDailyActivityIndexLazyRoute
   '/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
   '/organizations/$orgId/organization-settings/setup-meta': typeof AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute
   '/organizations/$orgId/accounts-management/adjustments': typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
@@ -372,6 +387,7 @@ export interface FileRoutesById {
   '/organizations/': typeof OrganizationsIndexRoute
   '/_app/organizations/$orgId/': typeof AppOrganizationsOrgIdIndexLazyRoute
   '/_app/organizations/$orgId/task-management/': typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  '/_app/organizations/$orgId/daily-activity/': typeof AppOrganizationsOrgIdDailyActivityIndexLazyRoute
   '/_app/organizations/$orgId/accounts-management/statements/$accountId': typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
   '/_app/organizations/$orgId/organization-settings/setup-meta/': typeof AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute
   '/_app/organizations/$orgId/accounts-management/adjustments/': typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
@@ -401,6 +417,7 @@ export interface FileRouteTypes {
     | '/organizations'
     | '/organizations/$orgId'
     | '/organizations/$orgId/task-management'
+    | '/organizations/$orgId/daily-activity'
     | '/organizations/$orgId/accounts-management/statements/$accountId'
     | '/organizations/$orgId/organization-settings/setup-meta'
     | '/organizations/$orgId/accounts-management/adjustments'
@@ -428,6 +445,7 @@ export interface FileRouteTypes {
     | '/organizations'
     | '/organizations/$orgId'
     | '/organizations/$orgId/task-management'
+    | '/organizations/$orgId/daily-activity'
     | '/organizations/$orgId/accounts-management/statements/$accountId'
     | '/organizations/$orgId/organization-settings/setup-meta'
     | '/organizations/$orgId/accounts-management/adjustments'
@@ -456,6 +474,7 @@ export interface FileRouteTypes {
     | '/organizations/'
     | '/_app/organizations/$orgId/'
     | '/_app/organizations/$orgId/task-management/'
+    | '/_app/organizations/$orgId/daily-activity/'
     | '/_app/organizations/$orgId/accounts-management/statements/$accountId'
     | '/_app/organizations/$orgId/organization-settings/setup-meta/'
     | '/_app/organizations/$orgId/accounts-management/adjustments/'
@@ -540,6 +559,13 @@ declare module '@tanstack/react-router' {
       path: '/organizations/$orgId'
       fullPath: '/organizations/$orgId'
       preLoaderRoute: typeof AppOrganizationsOrgIdIndexLazyRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/organizations/$orgId/daily-activity/': {
+      id: '/_app/organizations/$orgId/daily-activity/'
+      path: '/organizations/$orgId/daily-activity'
+      fullPath: '/organizations/$orgId/daily-activity'
+      preLoaderRoute: typeof AppOrganizationsOrgIdDailyActivityIndexLazyRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/organizations/$orgId/task-management/': {
@@ -675,6 +701,7 @@ interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
   AppOrganizationsOrgIdIndexLazyRoute: typeof AppOrganizationsOrgIdIndexLazyRoute
   AppOrganizationsOrgIdTaskManagementIndexRoute: typeof AppOrganizationsOrgIdTaskManagementIndexRoute
+  AppOrganizationsOrgIdDailyActivityIndexLazyRoute: typeof AppOrganizationsOrgIdDailyActivityIndexLazyRoute
   AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute: typeof AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute
   AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute: typeof AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute
   AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute: typeof AppOrganizationsOrgIdAccountsManagementAdjustmentsIndexLazyRoute
@@ -699,6 +726,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppOrganizationsOrgIdIndexLazyRoute: AppOrganizationsOrgIdIndexLazyRoute,
   AppOrganizationsOrgIdTaskManagementIndexRoute:
     AppOrganizationsOrgIdTaskManagementIndexRoute,
+  AppOrganizationsOrgIdDailyActivityIndexLazyRoute:
+    AppOrganizationsOrgIdDailyActivityIndexLazyRoute,
   AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute:
     AppOrganizationsOrgIdAccountsManagementStatementsAccountIdLazyRoute,
   AppOrganizationsOrgIdOrganizationSettingsSetupMetaIndexRoute:

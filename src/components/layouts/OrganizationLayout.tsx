@@ -1,6 +1,5 @@
 import { StorageUtil } from '@/lib/storage.util';
 import { fetchME } from '@/store/auth.atom';
-import { useRouter } from '@tanstack/react-router';
 import { LogOutIcon } from 'lucide-react';
 import React, { PropsWithChildren } from 'react';
 import { useAppConfirm } from '../AppConfirm';
@@ -9,7 +8,6 @@ import { Button } from '../ui/button';
 
 const OrganizationLayout: React.FC<PropsWithChildren> = ({ children }) => {
 	const appConfirmHandle = useAppConfirm();
-	const router = useRouter();
 	return (
 		<>
 			<header className='dark:bg-[#172031] bg-[#FBFBFB] border-b !py-8 flex h-20 shrink-0 justify-between items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 px-4'>

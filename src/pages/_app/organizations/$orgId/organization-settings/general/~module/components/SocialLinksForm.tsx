@@ -66,13 +66,15 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 					<FormField
 						control={form.control}
 						name='facebook'
-						render={({ field }) => (
+						render={() => (
 							<FormItem>
 								<FormLabel>Facebook</FormLabel>
 								<FormControl>
 									<Input
 										placeholder='www.facebook.com/page_username'
-										{...field}
+										onChange={(e) =>
+											form.setValue('facebook', e?.target?.value!)
+										}
 										defaultValue={organization?.socialLinks?.facebook!}
 									/>
 								</FormControl>
@@ -86,6 +88,7 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 						<FormControl>
 							<Input
 								placeholder='www.x.com/page_username'
+								onChange={(e) => form.setValue('x', e?.target?.value!)}
 								defaultValue={organization?.socialLinks?.x!}
 							/>
 						</FormControl>
@@ -96,13 +99,15 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 					<FormField
 						control={form.control}
 						name='instagram'
-						render={({ field }) => (
+						render={() => (
 							<FormItem>
 								<FormLabel>Instagram</FormLabel>
 								<FormControl>
 									<Input
 										placeholder='www.instagram.com/page_username'
-										{...field}
+										onChange={(e) =>
+											form.setValue('instagram', e?.target?.value!)
+										}
 										defaultValue={organization?.socialLinks?.instagram!}
 									/>
 								</FormControl>
@@ -115,13 +120,15 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 					<FormField
 						control={form.control}
 						name='youtube'
-						render={({ field }) => (
+						render={() => (
 							<FormItem>
 								<FormLabel>Youtube</FormLabel>
 								<FormControl>
 									<Input
 										placeholder='www.youtube.com/chanel_name'
-										{...field}
+										onChange={(e) =>
+											form.setValue('youtube', e?.target?.value!)
+										}
 										defaultValue={organization?.socialLinks?.youtube!}
 									/>
 								</FormControl>
@@ -134,13 +141,13 @@ const SocialLinksForm: FC<SocialLinksFormProps> = ({
 					<FormField
 						control={form.control}
 						name='daraz'
-						render={({ field }) => (
+						render={() => (
 							<FormItem>
 								<FormLabel>Daraz</FormLabel>
 								<FormControl>
 									<Input
 										placeholder='www.daraz.com.bd/username'
-										{...field}
+										onChange={(e) => form.setValue('daraz', e?.target?.value!)}
 										defaultValue={organization?.socialLinks?.daraz!}
 									/>
 								</FormControl>
